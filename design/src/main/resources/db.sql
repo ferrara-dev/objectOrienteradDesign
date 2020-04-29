@@ -24,7 +24,7 @@ INSERT INTO ProductDB VALUES
 ('7', 'News paper', '30', 'Literature', '500');
 
 
-INSERT INTO discountDB VALUES('MONDAY', 'Buy N Items Get N Free', '1' ,'3', '1', '1'),('TUESDAY', 'Bulk Discount', '2', '10', '0.20', '-1'),('WEDNESDAY', 'Buy N Items Get N Free', '3', '3', '1', '1'),('THURSDAY', 'Bulk Discount', '4', '5', '0.10', '-1'),('FRIDAY', 'Buy N Items Get N Free', '5', '5', '2', '3'),('SATURDAY', 'Price Discount', '6:3:1', '1', '0.15', '-1'),('MONDAY:TUESDAY:WEDNESDAY:THURSDAY:FRIDAY', 'Price Discount', '0', '500', '0.10', '1');
+INSERT INTO discountDB VALUES('TUESDAY', 'Bulk Discount', '2', '10', '0.20', '-1'),('WEDNESDAY', 'Bulk Discount', '3', '3', '0.3', '1'),('THURSDAY', 'Bulk Discount', '4', '5', '0.10', '-1'),('SATURDAY', 'Price Discount', '0', '1000', '0.20', '-1'),('MONDAY:TUESDAY:WEDNESDAY:THURSDAY:FRIDAY', 'Price Discount', '0', '500', '0.10', '1');
 
 INSERT INTO products VALUES('1',null);
 INSERT INTO customerDiscounts VALUES('940412-1395',null),('960404-6541',null),('711231-6325',null);

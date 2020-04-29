@@ -1,4 +1,4 @@
-package startup.databasecreator;
+package startup.database;
 
 import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 import org.h2.tools.RunScript;

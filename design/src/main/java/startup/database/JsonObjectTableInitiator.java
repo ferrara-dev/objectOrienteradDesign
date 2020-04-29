@@ -1,4 +1,4 @@
-package startup.databasecreator;
+package startup.database;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import util.datatransferobject.CustomerDTO;

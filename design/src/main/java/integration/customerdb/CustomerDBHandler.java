@@ -22,10 +22,14 @@ public class CustomerDBHandler implements DataBaseHandler <Member, Member>{
     private static final String SQL_FIND_USER = "SELECT * FROM CustomerDB WHERE id='%s';";
     private static final String SQL_FIND_USERNAME = "SELECT * FROM CustomerDB *;";
 
-
+    /**
+     * Override to register a new member to the database.
+     * @param id
+     * @param member
+     * @return
+     */
     @Override
     public boolean register(String id, Member member) {
-        //TODO: Implementation
        try{
            find(id);
        } catch (NotFoundException ex){
@@ -50,6 +54,11 @@ public class CustomerDBHandler implements DataBaseHandler <Member, Member>{
         return false;
     }
 
+    /**
+     * Override to check if a customer exists in the database
+     * @param customerId
+     * @return
+     */
     public boolean find(String customerId) {
         try (Connection con = DriverManager.getConnection(URL)) {
             Statement stm = con.createStatement();
@@ -64,6 +73,11 @@ public class CustomerDBHandler implements DataBaseHandler <Member, Member>{
         throw new NotFoundException();
     }
 
+    /**
+     * Override to collect a member object from the database
+     * @param id
+     * @return
+     */
     @Override
     public Member collect(String id) {
         // Step 1: Establishing a Connection

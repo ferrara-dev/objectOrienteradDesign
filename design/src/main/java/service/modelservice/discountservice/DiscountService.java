@@ -5,7 +5,7 @@ import model.customer.MemberDiscountRequest;
 import model.discount.Discount;
 import model.discount.discountrule.DiscountRule;
 import service.modelservice.Service;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ServiceCreator;
 import service.IntegrationService;
 import service.modelservice.customerservice.CustomerService;
 import service.modelservice.saleservice.SaleService;
@@ -82,4 +82,7 @@ public class DiscountService implements Service {
         return this;
     }
 
+    public MemberDiscountRequest getMemberDiscountRequest() {
+        return memberDiscountRequest;
+    }
 }

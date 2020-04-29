@@ -43,6 +43,7 @@ public class CashierView extends View {
         initialView.initDefault(mainController);
         saleView.initDefault(mainController);
         paymentView.initDefault(mainController);
+        closedSaleView.initDefault(mainController);
     }
 
 
@@ -61,12 +62,16 @@ public class CashierView extends View {
                 boolean active = (boolean) ((PropertyChangeEvent) observedEvent).getNewValue();
                 if (active == true)
                     update(SaleView.CARD_CONSTRAINT);
+                else if(active == false){
+                    update(ClosedSaleView.CARD_CONSTRAINT);
+                }
             }
             else if (propertyName == "completed"){
                 boolean completed = (boolean) ((PropertyChangeEvent) observedEvent).getNewValue();
                 if (completed == true)
                     update(PaymentView.CARD_CONSTRAINT);
             }
+
         }
     }
 

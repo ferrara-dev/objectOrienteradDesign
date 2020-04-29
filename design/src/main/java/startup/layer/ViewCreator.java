@@ -1,4 +1,4 @@
-package startup.layercreator;
+package startup.layer;
 
 import view.CashierDisplay;
 import view.CashierView;

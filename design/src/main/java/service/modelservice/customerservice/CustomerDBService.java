@@ -23,7 +23,9 @@ public class CustomerDBService implements IntegrationService<Member> {
     public Member getFromDB(Object customerId) {
         try {
             Member member = customerDataBaseHandler.collect((String) customerId);
-            member.setCustomerId(new CustomerId((String) customerId));
+            CustomerId customerIdentification = new CustomerId();
+            customerIdentification.setPersonalNumber((String) customerId);
+            member.setCustomerId(customerIdentification);
             return member;
         }
 

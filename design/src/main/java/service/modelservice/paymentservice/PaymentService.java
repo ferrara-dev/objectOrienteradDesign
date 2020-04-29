@@ -5,13 +5,18 @@ import model.amount.Payment;
 import model.physicalobjects.Register;
 import service.modelservice.Service;
 import service.modelservice.saleservice.SaleService;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ServiceCreator;
 
 public class PaymentService implements Service  {
     SaleService saleService;
     Register register;
 
-
+    /**
+     * Creates an instance of the <code> PaymentService </code>
+     * takes the <code> serviceCreator </code> as parameter to
+     * get access to the saleService and register.
+     * @param serviceCreator
+     */
     public PaymentService(ServiceCreator serviceCreator){
         this.saleService = serviceCreator.getSaleService();
         register = serviceCreator.getPhysicalObjectsRepository().getCashRegister();
@@ -36,6 +41,7 @@ public class PaymentService implements Service  {
         double result = costToPay.getNumber().doubleValue() - payment.getNumber().doubleValue();
         if(result <= 0){
             double cashBack = register.withdraw(result);
+            costToPay.setNumber(0);
             saleService.finalizeSale(cashBack);
         }
         else

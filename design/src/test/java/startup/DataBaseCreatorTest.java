@@ -10,7 +10,7 @@ public class DataBaseCreatorTest extends TestCase {
 
     @Test
     public void testMain(){
-        DataBaseHandler<Product,Integer> handler = new InventoryHandler();
+        DataBaseHandler<Product,Object> handler = new InventoryHandler();
         Main.initDB();
         // Product [] products  = new Product[7];
         for(int i = 1; i < 8; i++){

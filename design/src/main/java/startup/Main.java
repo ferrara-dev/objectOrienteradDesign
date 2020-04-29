@@ -6,8 +6,8 @@ import util.datatransferobject.CustomerDTO;
 import factory.CustomerFactory;
 import factory.ProductFactory;
 import util.datatransferobject.ItemDTO;
-import startup.databasecreator.DataBaseCreator;
-import startup.databasecreator.JsonObjectTableInitiator;
+import startup.database.DataBaseCreator;
+import startup.database.JsonObjectTableInitiator;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

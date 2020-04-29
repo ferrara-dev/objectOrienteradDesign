@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class Member implements Customer{
     private String name;
-    private String email;
     private CustomerId customerId;
     private Sale saleInProgress;
     private ArrayList<Sale> registeredPurchases = new ArrayList<>();
@@ -21,7 +20,8 @@ public class Member implements Customer{
     }
 
     public void setAttributes(CustomerDTO customerDTO){
-        this.customerId = new CustomerId(customerDTO.getCustomerId());
+        this.customerId = new CustomerId();
+        customerId.setPersonalNumber(customerDTO.getCustomerId());
         this.name = customerDTO.getName();
     }
 
@@ -37,17 +37,10 @@ public class Member implements Customer{
         return registeredPurchases;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setCustomerId(CustomerId customerId) {
         this.customerId = customerId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public void setName(String name) {
         this.name = name;

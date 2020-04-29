@@ -34,7 +34,7 @@ public class SaleController {
      * @param quantity amount of product units that are to be registered
      *                 to the sale.
      */
-    public void registerProduct(int itemId, int quantity){
+    public void initiateProductRegistration(int itemId, int quantity){
         saleService.registerProduct(itemId, quantity);
     }
     /**

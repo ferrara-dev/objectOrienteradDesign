@@ -3,8 +3,7 @@ package model.customer;
 public class CustomerId {
     private String personalNumber;
 
-    public CustomerId(String personalNumber) {
-        this.personalNumber = personalNumber;
+    public CustomerId() {
     }
 
     public String getPersonalNumber() {
@@ -15,5 +14,9 @@ public class CustomerId {
         if (this.personalNumber == customerId.getPersonalNumber())
             return true;
         return false;
+    }
+
+    public void setPersonalNumber(String personalNumber) {
+        this.personalNumber = personalNumber;
     }
 }

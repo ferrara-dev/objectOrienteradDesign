@@ -1,10 +1,11 @@
 package service.modelservice.saleservice;
 
 import model.amount.Amount;
+import model.sale.SaleItem;
 import service.modelservice.Service;
 import service.modelservice.customerservice.CustomerService;
 import service.PhysicalObjectsRepository;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ServiceCreator;
 import model.sale.Sale;
 import observer.EventObserver;
 import service.IntegrationService;
@@ -23,6 +24,7 @@ public class SaleService implements Service {
     public SaleService(ServiceCreator serviceCreator) {
         saleDataBaseService = serviceCreator.getIntegrationServiceFactory().getSaleDBService();
         productService = serviceCreator.getProductService();
+        customerService = serviceCreator.getCustomerService();
         physicalObjectsRepository = serviceCreator.getPhysicalObjectsRepository();
     }
 
@@ -59,13 +61,14 @@ public class SaleService implements Service {
 
     /**
      * Register a new product to the sale
-     *
+     * <p>
      * if <code> sale </code> is not initiated
      * before the method is called <code> IllegalStateException </code> is thrown.
-     *
+     * <p>
      * if<code> sale.isCompleted() </code> and <code> Sale.isActive() </code> ,
      * a product will be collected by calling <code> productService </code> and
      * then added to the <code> cart </code>.
+     *
      * @param itemId
      * @param quantity
      */
@@ -78,11 +81,13 @@ public class SaleService implements Service {
 
         if (!sale.getSaleDetail().isCompleted())
             if (sale.getSaleDetail().isActive()) {
-                sale.getCart().add(productService.getProduct(itemId), quantity);
+                SaleItem saleItem = new SaleItem(productService.getProduct(itemId), quantity);
+                sale.getCart().addProduct(saleItem);
                 sale.updateCost();
                 updateRunningTotal();
             }
     }
+
 
     public void updateRunningTotal() {
         double newTotal = sale.getCost().getTotalCost();
@@ -93,17 +98,18 @@ public class SaleService implements Service {
         sale.getSaleDetail().setCompleted(true);
     }
 
-    public void finalizeSale(double cashBack){
+    public void finalizeSale(double cashBack) {
         sale.setCashBack(cashBack);
         sale.finishSale();
-        if(sale.isDiscounted()){
+        if (sale.isDiscounted()) {
             customerService.registerSaleToCustomer(sale);
         }
         saleDataBaseService.updateDB(sale);
+        productService.updateInventory(sale.getCart().getItems());
         physicalObjectsRepository.printReceipt(sale);
     }
 
-    public Amount getSaleCost(){
+    public Amount getSaleCost() {
         return sale.getCost();
     }
 
@@ -112,5 +118,11 @@ public class SaleService implements Service {
         return this;
     }
 
+    public IntegrationService<Sale> getSaleDataBaseService() {
+        return saleDataBaseService;
+    }
 
+    public ProductService getProductService() {
+        return productService;
+    }
 }

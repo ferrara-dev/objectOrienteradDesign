@@ -4,13 +4,12 @@ package mainoperations;
 import controller.MainController;
 import controller.subcontroller.PaymentController;
 import controller.subcontroller.SaleController;
-import model.sale.Sale;
 import org.junit.Before;
 import org.junit.Test;
 import service.PhysicalObjectsRepository;
 import service.modelservice.saleservice.SaleService;
-import startup.layercreator.ControllerCreator;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ControllerCreator;
+import startup.layer.ServiceCreator;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;

@@ -1,9 +1,8 @@
 package service.modelservice.productservice;
 
-import model.sale.Cart;
 import model.sale.SaleItem;
 import service.modelservice.Service;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ServiceCreator;
 import integration.productdb.Product;
 import service.IntegrationService;
 

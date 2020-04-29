@@ -10,7 +10,8 @@ public interface DataBaseHandler<obj,param> {
      static final String SELECT_TEMPLATE = "SELECT * FROM %s WHERE id='%s';";
      static final String SELECT_ALL_TEMPLATE = "SELECT * FROM %s;";
      static final ObjectMapper objectMapper = new ObjectMapper();
-     static final String UPDATE_TEMPLATE = "UPDATE %s SET stockstatus=%s WHERE id='%s';";
+     static final String UPDATE_TEMPLATE = "UPDATE %s SET vdata='%s' FORMAT JSON WHERE id='%s';";
+
 
      boolean register(String id, param obj);
      boolean find(String id);

@@ -1,11 +1,15 @@
 package service;
 
+import model.customer.MemberDiscountRequest;
 import service.modelservice.saleservice.SaleService;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ServiceCreator;
 import org.junit.Before;
 import org.junit.Test;
 import service.modelservice.discountservice.DiscountService;
 import util.exception.NotFoundException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DiscountServiceTest {
     ServiceCreator serviceFactory;
@@ -39,22 +43,10 @@ public class DiscountServiceTest {
         saleService.initSaleDefault();
         saleService.registerProduct(2,10);
         discountService.initiateDiscountRequest("940412-1395");
-        discountService.processRequest();
-        /*
+
         MemberDiscountRequest discountRequest =  discountService.getMemberDiscountRequest();
         assertNotNull(discountRequest);
         assertEquals(discountRequest.getMember().getCustomerId().getPersonalNumber(),"940412-1395");
-
-        /* 2 *//*
-        SaleService saleService = serviceFactory.getSaleService();
-        saleService.startSale();
-        saleService.initSaleDefault();
-        saleService.registerProduct(1,1);
-        discountService.initiateDiscountRequest("940412-1395");
-        discountRequest =  discountService.getMemberDiscountRequest();
-        assertNotNull(discountRequest);
-        assertEquals(saleService.getSale().getSaleDetail().getId().getValue(),discountRequest.getCurrentSale().getSaleDetail().getId().getValue());
-        */
     }
 
 }

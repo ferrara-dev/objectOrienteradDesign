@@ -11,8 +11,37 @@ public class Product {
     private double taxRate;
     private double totalPrice;
     private int stockstatus;
+
     public Product(){
 
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setTaxRate(double taxRate) {
+        this.taxRate = taxRate;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setTotalVAT(double totalVAT) {
+        this.totalVAT = totalVAT;
     }
 
     public void setAttributes(ItemDTO itemDTO){

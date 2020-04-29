@@ -9,6 +9,10 @@ public class DiscountController {
         this.discountService = discountService;
     }
 
+    /**
+     * Inititate handlig of a discount request
+     * @param customerId the id of the customer requesting a discount
+     */
     public void handleDiscountRequest(String customerId) {
         discountService.initiateDiscountRequest(customerId);
         discountService.processRequest();

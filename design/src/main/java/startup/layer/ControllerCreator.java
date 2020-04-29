@@ -1,4 +1,4 @@
-package startup.layercreator;
+package startup.layer;
 
 import controller.MainController;
 import controller.subcontroller.CustomerController;

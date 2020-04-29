@@ -9,7 +9,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    public void enterPayment(double amount){
+    public void initiatePaymentProcess(double amount){
         paymentService.processPayment(amount);
     }
 }

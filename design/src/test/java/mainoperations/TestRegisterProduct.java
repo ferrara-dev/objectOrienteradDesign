@@ -7,9 +7,10 @@ import model.sale.Sale;
 import org.junit.Before;
 import org.junit.Test;
 import service.PhysicalObjectsRepository;
+import service.modelservice.productservice.ProductService;
 import service.modelservice.saleservice.SaleService;
-import startup.layercreator.ControllerCreator;
-import startup.layercreator.ServiceCreator;
+import startup.layer.ControllerCreator;
+import startup.layer.ServiceCreator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -19,7 +20,7 @@ public class TestRegisterProduct {
     MainController mainController;
     SaleController saleController;
     PaymentController paymentController;
-
+    ProductService productService;
     @Before
     public void startup(){
         creator = new ControllerCreator(new ServiceCreator(new PhysicalObjectsRepository()));

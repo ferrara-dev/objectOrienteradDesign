@@ -11,7 +11,7 @@ public class ProductDBTest {
 
     @Test
     public void testProductRegistryHandler(){
-        DataBaseHandler<Product,Integer> dataBaseHandler = new InventoryHandler();
+        DataBaseHandler<Product,Object> dataBaseHandler = new InventoryHandler();
         Product product = dataBaseHandler.collect("1");
         assertNotNull(product);
         assertEquals(product.getItemId(),1);

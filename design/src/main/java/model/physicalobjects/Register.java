@@ -26,7 +26,7 @@ public class Register {
     public double withdraw(double amountToWithdraw){
         if(balance >= amountToWithdraw){
             balance = balance + amountToWithdraw;
-            return amountToWithdraw;
+            return (-1)*amountToWithdraw;
         }
         else
             throw new IllegalArgumentException();
