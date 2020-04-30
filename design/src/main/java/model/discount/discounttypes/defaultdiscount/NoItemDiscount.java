@@ -1,9 +1,11 @@
 package model.discount.discounttypes.defaultdiscount;
 
-import integration.productdb.Product;
 import model.discount.discountrule.itemdiscountrule.ItemDiscountRule;
 import model.discount.discounttypes.itemdiscount.ItemDiscount;
 
+/**
+ * Class representing a default item discount
+ */
 public class NoItemDiscount implements ItemDiscount {
     private final double totalPriceReduction = 0;
 
@@ -13,7 +15,12 @@ public class NoItemDiscount implements ItemDiscount {
     }
 
     @Override
-    public ItemDiscountRule getDiscountPolicy() {
+    public ItemDiscountRule getDiscountRule() {
+        return null;
+    }
+
+    @Override
+    public Integer getRequirement() {
         return null;
     }
 

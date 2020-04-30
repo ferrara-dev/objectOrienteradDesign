@@ -9,7 +9,8 @@ import model.discount.discountrule.DiscountRule;
  */
 public interface Discount{
     void setTotalPriceReduction(double totalPriceReduction);
-    DiscountRule getDiscountPolicy();
+    Number getRequirement();
+    DiscountRule getDiscountRule();
     Double getTotalPriceReduction();
     String getDate();
     boolean isDefault();

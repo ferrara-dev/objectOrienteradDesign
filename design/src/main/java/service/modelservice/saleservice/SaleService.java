@@ -14,6 +14,9 @@ import service.modelservice.productservice.ProductService;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Service class that performs business logic and manipulates the sale model
+ */
 public class SaleService implements Service {
     private IntegrationService<Sale> saleDataBaseService;
     private ProductService productService;
@@ -22,7 +25,7 @@ public class SaleService implements Service {
     private Sale sale;
 
     public SaleService(ServiceCreator serviceCreator) {
-        saleDataBaseService = serviceCreator.getIntegrationServiceFactory().getSaleDBService();
+        saleDataBaseService = serviceCreator.getIntegrationServiceCreator().getSaleDBService();
         productService = serviceCreator.getProductService();
         customerService = serviceCreator.getCustomerService();
         physicalObjectsRepository = serviceCreator.getPhysicalObjectsRepository();
@@ -42,6 +45,10 @@ public class SaleService implements Service {
         sale.startSale();
     }
 
+    /**
+     * Distribute observers to the models
+     * @param observers
+     */
     public void distributeObservers(ArrayList<EventObserver> observers) {
         if (Objects.nonNull(observers))
             for (EventObserver observer : observers) {
@@ -88,16 +95,27 @@ public class SaleService implements Service {
             }
     }
 
-
+    /**
+     * Update the sales running total
+     */
     public void updateRunningTotal() {
         double newTotal = sale.getCost().getTotalCost();
         sale.setRunningTotal(newTotal);
     }
 
+    /**
+     * End the sale by setting it as completed
+     */
     public void endSale() {
         sale.getSaleDetail().setCompleted(true);
     }
 
+    /**
+     * Finialize the sale,
+     * this method is called from the payment service if
+     * the payed amount equals, or is greater the sales cost.
+     * @param cashBack
+     */
     public void finalizeSale(double cashBack) {
         sale.setCashBack(cashBack);
         sale.finishSale();

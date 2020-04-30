@@ -12,6 +12,9 @@ import util.exception.IllegalDiscountCombinationException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Amount class representing a cost
+ */
 public class Cost implements ObservableModel, Amount  {
     private PriceDiscount priceDiscount;
     private ArrayList<EventObserver> eventObservers = new ArrayList<>();

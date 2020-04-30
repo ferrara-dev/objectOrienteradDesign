@@ -8,13 +8,22 @@ import service.IntegrationService;
 
 import java.util.List;
 
+/**
+ * Performs logic to create fetch products from the database and
+ * update the inventory when a sale is finalized
+ */
 public class ProductService implements Service {
     IntegrationService<Product> integrationService;
 
     public ProductService(ServiceCreator serviceCreator){
-        integrationService = serviceCreator.getIntegrationServiceFactory().getProductDBService();
+        integrationService = serviceCreator.getIntegrationServiceCreator().getProductDBService();
     }
 
+    /**
+     * Update the inventory stock status for all items
+     * that have been sold in a sale
+     * @param soldItems
+     */
     public void updateInventory(List<SaleItem> soldItems){
         int oldStock;
         int newStock;
@@ -25,6 +34,12 @@ public class ProductService implements Service {
             integrationService.updateDB(saleItem.getProduct());
         }
     }
+
+    /**
+     * Fetch an item from the product database
+     * @param itemId
+     * @return
+     */
     public Product getProduct(int itemId){
         return integrationService.getFromDB(itemId);
     }

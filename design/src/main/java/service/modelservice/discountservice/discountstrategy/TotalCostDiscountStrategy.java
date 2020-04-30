@@ -1,20 +1,21 @@
 package service.modelservice.discountservice.discountstrategy;
 
+import model.discount.discountrule.DiscountRule;
 import util.datatransferobject.DiscountDTO;
 import model.discount.discountrule.pricediscountrule.TotalCostDiscountRule;
 
 
 import java.util.ArrayList;
 
-public class TotalCostDiscountStrategy implements DiscountStrategy {
+public class TotalCostDiscountStrategy implements DiscountStrategy{
     private ArrayList<TotalCostDiscountRule> totalCostDiscountRules;
 
-    public TotalCostDiscountStrategy(){
+    public TotalCostDiscountStrategy(DiscountDTO discountDTO){
         totalCostDiscountRules = new ArrayList<>();
+        applyStrategy(discountDTO);
     }
 
-    @Override
-    public boolean applyStrategy(DiscountDTO discountDTO) {
+    private boolean applyStrategy(DiscountDTO discountDTO) {
         double minimumSpent = Double.parseDouble(discountDTO.getRequirement());
         double priceReduction = Double.parseDouble(discountDTO.getReduction());
                 TotalCostDiscountRule priceDiscountPolicy = new TotalCostDiscountRule(minimumSpent,priceReduction);
@@ -24,8 +25,8 @@ public class TotalCostDiscountStrategy implements DiscountStrategy {
 
 
     @Override
-    public ArrayList getRules() {
-        return totalCostDiscountRules;
+    public TotalCostDiscountRule [] getRules() {
+        return totalCostDiscountRules.toArray(new TotalCostDiscountRule[0]);
     }
 
 

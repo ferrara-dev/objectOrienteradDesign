@@ -23,6 +23,9 @@ public class SaleDetail implements ObservableModel {
 
     }
 
+    /**
+     * Inititate the fields to default values
+     */
     public void createDefault() {
         setSaleId(new SaleId());
         setCompleted(false);
@@ -56,6 +59,10 @@ public class SaleDetail implements ObservableModel {
         return this.dateOfSale;
     }
 
+    /**
+     * Check if the sale is active
+     * @return
+     */
     public boolean isActive() {
         return active;
     }

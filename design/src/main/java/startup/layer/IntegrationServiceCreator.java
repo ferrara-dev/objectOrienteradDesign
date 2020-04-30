@@ -1,4 +1,4 @@
-package factory;
+package startup.layer;
 
 
 import integration.customerdb.CustomerDBHandler;
@@ -10,13 +10,16 @@ import service.modelservice.discountservice.DiscountDBService;
 import service.modelservice.productservice.ProductDBService;
 import service.modelservice.saleservice.SaleDBService;
 
-public class IntegrationServiceFactory {
+/**
+ * Creator used to initiate all the integrations services and provide references to them
+ */
+public class IntegrationServiceCreator {
     private SaleDBService saleDBService;
     private DiscountDBService discountDBService;
     private CustomerDBService customerDBService;
     private ProductDBService productDBService;
 
-    public IntegrationServiceFactory() {
+    public IntegrationServiceCreator() {
         saleDBService = new SaleDBService(new SaleLogHandler());
         discountDBService = new DiscountDBService(new DiscountRegistryHandler());
         customerDBService = new CustomerDBService(new CustomerDBHandler());

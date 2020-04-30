@@ -7,6 +7,9 @@ import model.sale.Sale;
 import service.IntegrationService;
 import service.modelservice.saleservice.SaleService;
 
+/**
+ * Customer service class that used to perform operation on <code> Member </code>objects
+ */
 public class CustomerService implements Service {
     public static final Long HASH_KEY_ID = 13L;
     private SaleService saleService;
@@ -14,13 +17,18 @@ public class CustomerService implements Service {
     private Member member;
     public CustomerService(ServiceCreator serviceCreator){
         saleService = serviceCreator.getSaleService();
-        dataBaseService = serviceCreator.getIntegrationServiceFactory().getCustomerDBService();
+        dataBaseService = serviceCreator.getIntegrationServiceCreator().getCustomerDBService();
     }
 
     public void initDefault(){
 
     }
 
+    /**
+     * Find a customer and set the sale in progress
+     * @param customerId
+     * @return
+     */
     public Member findCustomer(String customerId){
         member = dataBaseService.getFromDB(customerId);
         member.setSaleInProgress(saleService.getSale());

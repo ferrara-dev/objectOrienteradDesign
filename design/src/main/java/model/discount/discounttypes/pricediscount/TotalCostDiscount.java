@@ -18,26 +18,52 @@ public class TotalCostDiscount implements PriceDiscount {
         this.totalPriceReduction = totalPriceReduction;
     }
 
+    /**
+     * Get the minimum amount that needs to be spent to
+     * get the discount.
+     * @return
+     */
     @Override
-    public PriceDiscountRule getDiscountPolicy() {
+    public Double getRequirement() {
+        return priceDiscountRule.getMinimumSpend();
+    }
+
+    /**
+     * Get the rule that defines the discount
+     * @return
+     */
+    @Override
+    public PriceDiscountRule getDiscountRule() {
         return priceDiscountRule;
     }
 
+    /**
+     * Get the total price reduction
+     * @return
+     */
     @Override
     public Double getTotalPriceReduction() {
         return totalPriceReduction;
     }
-
+    //TODO:
     @Override
     public String getDate() {
         return null;
     }
 
+    /**
+     * Check if the discount is a default discount or not
+     * @return
+     */
     @Override
     public boolean isDefault() {
         return false;
     }
 
+    /**
+     * Get the discount rate
+     * @return
+     */
     public double getDiscountRate() {
         return discountRate;
     }

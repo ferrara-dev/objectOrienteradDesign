@@ -5,6 +5,7 @@ import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
 
 public interface PriceDiscount extends Discount {
     @Override
-    PriceDiscountRule getDiscountPolicy();
-
+    PriceDiscountRule getDiscountRule();
+    @Override
+    public Double getRequirement();
 }

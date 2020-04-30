@@ -26,7 +26,7 @@ public class DiscountService implements Service {
     public DiscountService(ServiceCreator serviceCreator) {
         saleService = serviceCreator.getSaleService();
         customerService = serviceCreator.getCustomerService();
-        discountDBService = serviceCreator.getIntegrationServiceFactory().getDiscountDBService();
+        discountDBService = serviceCreator.getIntegrationServiceCreator().getDiscountDBService();
         discountCalculator = new DiscountCalculator();
     }
 

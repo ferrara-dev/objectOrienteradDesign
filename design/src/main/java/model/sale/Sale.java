@@ -8,6 +8,9 @@ import observer.PropertyChangeEvent;
 
 import java.util.ArrayList;
 
+/**
+ * Class representing a sale
+ */
 
 public class Sale implements ObservableModel {
     private boolean discounted;
@@ -26,14 +29,26 @@ public class Sale implements ObservableModel {
 
     }
 
+    /**
+     * Check if the sale is discounted or not
+     * @return
+     */
     public boolean isDiscounted() {
         return discounted;
     }
 
+    /**
+     * Get change from after the purchase
+     * @return
+     */
     public double getCashBack() {
         return cashBack;
     }
 
+    /**
+     * Set the change
+     * @param cashBack
+     */
     public void setCashBack(double cashBack) {
         notifyObservers(new PropertyChangeEvent("cashBack",cashBack,this.cashBack));
         this.cashBack = cashBack;
@@ -43,6 +58,9 @@ public class Sale implements ObservableModel {
         return cost;
     }
 
+    /**
+     * Update the sale cost
+     */
     public void updateCost() {
         cost.updateCost(this);
     }
@@ -55,16 +73,25 @@ public class Sale implements ObservableModel {
         this.cart = cart;
     }
 
+    /**
+     * Start the sale and initiate
+     * fields to default values
+     */
     public void startSale(){
         this.cart = new Cart();
         this.cost = new Cost();
         this.saleDetail = new SaleDetail();
     }
-
+    /**
+     * Initiate fields in the saleDetail to default values
+     */
     public void createDefault(){
         saleDetail.createDefault();
     }
-
+    /**
+     * inactivate the sale by setting the boolean field <code> active </code>
+     * in <code> SaleDetail </code> as false
+     */
     public void finishSale(){
         saleDetail.setActive(false);
     }

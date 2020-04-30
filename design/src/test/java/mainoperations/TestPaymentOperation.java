@@ -29,7 +29,7 @@ public class TestPaymentOperation {
     }
 
     @Test
-    public void testRegisterProductOperation(){
+    public void testPaymentOperation(){
         saleController.startSale();
         SaleService saleService = saleController.getSaleService();
         double initialToPay = saleService.getSaleCost().getNumber().doubleValue();

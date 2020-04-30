@@ -1,7 +1,7 @@
 package model.amount;
 
 /**
- * Class representing a payment of items
+ * Amount class representing a payment
  */
 public class Payment implements Amount {
     private double number;
@@ -20,6 +20,12 @@ public class Payment implements Amount {
         return number;
     }
 
+    /**
+     * Overriden to compare if two amounts are
+     * of the same type
+     * @param amount
+     * @return
+     */
     @Override
     public boolean compare(Amount amount) {
         if (amount == null)

@@ -14,6 +14,10 @@ public class ProductDBService implements IntegrationService<Product> {
         this.dataBaseHandler = dataBaseHandler;
     }
 
+    /**
+     * Call the databaseHandler to update the inventory
+     * @param object
+     */
     @Override
     public void updateDB(Object object) {
         int stockstatus = ((Product) object).getStockstatus();
@@ -21,6 +25,11 @@ public class ProductDBService implements IntegrationService<Product> {
         dataBaseHandler.register(String.valueOf(id), (Product) object);
     }
 
+    /**
+     * Call the databasehandler to fetch a product from the database
+     * @param object
+     * @return
+     */
     @Override
     public Product getFromDB(Object object) {
         String itemId = Integer.toString((int) object);

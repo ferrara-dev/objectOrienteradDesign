@@ -6,6 +6,7 @@ public interface ItemDiscount extends Discount {
     int getDiscountedItem();
 
     @Override
-    ItemDiscountRule getDiscountPolicy();
-
+    ItemDiscountRule getDiscountRule();
+    @Override
+    public Integer getRequirement();
 }

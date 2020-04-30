@@ -1,6 +1,5 @@
 package startup.layer;
 
-import factory.IntegrationServiceFactory;
 import service.modelservice.paymentservice.PaymentService;
 import service.modelservice.productservice.ProductService;
 import service.modelservice.customerservice.CustomerService;
@@ -10,7 +9,7 @@ import service.PhysicalObjectsRepository;
 
 public class ServiceCreator {
     private PhysicalObjectsRepository physicalObjectsRepository;
-    private IntegrationServiceFactory integrationServiceFactory;
+    private IntegrationServiceCreator integrationServiceCreator;
     private DiscountService discountService;
     private SaleService saleService;
     private CustomerService customerService;
@@ -19,7 +18,7 @@ public class ServiceCreator {
 
     public ServiceCreator(PhysicalObjectsRepository physicalObjectsRepository){
         this.physicalObjectsRepository = physicalObjectsRepository;
-        integrationServiceFactory = new IntegrationServiceFactory();
+        integrationServiceCreator = new IntegrationServiceCreator();
         productService = new ProductService(this);
         saleService = new SaleService(this);
         customerService = new CustomerService(this);
@@ -39,8 +38,8 @@ public class ServiceCreator {
         return discountService;
     }
 
-    public IntegrationServiceFactory getIntegrationServiceFactory() {
-        return integrationServiceFactory;
+    public IntegrationServiceCreator getIntegrationServiceCreator() {
+        return integrationServiceCreator;
     }
 
     public SaleService getSaleService() {

@@ -34,10 +34,12 @@ public class SaleItem implements ObservableModel {
      * @param itemDiscount the discount that is to be applied to the saleItem.
      */
     public void setItemDiscount(ItemDiscount itemDiscount){
-        if(itemDiscount == null || (this.itemDiscount.getTotalPriceReduction() < itemDiscount.getTotalPriceReduction())) {
+        if(Objects.nonNull(itemDiscount))
+            if( (this.itemDiscount.getTotalPriceReduction() < itemDiscount.getTotalPriceReduction())) {
             this.itemDiscount = itemDiscount;
 
         }
+
         else
             throw new IllegalDiscountCombinationException();
     }
@@ -46,6 +48,10 @@ public class SaleItem implements ObservableModel {
         return itemDiscount;
     }
 
+    /**
+     * Update the saleitems quantity, price and total vat
+     * @param increasedQuantity
+     */
     public void update(int increasedQuantity){
         if(Objects.nonNull(this) && Objects.nonNull(product)) {
             int newQuantity = quantity + increasedQuantity;

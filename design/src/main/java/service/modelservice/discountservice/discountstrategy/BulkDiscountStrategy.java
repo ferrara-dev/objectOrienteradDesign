@@ -10,12 +10,18 @@ import java.util.ArrayList;
 public class BulkDiscountStrategy implements DiscountStrategy {
     private ArrayList<BulkDiscountRule> bulkDiscountRules;
 
-    public BulkDiscountStrategy() {
+    /**
+     * A concrete implementation of a discount strategy, applies
+     * a strategy to get a bulk discount on on ore more items.
+     * @param discountDTO Information about the discount that
+     * the strategy is applied to.
+     */
+    public BulkDiscountStrategy(DiscountDTO discountDTO) {
         this.bulkDiscountRules = new ArrayList<>();
+        applyStrategy(discountDTO);
     }
 
-    @Override
-    public boolean applyStrategy(DiscountDTO discountDTO) {
+    private boolean applyStrategy(DiscountDTO discountDTO) {
         int itemIdCounter = 0;
         String[] discountItemId = discountDTO.getItemId().split(":");
         int[] itemId = new int[discountItemId.length];
@@ -33,8 +39,8 @@ public class BulkDiscountStrategy implements DiscountStrategy {
     }
 
     @Override
-    public ArrayList getRules() {
-        return bulkDiscountRules;
+    public BulkDiscountRule [] getRules() {
+        return bulkDiscountRules.toArray(new BulkDiscountRule[0]);
     }
 
     private boolean bulkDiscountWasAdded() {

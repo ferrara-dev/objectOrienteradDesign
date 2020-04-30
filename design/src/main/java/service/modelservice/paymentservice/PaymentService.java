@@ -7,6 +7,9 @@ import service.modelservice.Service;
 import service.modelservice.saleservice.SaleService;
 import startup.layer.ServiceCreator;
 
+/**
+ * Class containing logic used to process payments
+ */
 public class PaymentService implements Service  {
     SaleService saleService;
     Register register;

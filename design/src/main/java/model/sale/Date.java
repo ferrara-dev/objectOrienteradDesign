@@ -1,6 +1,8 @@
 package model.sale;
 
-
+/**
+ * Class representing a date
+ */
 public class Date {
     private int currentYear;
     private int monthOfTheYear;
