@@ -82,6 +82,7 @@ public class Sale implements ObservableModel {
         this.cost = new Cost();
         this.saleDetail = new SaleDetail();
     }
+
     /**
      * Initiate fields in the saleDetail to default values
      */
@@ -96,7 +97,7 @@ public class Sale implements ObservableModel {
     public void finishSale(){
         saleDetail.setActive(false);
     }
-    
+
     public SaleDetail getSaleDetail() {
         return saleDetail;
     }

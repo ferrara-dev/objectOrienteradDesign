@@ -9,6 +9,10 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
+    /**
+     * Inititate the paymentProcess
+     * @param amount the amount payed
+     */
     public void initiatePaymentProcess(double amount){
         paymentService.processPayment(amount);
     }
