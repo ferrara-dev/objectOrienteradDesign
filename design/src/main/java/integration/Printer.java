@@ -9,8 +9,14 @@ public class Printer {
 
     }
 
+    /**
+     * Print what is specified in the <code> receipt dto </code>
+     *
+     * call to <code> formatReceipt </code> to get the right format.
+     * @param receiptDTO
+     */
     public void print(ReceiptDTO receiptDTO){
-
+        // Print the receipt
     }
 
     private void formatReceipt(Store store, Sale sale){

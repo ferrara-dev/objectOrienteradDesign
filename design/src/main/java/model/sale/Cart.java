@@ -82,7 +82,6 @@ public class Cart implements ObservableModel {
      * Method to get an saleitem from the cart
      * if the cart does not contain the item
      * in question, NotFoundException is thrown
-     * already contain a product
      *
      * @param product
      * @return
@@ -99,7 +98,7 @@ public class Cart implements ObservableModel {
     }
 
     /**
-     * Method to check is the list <code> items </code>
+     * Method to check if the list <code> items </code>
      * already contain a product
      *
      * @param saleItem
@@ -116,7 +115,7 @@ public class Cart implements ObservableModel {
     }
 
     /**
-     * Method to check is the list <code> items </code>
+     * Method to check if the list <code> items </code>
      * already contain a product
      *
      * @param itemId

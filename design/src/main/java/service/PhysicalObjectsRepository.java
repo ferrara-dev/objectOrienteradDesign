@@ -27,6 +27,11 @@ public class PhysicalObjectsRepository {
         this.printer = new Printer();
     }
 
+    /**
+     * Prints the receipt
+     *
+     * @param sale
+     */
     public void printReceipt(Sale sale){
         printer.print(new ReceiptDTO(store,sale));
     }

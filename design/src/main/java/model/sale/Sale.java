@@ -38,7 +38,7 @@ public class Sale implements ObservableModel {
     }
 
     /**
-     * Get change from after the purchase
+     * Get change from cost after the purchase has been payed
      * @return
      */
     public double getCashBack() {
@@ -88,6 +88,7 @@ public class Sale implements ObservableModel {
     public void createDefault(){
         saleDetail.createDefault();
     }
+
     /**
      * inactivate the sale by setting the boolean field <code> active </code>
      * in <code> SaleDetail </code> as false
@@ -95,11 +96,7 @@ public class Sale implements ObservableModel {
     public void finishSale(){
         saleDetail.setActive(false);
     }
-
-    /**
-     *
-     * Method used to initiate fields to default values in a newly started sale
-     */
+    
     public SaleDetail getSaleDetail() {
         return saleDetail;
     }
