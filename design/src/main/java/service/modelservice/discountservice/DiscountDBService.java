@@ -2,7 +2,7 @@ package service.modelservice.discountservice;
 
 
 import util.datatransferobject.DiscountDTO;
-import factory.DiscountStrategyFactory;
+import factory.discountstrategyFactory.DiscountStrategyFactory;
 import integration.DataBaseHandler;
 import model.discount.Discount;
 import model.discount.discountrule.DiscountRule;

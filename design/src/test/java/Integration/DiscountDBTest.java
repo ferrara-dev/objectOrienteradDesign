@@ -1,10 +1,10 @@
 package Integration;
 
 import util.datatransferobject.DiscountDTO;
-import factory.DiscountStrategyFactory;
+import factory.discountstrategyFactory.DiscountStrategyFactory;
 import factory.Factory;
 import integration.DataBaseHandler;
-import integration.discountdb.DiscountRegistryHandler;
+import integration.discountdb.DiscountRepository;
 import model.discount.Discount;
 import org.junit.Test;
 import service.modelservice.discountservice.discountstrategy.DiscountStrategy;
@@ -19,7 +19,7 @@ public class DiscountDBTest {
     @Test
     public void testDiscountRegistryHandler(){
         /* 1 */
-        DataBaseHandler<List, Discount> dataBaseHandler = new DiscountRegistryHandler();
+        DataBaseHandler<List, Discount> dataBaseHandler = new DiscountRepository();
         Factory<DiscountStrategy, DiscountDTO> strategyFactory = new DiscountStrategyFactory();
         List<DiscountDTO> dtos = dataBaseHandler.collect(Calendar.getDayOfTheWeek());
         assertEquals(dtos.get(0).getClass(),DiscountDTO.class);

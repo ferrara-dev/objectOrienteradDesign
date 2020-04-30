@@ -17,7 +17,6 @@ public class Sale implements ObservableModel {
     private SaleDetail saleDetail;
     private Cart cart;
     private Cost cost;
-    private double runningTotal = 0;
     private double cashBack = 0;
     private ArrayList<EventObserver> eventObservers = new ArrayList<>();
 
@@ -98,16 +97,16 @@ public class Sale implements ObservableModel {
         saleDetail.setActive(false);
     }
 
+    /**
+     * Set the sale cost
+     * @param cost
+     */
+    public void setCost(Cost cost) {
+        this.cost = cost;
+    }
+
     public SaleDetail getSaleDetail() {
         return saleDetail;
-    }
-
-    public void setRunningTotal(double runningTotal) {
-        this.runningTotal = runningTotal;
-    }
-
-    public double getRunningTotal() {
-        return runningTotal;
     }
 
     @Override

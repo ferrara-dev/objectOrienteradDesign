@@ -3,10 +3,13 @@ package model.sale;
 import java.util.UUID;
 /**
  * Class representing a unique id used to identify each sale
- */
+ *
+ *
+ * */
 public class SaleId {
-
+        private static SaleId instance;
         private String value;
+
         public SaleId(){
             this.value =  UUID.randomUUID().toString();
         }
@@ -20,9 +23,11 @@ public class SaleId {
             return "[ " + value + " ]";
         }
 
-        public String getValue() {
+    /**
+     * Get the sale id as string
+     * @return
+     */
+    public String getValue() {
             return value;
         }
-    }
-
-
+}

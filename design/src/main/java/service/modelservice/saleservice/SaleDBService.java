@@ -7,7 +7,6 @@ import service.IntegrationService;
 public class SaleDBService implements IntegrationService<Sale> {
     public static final Long HASH_KEY_ID = 121L;
     DataBaseHandler<String, Sale> dataBaseHandler;
-
     public SaleDBService(DataBaseHandler dataBaseHandler) {
         this.dataBaseHandler = dataBaseHandler;
     }

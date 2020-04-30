@@ -2,7 +2,7 @@ package Integration;
 
 import util.datatransferobject.CustomerDTO;
 import integration.DataBaseHandler;
-import integration.customerdb.CustomerDBHandler;
+import integration.customerdb.CustomerRepository;
 import model.customer.Member;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ public class MemberDBTest {
     @Test
     public void testCustomerDBHandler(){
         /* 1 */
-        DataBaseHandler<Member, Member> dataBaseHandler = new CustomerDBHandler();
+        DataBaseHandler<Member, Member> dataBaseHandler = new CustomerRepository();
         Member member = dataBaseHandler.collect("940412-1395");
         assertNotNull(member);
         assertEquals(member.getName(),"Samuel");

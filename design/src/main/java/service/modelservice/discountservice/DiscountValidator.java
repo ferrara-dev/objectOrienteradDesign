@@ -26,6 +26,7 @@ import util.exception.InvalidRequestException;
 public class DiscountValidator {
 
     public Discount validateRequest(MemberDiscountRequest discountRequest, DiscountRule discountRule) {
+        /*
         if (discountRule instanceof BulkDiscountRule) {
             int id = ((ItemDiscountRule) discountRule).getItemId();
             boolean containsProduct = discountRequest.getCurrentSale().getCart().contains(id);
@@ -40,5 +41,8 @@ public class DiscountValidator {
         }
 
         throw new InvalidRequestException();
+    }
+    */
+        return null;
     }
 }

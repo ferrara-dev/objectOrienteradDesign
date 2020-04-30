@@ -1,9 +1,9 @@
 package model;
 
-import factory.DiscountStrategyFactory;
+import factory.discountstrategyFactory.DiscountStrategyFactory;
 import factory.Factory;
-import integration.customerdb.CustomerDBHandler;
-import integration.productdb.InventoryHandler;
+import integration.customerdb.CustomerRepository;
+import integration.productdb.ProductRepository;
 import integration.productdb.Product;
 import model.customer.Member;
 import model.discount.discountrule.itemdiscountrule.ItemDiscountRule;
@@ -31,7 +31,7 @@ public class TestDiscount {
         priceDiscountDTO = new DiscountDTO("Price Discount", "1000", "0.20", "-1", "0");
         itemDiscountDTO = new DiscountDTO("Bulk Discount", "10", "0.20", "-1", "2");
 
-       member = new CustomerDBHandler().collect("940412-1395");
+       member = new CustomerRepository().collect("940412-1395");
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TestDiscount {
             assertNotEquals(0,itemId);
 
 
-            Product product = new InventoryHandler().collect(String.valueOf(itemId));
+            Product product = new ProductRepository().collect(String.valueOf(itemId));
             assertNotNull(product);
 
             Sale sale = new Sale();

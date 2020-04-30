@@ -7,7 +7,9 @@ import view.closedsaleview.ClosedSaleView;
 import view.initialview.InitialView;
 import view.paymentview.PaymentView;
 import view.saleview.SaleView;
+import view.storesystemview.RevenueView;
 
+import javax.swing.*;
 import java.awt.*;
 
 
@@ -25,6 +27,7 @@ public class CashierView extends View {
     private ClosedSaleView closedSaleView;
     private long id = 1L;
 
+
     public CashierView() {
         setLayout(new CardLayout());
         initialView = new InitialView();
@@ -35,6 +38,8 @@ public class CashierView extends View {
         add(saleView, saleView.CARD_CONSTRAINT);
         add(paymentView, PaymentView.CARD_CONSTRAINT);
         add(closedSaleView, ClosedSaleView.CARD_CONSTRAINT);
+
+
     }
 
     public void initDefault(MainController mainController) {

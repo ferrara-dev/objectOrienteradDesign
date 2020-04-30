@@ -1,5 +1,7 @@
 package integration.discountdb;
 
+import integration.customerdb.CustomerRepository;
+import model.customer.Member;
 import util.datatransferobject.DiscountDTO;
 import integration.DataBaseHandler;
 import model.discount.Discount;
@@ -9,8 +11,27 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscountRegistryHandler implements DataBaseHandler<List, Discount> {
+public class DiscountRepository implements DataBaseHandler<List, Discount> {
     private final String SELECT_DISCOUNT_TEMPLATE = "SELECT * FROM %s ;";
+    private static DiscountRepository instance;
+
+    /**
+     *  Singleton method used to create an instance of the class
+     *  and make sure that multiple instances can not be created
+     *  <code> synchronized </code> keyword is used to make the
+     *  calls to the method thread safe.
+     * * @return
+     */
+    public static DataBaseHandler<List, Discount> getInstance() {
+        if(instance == null){
+            synchronized (CustomerRepository.class) {
+                if(instance == null){
+                    instance = new DiscountRepository();
+                }
+            }
+        }
+        return instance;
+    }
 
     @Override
     public boolean register(String id, Discount discount) {

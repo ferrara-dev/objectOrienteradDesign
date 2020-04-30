@@ -1,5 +1,6 @@
-package factory;
+package factory.discountstrategyFactory;
 
+import factory.Factory;
 import util.datatransferobject.DiscountDTO;
 import service.modelservice.discountservice.discountstrategy.BulkDiscountStrategy;
 import service.modelservice.discountservice.discountstrategy.DiscountStrategy;

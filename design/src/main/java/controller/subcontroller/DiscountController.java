@@ -14,8 +14,8 @@ public class DiscountController {
      * @param customerId the id of the customer requesting a discount
      */
     public void handleDiscountRequest(String customerId) {
-        discountService.initiateDiscountRequest(customerId);
-        discountService.processRequest();
-        discountService.applyValidDiscounts();
+        discountService.processDiscountRequest(customerId);
+     //   discountService.processRequest();
+      //  discountService.applyValidDiscounts();
     }
 }

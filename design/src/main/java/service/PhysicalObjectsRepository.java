@@ -18,13 +18,13 @@ public class PhysicalObjectsRepository {
     private final Store store;
     private final Address address;
     private final ContactInformation contactInformation;
-    private final Printer printer;
+
     public PhysicalObjectsRepository(){
         address = new Address("Store street 123", "Store City","Sweden","191 49");
         contactInformation = new ContactInformation("spof@kth.se", "070 123 4567");
         store = new Store(address,contactInformation);
         cashRegister = new Register(store);
-        this.printer = new Printer();
+
     }
 
     /**
@@ -33,7 +33,7 @@ public class PhysicalObjectsRepository {
      * @param sale
      */
     public void printReceipt(Sale sale){
-        printer.print(new ReceiptDTO(store,sale));
+       Printer.getInstance().print(new ReceiptDTO(store,sale));
     }
 
     public Register getCashRegister() {

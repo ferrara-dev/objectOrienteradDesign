@@ -1,7 +1,7 @@
 package startup;
 
 import integration.DataBaseHandler;
-import integration.productdb.InventoryHandler;
+import integration.productdb.ProductRepository;
 import junit.framework.TestCase;
 import integration.productdb.Product;
 import org.junit.Test;
@@ -10,7 +10,7 @@ public class DataBaseCreatorTest extends TestCase {
 
     @Test
     public void testMain(){
-        DataBaseHandler<Product,Object> handler = new InventoryHandler();
+        DataBaseHandler<Product,Object> handler = new ProductRepository();
         Main.initDB();
         // Product [] products  = new Product[7];
         for(int i = 1; i < 8; i++){

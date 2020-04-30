@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
+import integration.Printer;
+import integration.customerdb.CustomerRepository;
+import model.customer.Member;
 import util.exception.NotFoundException;
 
 import java.io.IOException;
@@ -11,7 +14,9 @@ import java.io.Reader;
 import java.sql.*;
 import java.util.Base64;
 
-public class InventoryHandler implements DataBaseHandler<Product, Object> {
+public class ProductRepository implements DataBaseHandler<Product, Object> {
+
+    private static ProductRepository instance;
     /**
      * Override to register a new product to the database
      *
@@ -100,6 +105,24 @@ public class InventoryHandler implements DataBaseHandler<Product, Object> {
             e.printStackTrace();
         }
         throw new NotFoundException("Product not found!");
+    }
+
+    /**
+     *  Singleton method used to create an instance of the class
+     *  and make sure that multiple instances can not be created
+     *  <code> synchronized </code> keyword is used to make the
+     *  calls to the method thread safe.
+     * * @return
+     */
+    public static DataBaseHandler<Product, Object> getInstance() {
+        if(instance == null){
+            synchronized (ProductRepository.class) {
+                if(instance == null){
+                    instance = new ProductRepository();
+                }
+            }
+        }
+        return instance;
     }
 }
 

@@ -24,7 +24,7 @@ public class DiscountServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void testExceptionThrownRequestCustomerDiscount() {
-        discountService.initiateDiscountRequest("950412-1395");
+        discountService.processDiscountRequest("950412-1395");
         discountService.applyValidDiscounts();
     }
 
@@ -42,7 +42,7 @@ public class DiscountServiceTest {
         saleService.startSale();
         saleService.initSaleDefault();
         saleService.registerProduct(2,10);
-        discountService.initiateDiscountRequest("940412-1395");
+        discountService.processDiscountRequest("940412-1395");
 
         MemberDiscountRequest discountRequest =  discountService.getMemberDiscountRequest();
         assertNotNull(discountRequest);

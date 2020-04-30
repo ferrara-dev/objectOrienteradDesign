@@ -4,23 +4,28 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
+import integration.Printer;
 import model.customer.Member;
 import util.exception.NotFoundException;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
-public class CustomerDBHandler implements DataBaseHandler <Member, Member>{
+
+public class CustomerRepository implements DataBaseHandler <Member, Member>{
     private static final String URL = "jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1";
     private static final String INSERT_MULTIPLE_USERS_SQL = "INSERT INTO  CustomerDB " +
             "VALUES ('940412-1395', 'Samuel', 'samuel@gmail.com', 'India', '123')," +
             "('960404-6541', 'Deepa', 'deepa@gmail.com', 'India', '123')," + "('711231-6325', 'Tom', 'top@gmail.com', 'India', '123');";
     private static final String SQL_FIND_USER = "SELECT * FROM CustomerDB WHERE id='%s';";
     private static final String SQL_FIND_USERNAME = "SELECT * FROM CustomerDB *;";
+
+    private static CustomerRepository instance;
+
+    private CustomerRepository(){
+
+    }
 
     /**
      * Override to register a new member to the database.
@@ -140,80 +145,22 @@ public class CustomerDBHandler implements DataBaseHandler <Member, Member>{
 
 
     }
-
-    public static List<String> getInformation(String operation) {
-        List<String> result = new ArrayList<>();
-        switch (operation) {
-            case "name": {
-                try (Connection con = DriverManager.getConnection(URL)) {
-                    Statement stm = con.createStatement();
-                    stm = con.createStatement();
-                    String sql1 = "SELECT NAME FROM CustomerDB";
-                    ResultSet rs = stm.executeQuery(sql1);
-
-
-                    // STEP 4: Extract data from result set
-                    while (rs.next()) {
-                        // Retrieve by column name
-                        String name = rs.getString("name");
-                        result.add(name);
-                        // Display values
-                        System.out.print("User : " + name);
-                        System.out.println();
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
+    /**
+     *  Singleton method used to create an instance of the class
+     *  and make sure that multiple instances can not be created
+     *  <code> synchronized </code> keyword is used to make the
+     *  calls to the method thread safe.
+     * * @return
+     */
+    public static DataBaseHandler<Member, Member> getInstance() {
+        if(instance == null){
+            synchronized (CustomerRepository.class) {
+                if(instance == null){
+                    instance = new CustomerRepository();
                 }
-
-                return result;
-            }
-            case "id": {
-                try (Connection con = DriverManager.getConnection(URL)) {
-                    Statement stm = con.createStatement();
-                    stm = con.createStatement();
-                    String sql1 = "SELECT ID FROM CustomerDB";
-                    ResultSet rs = stm.executeQuery(sql1);
-
-
-                    // STEP 4: Extract data from result set
-                    while (rs.next()) {
-                        // Retrieve by column name
-                        String name = rs.getString("id");
-                        result.add(name);
-                        // Display values
-                        System.out.print("User : " + name);
-                        System.out.println();
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                return result;
             }
         }
-
-        return result;
-    }
-
-
-    public static void insertRecord() throws SQLException {
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager
-                .getConnection(URL);
-
-             // Step 2:Create a statement using connection object
-             Statement statement = connection.createStatement();) {
-
-            // Step 3: Execute the query or update query
-            int result = statement.executeUpdate(INSERT_MULTIPLE_USERS_SQL);
-            System.out.println("No. of records affected : " + result);
-        } catch (SQLException e) {
-
-            // print SQL exception information
-            printSQLException(e);
-        }
+        return instance;
     }
 
 

@@ -1,7 +1,7 @@
 package Integration;
 
 import integration.DataBaseHandler;
-import integration.productdb.InventoryHandler;
+import integration.productdb.ProductRepository;
 import integration.productdb.Product;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ public class ProductDBTest {
 
     @Test
     public void testProductRegistryHandler(){
-        DataBaseHandler<Product,Object> dataBaseHandler = new InventoryHandler();
+        DataBaseHandler<Product,Object> dataBaseHandler = new ProductRepository();
         Product product = dataBaseHandler.collect("1");
         assertNotNull(product);
         assertEquals(product.getItemId(),1);

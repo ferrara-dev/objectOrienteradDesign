@@ -1,6 +1,8 @@
 package service.modelservice.saleservice;
 
 import model.amount.Amount;
+import model.amount.Cost;
+import model.sale.Cart;
 import model.sale.SaleItem;
 import service.modelservice.Service;
 import service.modelservice.customerservice.CustomerService;
@@ -35,6 +37,19 @@ public class SaleService implements Service {
         return sale;
     }
 
+    public void updateSaleCost(Cost cost){
+        if(Objects.nonNull(cost)) {
+            sale.setCost(cost);
+            updateCost();
+        }
+    }
+
+    public void updateSaleCart(Cart cart){
+        if(Objects.nonNull(cart)) {
+            sale.setCart(cart);
+            updateCost();
+        }
+    }
     /**
      * Start a new sale on request by the <code> SaleController </code>
      * If the call origins from the view, observers need to be added to the models
@@ -91,16 +106,15 @@ public class SaleService implements Service {
                 SaleItem saleItem = new SaleItem(productService.getProduct(itemId), quantity);
                 sale.getCart().addProduct(saleItem);
                 sale.updateCost();
-                updateRunningTotal();
+                updateCost();
             }
     }
 
     /**
      * Update the sales running total
      */
-    public void updateRunningTotal() {
-        double newTotal = sale.getCost().getTotalCost();
-        sale.setRunningTotal(newTotal);
+    public void updateCost() {
+        sale.updateCost();
     }
 
     /**

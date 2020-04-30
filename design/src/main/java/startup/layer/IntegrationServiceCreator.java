@@ -1,9 +1,9 @@
 package startup.layer;
 
 
-import integration.customerdb.CustomerDBHandler;
-import integration.discountdb.DiscountRegistryHandler;
-import integration.productdb.InventoryHandler;
+import integration.customerdb.CustomerRepository;
+import integration.discountdb.DiscountRepository;
+import integration.productdb.ProductRepository;
 import integration.saledb.SaleLogHandler;
 import service.modelservice.customerservice.CustomerDBService;
 import service.modelservice.discountservice.DiscountDBService;
@@ -21,9 +21,9 @@ public class IntegrationServiceCreator {
 
     public IntegrationServiceCreator() {
         saleDBService = new SaleDBService(new SaleLogHandler());
-        discountDBService = new DiscountDBService(new DiscountRegistryHandler());
-        customerDBService = new CustomerDBService(new CustomerDBHandler());
-        productDBService = new ProductDBService(new InventoryHandler());
+        discountDBService = new DiscountDBService(new DiscountRepository());
+        customerDBService = new CustomerDBService(new CustomerRepository());
+        productDBService = new ProductDBService(new ProductRepository());
     }
 
     public CustomerDBService getCustomerDBService() {
