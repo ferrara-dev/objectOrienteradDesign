@@ -4,21 +4,18 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
-import integration.customerdb.CustomerRepository;
-import integration.discountdb.DiscountRepository;
-import model.discount.Discount;
-import model.sale.Sale;
-import util.exception.NotFoundException;
+import model.sale.saleinformation.SaleSpecification;
+import util.exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.*;
 import java.util.Base64;
-import java.util.List;
 
-public class SaleLogHandler implements DataBaseHandler<Sale,Object> {
+
+public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object> {
    private final String saleDB = "sales";
-    private static SaleLogHandler instance;
+   private static SaleLogHandler instance;
 
 
     /**
@@ -28,7 +25,7 @@ public class SaleLogHandler implements DataBaseHandler<Sale,Object> {
      *  calls to the method thread safe.
      * * @return
      */
-    public static DataBaseHandler<Sale,Object> getInstance() {
+    public static DataBaseHandler<SaleSpecification,Object> getInstance() {
         if(instance == null){
             synchronized (SaleLogHandler.class) {
                 if(instance == null){
@@ -66,7 +63,7 @@ public class SaleLogHandler implements DataBaseHandler<Sale,Object> {
 
 
     @Override
-    public boolean find(String id) {
+    public boolean find(String id){
         try (Connection con = DriverManager.getConnection(URL)){
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE,saleDB,id));
@@ -90,7 +87,7 @@ public class SaleLogHandler implements DataBaseHandler<Sale,Object> {
      * @return the sale specified by the saleId
      */
     @Override
-    public Sale collect(String saleId) {
+    public SaleSpecification collect(String saleId){
         // Step 1: Establishing a Connection
         try (Connection connection = DriverManager.getConnection(URL)) {
             Statement statement = connection.createStatement();
@@ -108,7 +105,7 @@ public class SaleLogHandler implements DataBaseHandler<Sale,Object> {
                 reader.close();
                 String targetString = buffer.toString();
 
-                return objectMapper.readValue(targetString, Sale.class);
+                return objectMapper.readValue(targetString, SaleSpecification.class);
             }
 
 
@@ -123,6 +120,6 @@ public class SaleLogHandler implements DataBaseHandler<Sale,Object> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw  new NotFoundException("Sale not found!");
+        throw  new NotFoundException("Sale id not found!");
     }
 }

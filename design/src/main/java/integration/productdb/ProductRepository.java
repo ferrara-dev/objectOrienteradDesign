@@ -4,10 +4,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
-import integration.Printer;
-import integration.customerdb.CustomerRepository;
-import model.customer.Member;
-import util.exception.NotFoundException;
+import org.h2.api.ErrorCode;
+import util.exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -17,6 +15,10 @@ import java.util.Base64;
 public class ProductRepository implements DataBaseHandler<Product, Object> {
 
     private static ProductRepository instance;
+
+    private ProductRepository(){
+
+    }
     /**
      * Override to register a new product to the database
      *
@@ -71,7 +73,7 @@ public class ProductRepository implements DataBaseHandler<Product, Object> {
      * @return
      */
     @Override
-    public Product collect(String id) {
+    public Product collect(String id){
         // Step 1: Establishing a Connection
         try (Connection connection = DriverManager.getConnection(URL)) {
             Statement statement = connection.createStatement();
@@ -94,7 +96,6 @@ public class ProductRepository implements DataBaseHandler<Product, Object> {
 
 
         } catch (SQLException e) {
-
             // print SQL exception information
             DataBaseHandler.printSQLException(e);
         } catch (JsonParseException e) {
@@ -104,7 +105,7 @@ public class ProductRepository implements DataBaseHandler<Product, Object> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new NotFoundException("Product not found!");
+        throw new NotFoundException("Not Found in data base");
     }
 
     /**

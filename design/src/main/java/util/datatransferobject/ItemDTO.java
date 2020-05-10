@@ -1,6 +1,6 @@
 package util.datatransferobject;
 
-public class ItemDTO {
+public class ItemDTO implements DataTransferObject{
     private String name;
     private String category;
     private double price;

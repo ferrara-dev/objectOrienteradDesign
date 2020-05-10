@@ -83,6 +83,9 @@ public class SaleItemTableModel extends AbstractTableModel {
         } else if (col == 2) {
             temp = (double) getElementAt(row).getQuantity();
         }
+        else if (col == 3) {
+            temp = getElementAt(row).getItemDiscount().getTotalPriceReduction().doubleValue();
+        }
         return temp;
     }
 

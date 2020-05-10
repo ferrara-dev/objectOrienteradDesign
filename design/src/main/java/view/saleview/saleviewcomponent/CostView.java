@@ -10,9 +10,10 @@ public class CostView extends JPanel{
     DefaultTableModel defaultTableModel;
 
     public CostView(){
-        defaultTableModel = new DefaultTableModel(new String[]{"Running total", "Total VAT"} , 1) ;
+        defaultTableModel = new DefaultTableModel(new String[]{"Running total", "Total VAT", "Price discount"} , 1) ;
         defaultTableModel.setValueAt(0,0,0);
         defaultTableModel.setValueAt(0,0,1);
+        defaultTableModel.setValueAt(0,0,2);
         jTable = new JTable(defaultTableModel);
 
         jTable.setAutoCreateRowSorter(true);
@@ -22,9 +23,10 @@ public class CostView extends JPanel{
     }
 
 
-    public void runningTotalHasChanged(double runningTotal, double vat) {
+    public void runningTotalHasChanged(double runningTotal, double vat, double priceDiscount) {
         jTable.setValueAt(runningTotal,0, 0);
         jTable.setValueAt(vat,0,1);
+        jTable.setValueAt(priceDiscount,0,2);
         defaultTableModel.newDataAvailable(new TableModelEvent(defaultTableModel));
     }
 

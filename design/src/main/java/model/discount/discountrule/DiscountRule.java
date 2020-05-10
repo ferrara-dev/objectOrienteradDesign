@@ -9,5 +9,6 @@ public interface DiscountRule {
     List<String> getAvailable();
     String getDescription();
     boolean checkRequierments(double obj);
+    double getRequierment();
     double getDiscountRate();
 }

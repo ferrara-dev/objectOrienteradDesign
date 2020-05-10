@@ -2,18 +2,15 @@ create table IF NOT EXISTS CustomerDB( id  varchar(20) primary key, name varchar
 create table IF NOT EXISTS ProductDB( id  varchar(20) primary key, name varchar(20), price varchar(20), category varchar(20), stockstatus varchar(20) );
 create table IF NOT EXISTS discountDB( available  varchar(256) , type varchar(256), id varchar(256), requierment varchar(256), reduction varchar(256), limitation varchar (256));
 create table IF NOT EXISTS products( id  varchar(50) primary key, vdata JSON);
-create table IF NOT EXISTS customerDiscounts( id  varchar(50) primary key, vdata JSON);
 create table IF NOT EXISTS discountdatabase( id  varchar(50) primary key, vdata JSON);
-
 
 create table IF NOT EXISTS sales( id  varchar(50) primary key, vdata JSON);
 create table IF NOT EXISTS jsonProductTable( id  varchar(50) primary key, vdata JSON);
 create table IF NOT EXISTS jsonCustomerTable( id  varchar(50) primary key, vdata JSON);
 
+create table IF NOT EXISTS BANKDB (id varchar(256) primary key, vdata JSON);
 
-create table IF NOT EXISTS customerDiscounts( id  varchar(50) primary key, vdata JSON);
-create table IF NOT EXISTS discountdatabase( id  varchar(50) primary key, vdata JSON);
-
+create table IF NOT EXISTS RegisterAccount (id varchar(256) primary key, vdata JSON);
 INSERT INTO ProductDB VALUES
 ('1', 'chicken', '79', 'Viand', '500'),
 ('2', 'Apple', '5', 'Viand', '500'),
@@ -24,10 +21,8 @@ INSERT INTO ProductDB VALUES
 ('7', 'News paper', '30', 'Literature', '500');
 
 
-INSERT INTO discountDB VALUES('TUESDAY', 'Bulk Discount', '2', '10', '0.20', '-1'),('WEDNESDAY', 'Bulk Discount', '3', '3', '0.3', '1'),('THURSDAY', 'Bulk Discount', '4', '5', '0.10', '-1'),('SATURDAY', 'Price Discount', '0', '1000', '0.20', '-1'),('MONDAY:TUESDAY:WEDNESDAY:THURSDAY:FRIDAY', 'Price Discount', '0', '500', '0.10', '1');
+INSERT INTO discountDB VALUES('TUESDAY', 'Bulk Discount', '2', '10', '0.20', '-1'),('WEDNESDAY', 'Bulk Discount', '3', '3', '0.3', '1'),('THURSDAY', 'Bulk Discount', '4', '5', '0.10', '-1'),('SATURDAY', 'Price Discount', '0', '1000', '0.20', '-1'),('MONDAY:TUESDAY:WEDNESDAY:THURSDAY:FRIDAY:SUNDAY', 'Price Discount', '0', '500', '0.10', '1');
 
-INSERT INTO products VALUES('1',null);
-INSERT INTO customerDiscounts VALUES('940412-1395',null),('960404-6541',null),('711231-6325',null);
 
 INSERT INTO  CustomerDB VALUES
 ('940412-1395', 'Samuel', 'samuel@gmail.com', 'India', '123'),

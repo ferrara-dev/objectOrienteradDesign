@@ -1,13 +1,15 @@
 package model.amount;
 
+import java.math.BigDecimal;
+
 /**
  * Interface that is to be implemented by classes representing an amount
  */
 public interface Amount {
     String MONETARY = "Monetary amount";
-    boolean compare(Amount amount);
     String getType();
-    Number getNumber();
-    Number subtract(Amount amount);
-    void setNumber(Number number);
+    BigDecimal getNumber();
+    void subtract(Amount amount);
+    void setNumber(BigDecimal number);
+    boolean equals(Amount amount);
 }

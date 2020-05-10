@@ -1,16 +1,13 @@
 package integration.customerdb;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
-import integration.Printer;
 import model.customer.Member;
-import util.exception.NotFoundException;
+import util.exception.notfoundexception.NotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.*;
-import java.util.Base64;
 
 
 public class CustomerRepository implements DataBaseHandler <Member, Member>{
@@ -35,27 +32,7 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
      */
     @Override
     public boolean register(String id, Member member) {
-       try{
-           find(id);
-       } catch (NotFoundException ex){
-           // Step 1: Establishing a Connection
-           try (Connection connection = DriverManager.getConnection(URL)) {
-               Statement statement = connection.createStatement();
-               String value = Base64.getEncoder().encodeToString(objectMapper.writeValueAsString(member).getBytes());
-               // Step 3: Execute the query or update query
-               int result = statement.executeUpdate(String.format(INSERT_TEMPLATE,"jsonCustomerTable",id, objectMapper.writeValueAsString(member)));
-               System.out.println("No. of records affected : " + result);
-           } catch (JsonProcessingException jme) {
-               System.err.println(jme.getMessage());
-           } catch (SQLException e) {
 
-               // print SQL exception information
-               DataBaseHandler.printSQLException(e);
-           }
-           return true;
-
-
-       }
         return false;
     }
 
@@ -64,7 +41,7 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
      * @param customerId
      * @return
      */
-    public boolean find(String customerId) {
+    public boolean find(String customerId){
         try (Connection con = DriverManager.getConnection(URL)) {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, "jsonCustomerTable", customerId));
@@ -84,7 +61,7 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
      * @return
      */
     @Override
-    public Member collect(String id) {
+    public Member collect(String id){
         // Step 1: Establishing a Connection
         try (Connection connection = DriverManager.getConnection(URL)) {
             Statement statement = connection.createStatement();

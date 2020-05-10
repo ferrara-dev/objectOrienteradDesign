@@ -1,45 +1,34 @@
 package service.modelservice.discountservice;
 
+import factory.discountstrategyFactory.DiscountRuleFactory;
+import integration.customerdb.CustomerRepository;
+import integration.discountdb.DiscountRepository;
 import model.customer.Member;
-import model.customer.MemberDiscountRequest;
-import model.discount.Discount;
-import model.discount.ValidMemberDiscount;
+import model.customer.customerrequest.MemberDiscountRequest;
 import model.discount.discountrule.DiscountRule;
-import service.handlerpattern.requesthandler.BulkDiscountRequestHandler;
-import service.handlerpattern.requesthandler.TotalCostDiscountRequestHandler;
-import service.handlerpattern.discountidentifier.DiscountRequestHandler;
-import service.handlerpattern.discountidentifier.DiscountRuleIdentifier;
+import model.transaction.saleTransaction.SaleTransaction;
+import service.modelservice.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
+import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import service.modelservice.discountservice.discountidentifier.*;
 import service.modelservice.Service;
+import service.visitor.Visitor;
+import factory.VisitorFactory;
 import startup.layer.ServiceCreator;
-import service.IntegrationService;
-import service.modelservice.customerservice.CustomerService;
-import service.modelservice.saleservice.SaleService;
-import util.exception.NotFoundException;
-import util.exception.UndefinedDiscountException;
+import util.Calendar;
+import util.datatransferobject.DiscountDTO;
+import util.exception.notfoundexception.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 public class DiscountService implements Service {
     public static final Long HASH_KEY_ID = 12L;
-    private IntegrationService<ArrayList<DiscountRule>> discountDBService;
-    private SaleService saleService;
-    private CustomerService customerService;
-    private DiscountCalculator discountCalculator;
-    private MemberDiscountRequest memberDiscountRequest;
-
     private DiscountRequestHandler requestHandler;
+    private Visitor visitor;
 
     public DiscountService(ServiceCreator serviceCreator) {
-        saleService = serviceCreator.getSaleService();
-        customerService = serviceCreator.getCustomerService();
-        discountDBService = serviceCreator.getIntegrationServiceCreator().getDiscountDBService();
-
         requestHandler = new DiscountRuleIdentifier(
                 new TotalCostDiscountRequestHandler(null),
                 new BulkDiscountRequestHandler(null));
-
-        discountCalculator = new DiscountCalculator();
     }
 
     /**
@@ -54,67 +43,49 @@ public class DiscountService implements Service {
      *
      * @param customerId
      */
-    public void processDiscountRequest(String customerId) {
+    public void processDiscountRequest(String customerId, SaleTransaction saleTransaction) throws NotFoundException {
         try {
-            Member member = customerService.findCustomer(customerId);
-            ArrayList<DiscountRule> discountRules = discountDBService.getFromDB(util.Calendar.getDayOfTheWeek());
-            MemberDiscountRequest memberDiscountRequest = new MemberDiscountRequest(member);
-            memberDiscountRequest.setDiscountRuleListSequence(discountRules);
-            requestHandler.handleRequest(memberDiscountRequest);
+            MemberDiscountRequest memberDiscountRequest = createRequest(customerId);
 
-                /*
-            for (DiscountRule discountRule : discountRules) {
-                memberDiscountRequest.setRequestedDiscount(discountRule);
-                try {
-                    requestHandler.handleRequest(memberDiscountRequest);
-                }catch (UndefinedDiscountException ex){
-                    ex.getMessage();
-                    continue;
-                }
-                */
-                saleService.getSale().setCart(memberDiscountRequest.getSaleCart());
-                saleService.getSale().setCost(memberDiscountRequest.getSaleCost());
-            } catch (NotFoundException ex) {
-                throw ex;
-            } catch (Exception e) {
+            memberDiscountRequest.setSaleTransaction(saleTransaction);
+
+            findAvailableDiscounts(memberDiscountRequest);
+
+            handleRequest(memberDiscountRequest);
+        } catch (NotFoundException ex) {
+            throw ex;
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-        /**
-         * Calls <code> DiscountCalculator </code> to apply all validated
-         * discounts to the current sale.
-         */
-        public void applyValidDiscounts () {
-        /*
-        ArrayList<Discount> discounts = memberDiscountRequest.getValidatedDiscounts();
-        if (Objects.nonNull(discounts)) {
-            for (Discount discount : discounts) {
-                discountCalculator.applyDiscount(saleService.getSale(), discount);
-            }
-        }
-        saleService.updateRunningTotal();
-        saleService.getSale().updateCost();
-        */
 
-        }
-
-        /**
-         * Processes the collected discounts.
-         * <p>
-         * calls <code> discountCalculator </code>
-         * to validate and generate discounts from collected discount rules.
-         */
-        public void processRequest () {
-            ArrayList<DiscountRule> discountRules = discountDBService.getFromDB(util.Calendar.getDayOfTheWeek());
-            discountCalculator.generateDiscounts(memberDiscountRequest, discountRules);
-        }
-
-        @Override
-        public Service getInstance () {
-            return this;
-        }
-
-        public MemberDiscountRequest getMemberDiscountRequest () {
+    private MemberDiscountRequest createRequest(String customerId) throws NotFoundException{
+        try {
+        Member member = CustomerRepository.getInstance().collect(customerId);
+            MemberDiscountRequest memberDiscountRequest = new MemberDiscountRequest(member);
             return memberDiscountRequest;
+        } catch (NotFoundException ex) {
+            ex.printStackTrace();
+            throw ex;
         }
     }
+
+    private void findAvailableDiscounts(MemberDiscountRequest memberDiscountRequest) throws NotFoundException{
+        try {
+            List<DiscountDTO> discountDTOs = DiscountRepository.getInstance().collect(Calendar.getDayOfTheWeek());
+            for (DiscountDTO discountDTO : discountDTOs)
+                for (DiscountRule discountRule : DiscountRuleFactory.getInstance().create(discountDTO))
+                    memberDiscountRequest.addDiscountRule(discountRule);
+        } catch (NotFoundException exception){
+            exception.printStackTrace();
+            throw exception;
+        }
+    }
+
+    private void handleRequest(MemberDiscountRequest memberDiscountRequest) throws Exception {
+        requestHandler.handle(memberDiscountRequest);
+        visitor = VisitorFactory.COST_VISITOR.getVisitor();
+        visitor.setData(memberDiscountRequest.getSaleTransaction().getCart().getSequenceIterator());
+        memberDiscountRequest.getSaleTransaction().getCost().acceptVisitor(visitor);
+    }
+}

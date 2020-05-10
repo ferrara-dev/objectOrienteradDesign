@@ -1,8 +1,8 @@
 package model.customer;
 
+import model.transaction.saleTransaction.SaleTransaction;
 import util.datatransferobject.CustomerDTO;
-import model.sale.Date;
-import model.sale.Sale;
+
 import java.util.ArrayList;
 
 /**
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class Member implements Customer{
     private String name;
     private CustomerId customerId;
-    private Sale saleInProgress;
-    private ArrayList<Sale> registeredPurchases = new ArrayList<>();
+    private SaleTransaction saleInProgress;
+    private ArrayList<SaleTransaction> registeredPurchases = new ArrayList<>();
 
     public Member( ){
 
@@ -26,7 +26,7 @@ public class Member implements Customer{
      * Add a finished sale to the member
      * @param sale
      */
-    public void addSaleToRegisteredPurchases(Sale sale){
+    public void addSaleToRegisteredPurchases(SaleTransaction sale){
         registeredPurchases.add(sale);
     }
 
@@ -34,11 +34,11 @@ public class Member implements Customer{
      * Set the sale that the member is currently performing
      * @param saleInProgress
      */
-    public void setSaleInProgress(Sale saleInProgress){
+    public void setSaleInProgress(SaleTransaction saleInProgress){
         this.saleInProgress  = saleInProgress;
     }
 
-    public Sale getSaleInProgress() {
+    public SaleTransaction getSaleInProgress() {
         return saleInProgress;
     }
 
@@ -60,7 +60,7 @@ public class Member implements Customer{
         return customerId;
     }
 
-    public ArrayList<Sale> getRegisteredPurchases() {
+    public ArrayList<SaleTransaction> getRegisteredPurchases() {
         return registeredPurchases;
     }
 
@@ -73,7 +73,7 @@ public class Member implements Customer{
         this.name = name;
     }
 
-    public void setRegisteredPurchases(ArrayList<Sale> registeredPurchases) {
+    public void setRegisteredPurchases(ArrayList<SaleTransaction> registeredPurchases) {
         this.registeredPurchases = registeredPurchases;
     }
 

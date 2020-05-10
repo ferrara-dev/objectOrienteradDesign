@@ -5,12 +5,13 @@ import integration.productdb.ProductRepository;
 import junit.framework.TestCase;
 import integration.productdb.Product;
 import org.junit.Test;
+import util.exception.notfoundexception.NotFoundException;
 
 public class DataBaseCreatorTest extends TestCase {
 
     @Test
-    public void testMain(){
-        DataBaseHandler<Product,Object> handler = new ProductRepository();
+    public void testMain() throws NotFoundException {
+        DataBaseHandler<Product,Object> handler = ProductRepository.getInstance();
         Main.initDB();
         // Product [] products  = new Product[7];
         for(int i = 1; i < 8; i++){

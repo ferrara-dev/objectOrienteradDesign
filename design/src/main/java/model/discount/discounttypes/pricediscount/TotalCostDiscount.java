@@ -2,10 +2,12 @@ package model.discount.discounttypes.pricediscount;
 
 import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
 
+import java.math.BigDecimal;
+
 public class TotalCostDiscount implements PriceDiscount {
     private PriceDiscountRule priceDiscountRule;
     private double discountRate;
-    private double totalPriceReduction;
+    private BigDecimal totalPriceReduction = new BigDecimal("0");
 
     public TotalCostDiscount(PriceDiscountRule priceDiscountRule) {
         this.priceDiscountRule = priceDiscountRule;
@@ -15,7 +17,7 @@ public class TotalCostDiscount implements PriceDiscount {
 
     @Override
     public void setTotalPriceReduction(double totalPriceReduction) {
-        this.totalPriceReduction = totalPriceReduction;
+        this.totalPriceReduction = new BigDecimal(totalPriceReduction);
     }
 
     /**
@@ -42,7 +44,7 @@ public class TotalCostDiscount implements PriceDiscount {
      * @return
      */
     @Override
-    public Double getTotalPriceReduction() {
+    public BigDecimal getTotalPriceReduction() {
         return totalPriceReduction;
     }
     //TODO:

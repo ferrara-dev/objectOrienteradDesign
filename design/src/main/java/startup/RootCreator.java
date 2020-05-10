@@ -1,36 +1,41 @@
 package startup;
-import service.PhysicalObjectsRepository;
+import integration.PhysicalObjectsRepository;
+import service.handlerpattern.exceptionlog.ExceptionLogStrategy;
 import startup.layer.ControllerCreator;
 import startup.layer.ServiceCreator;
 import startup.layer.ViewCreator;
+import util.exception.SystemStartUpFailureException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 
 public class RootCreator {
-    private PhysicalObjectsRepository physicalObjectsRepository;
     private ControllerCreator controllerCreator;
     private ServiceCreator serviceCreator;
-
-
-    ViewCreator viewCreator;
-
-    public RootCreator(){
-        physicalObjectsRepository = new PhysicalObjectsRepository();
-    }
+    private ViewCreator viewCreator;
 
     public void initServiceLayer(){
-        serviceCreator = new ServiceCreator(physicalObjectsRepository);
+        serviceCreator = new ServiceCreator();
+        serviceCreator.setUpObservers(viewCreator.collectObservers());
     }
-
 
     public void initControllerLayer(){
         controllerCreator = new ControllerCreator(serviceCreator);
+        controllerCreator.configureObservers(viewCreator.collectInputViews());
+    }
+
+    public void initPeripherals(){
+        try {
+             PhysicalObjectsRepository.getInstance().startUpRegister(viewCreator.collectObservers());
+        }
+        catch (SystemStartUpFailureException systemStartUpFailureException){
+            ExceptionLogStrategy.STARTUP_EXCEPTION_LOG.get().logException(systemStartUpFailureException);
+        }
     }
 
     public void createGui() {
-        viewCreator = new ViewCreator(controllerCreator);
+        viewCreator = new ViewCreator();
         viewCreator.createView();
     }
 
@@ -51,10 +56,6 @@ public class RootCreator {
 
     public ServiceCreator getServiceCreator() {
         return serviceCreator;
-    }
-
-    public PhysicalObjectsRepository getPhysicalObjectsRepository() {
-        return physicalObjectsRepository;
     }
 
     public ViewCreator getViewCreator() {

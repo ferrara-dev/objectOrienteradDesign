@@ -58,6 +58,11 @@ public class BulkDiscountRule implements ItemDiscountRule {
     }
 
     @Override
+    public double getRequierment() {
+        return minimumAmountOfItems;
+    }
+
+    @Override
     public double getDiscountRate() {
         return reduction;
     }

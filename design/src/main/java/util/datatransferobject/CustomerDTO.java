@@ -1,9 +1,10 @@
 package util.datatransferobject;
 
+
 /**
  * Data transfer object used to initialize the customer database.
  */
-public class CustomerDTO {
+public class CustomerDTO implements DataTransferObject {
     private String customerId;
     private String name;
     private String email;

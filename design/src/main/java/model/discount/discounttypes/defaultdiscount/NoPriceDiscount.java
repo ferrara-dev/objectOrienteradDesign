@@ -3,15 +3,17 @@ package model.discount.discounttypes.defaultdiscount;
 import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
 import model.discount.discounttypes.pricediscount.PriceDiscount;
 
+import java.math.BigDecimal;
+
 /**
  * Class representing a default price discount
  */
 public class NoPriceDiscount implements PriceDiscount {
-    private double totalPriceReduction = 0;
+    private BigDecimal totalPriceReduction = new BigDecimal("0");
 
     @Override
     public void setTotalPriceReduction(double totalPriceReduction) {
-        this.totalPriceReduction = 0;
+        this.totalPriceReduction = new BigDecimal(totalPriceReduction);
     }
 
     @Override
@@ -25,7 +27,7 @@ public class NoPriceDiscount implements PriceDiscount {
     }
 
     @Override
-    public Double getTotalPriceReduction() {
+    public BigDecimal getTotalPriceReduction() {
         return this.totalPriceReduction;
     }
 

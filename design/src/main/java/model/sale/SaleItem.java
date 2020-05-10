@@ -1,4 +1,5 @@
 package model.sale;
+
 import integration.productdb.Product;
 import model.ObservableModel;
 import model.discount.discounttypes.itemdiscount.ItemDiscount;
@@ -7,21 +8,22 @@ import observer.EventObserver;
 import observer.ObservedEvent;
 import util.exception.IllegalDiscountCombinationException;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class SaleItem implements ObservableModel {
     private final Product product;
     private ItemDiscount itemDiscount;
-    private double totalPrice;
-    private double totalVAT;
+    private BigDecimal totalPrice;
+    private BigDecimal totalVAT;
     private int quantity;
 
-    public SaleItem(Product product, int quantity){
+    public SaleItem(Product product, int quantity) {
         this.product = product;
         itemDiscount = new NoItemDiscount();
         this.quantity = quantity;
-        totalVAT = product.getTotalVAT() * quantity;
-        totalPrice = product.getTotalPrice() * quantity;
+        totalVAT = new BigDecimal(product.getTotalVAT() * quantity);
+        totalPrice = new BigDecimal(product.getTotalPrice() * quantity);
     }
 
     /**
@@ -31,57 +33,59 @@ public class SaleItem implements ObservableModel {
      * discount is set to the value of <code> @param itemDiscount </code>.
      * else <code> IllegalDiscountCombinationException </code> is thrown
      * and needs to be handled by the caller.
+     *
      * @param itemDiscount the discount that is to be applied to the saleItem.
      */
-    public void setItemDiscount(ItemDiscount itemDiscount){
-        if(Objects.nonNull(itemDiscount))
-            if( (this.itemDiscount.getTotalPriceReduction() < itemDiscount.getTotalPriceReduction())) {
-            this.itemDiscount = itemDiscount;
+    public void setItemDiscount(ItemDiscount itemDiscount) {
+        if (Objects.nonNull(itemDiscount))
+            if ((this.itemDiscount.getTotalPriceReduction().doubleValue() < itemDiscount.getTotalPriceReduction().doubleValue())) {
+                this.itemDiscount = itemDiscount;
 
-        }
-
-        else
-            throw new IllegalDiscountCombinationException();
+            } else
+                throw new IllegalDiscountCombinationException();
     }
 
     public ItemDiscount getItemDiscount() {
         return itemDiscount;
     }
 
-    /**
-     * Update the saleitems quantity, price and total vat
-     * @param increasedQuantity
-     */
-    public void update(int increasedQuantity){
-        if(Objects.nonNull(this) && Objects.nonNull(product)) {
-            int newQuantity = quantity + increasedQuantity;
-            double newTotalPrice = product.getTotalPrice() * newQuantity;
-            double newTotalVAT = product.getTotalVAT() * newQuantity;
-            setQuantity(newQuantity);
-
-            if(itemDiscount != null){
-                newTotalPrice = newTotalPrice - itemDiscount.getTotalPriceReduction();
-            }
-
-            setTotalPrice(newTotalPrice);
-            setTotalVAT(newTotalVAT);
-
-        }
+    public boolean compare(SaleItem saleItem) {
+        if (this.product.equals(saleItem.getProduct()))
+            return true;
+        else return false;
     }
 
-    public void setQuantity(int quantity){
+    /**
+     * Increase the sale items quantity by adding a
+     * another quantity
+     * @param quantity, the quantity that this <code> quantity </code>
+     *                  is increased by.
+     */
+    public void increaseQuantity(int quantity) {
+        this.quantity = this.quantity + quantity;
+    }
+
+    public void reCalcTotalPrice() {
+        totalPrice = new BigDecimal(product.getTotalPrice() * quantity - itemDiscount.getTotalPriceReduction().doubleValue());
+    }
+
+    public void reCalcTotalVAT() {
+        totalVAT = new BigDecimal(product.getTotalVAT() * quantity);
+    }
+
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+        this.totalPrice = new BigDecimal(totalPrice);
     }
 
     public void setTotalVAT(double totalVAT) {
-        this.totalVAT = totalVAT;
+        this.totalVAT = new BigDecimal(totalVAT);
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
@@ -93,7 +97,7 @@ public class SaleItem implements ObservableModel {
         return product;
     }
 
-    public double getTotalVAT() {
+    public BigDecimal getTotalVAT() {
         return totalVAT;
     }
 

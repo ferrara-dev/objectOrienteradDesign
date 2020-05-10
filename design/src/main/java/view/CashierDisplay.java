@@ -7,7 +7,7 @@ import java.util.Map;
 public class CashierDisplay extends JFrame{
     private final String TITLE = "Point of Sale";
     private final Dimension SCREEN_SIZE = new Dimension(800, 600);
-    private static Map<String,View> viewMap;
+    private static Map<String, MainView> viewMap;
 
     public CashierDisplay(){
         setTitle(TITLE);

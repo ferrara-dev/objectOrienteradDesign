@@ -1,7 +1,7 @@
 package util.datatransferobject;
 
 
-public class DiscountDTO {
+public class DiscountDTO implements DataTransferObject{
     private String type;
     private String requirement;
     private String reduction;

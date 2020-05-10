@@ -1,27 +1,22 @@
 package service.modelservice.discountservice.discountstrategy;
 
-
 import util.datatransferobject.DiscountDTO;
 import model.discount.discountrule.itemdiscountrule.BulkDiscountRule;
-
 import java.util.ArrayList;
 
+/**
+ * A concrete implementation of a discount strategy, applies
+ * a strategy to get a bulk discount on on ore more items.
+ */
+public class BulkDiscountStrategy implements DiscountStrategy <BulkDiscountRule> {
 
-public class BulkDiscountStrategy implements DiscountStrategy {
-    private ArrayList<BulkDiscountRule> bulkDiscountRules;
+    public BulkDiscountStrategy() {
 
-    /**
-     * A concrete implementation of a discount strategy, applies
-     * a strategy to get a bulk discount on on ore more items.
-     * @param discountDTO Information about the discount that
-     * the strategy is applied to.
-     */
-    public BulkDiscountStrategy(DiscountDTO discountDTO) {
-        this.bulkDiscountRules = new ArrayList<>();
-        applyStrategy(discountDTO);
     }
 
-    private boolean applyStrategy(DiscountDTO discountDTO) {
+    @Override
+    public ArrayList<BulkDiscountRule> applyStrategy(DiscountDTO discountDTO) {
+        ArrayList<BulkDiscountRule> bulkDiscountRules = new ArrayList<>();
         int itemIdCounter = 0;
         String[] discountItemId = discountDTO.getItemId().split(":");
         int[] itemId = new int[discountItemId.length];
@@ -35,16 +30,7 @@ public class BulkDiscountStrategy implements DiscountStrategy {
             BulkDiscountRule bulkDiscountRule = new BulkDiscountRule(itemId[itemIdCounter++], minimumAmountOfItems, limit, priceReduction);
             bulkDiscountRules.add(bulkDiscountRule);
         }
-        return bulkDiscountWasAdded();
-    }
-
-    @Override
-    public BulkDiscountRule [] getRules() {
-        return bulkDiscountRules.toArray(new BulkDiscountRule[0]);
-    }
-
-    private boolean bulkDiscountWasAdded() {
-        return !bulkDiscountRules.isEmpty();
+        return bulkDiscountRules;
     }
 
 }

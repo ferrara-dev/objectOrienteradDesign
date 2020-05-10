@@ -1,8 +1,10 @@
 package view.saleview.saleviewcomponent;
+import model.sale.SaleItem;
 import net.miginfocom.swing.MigLayout;
 import view.guiutil.SaleItemJTable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CartView extends JPanel {
     private SaleItemJTable saleItemJTable;
@@ -22,5 +24,7 @@ public class CartView extends JPanel {
     private void addActionListeners() {
 
     }
-
+    public void cartHasChanged(ArrayList<SaleItem> list){
+        saleItemJTable.setCard(list);
+    }
 }

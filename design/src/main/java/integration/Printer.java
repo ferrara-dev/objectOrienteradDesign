@@ -1,8 +1,7 @@
 package integration;
-import model.discount.discounttypes.pricediscount.PriceDiscount;
+import model.transaction.saleTransaction.SaleTransaction;
 import util.datatransferobject.ReceiptDTO;
 import model.physicalobjects.Store;
-import model.sale.Sale;
 
 public class Printer {
     private static Printer instance;
@@ -21,7 +20,7 @@ public class Printer {
         // Print the receipt
     }
 
-    private void formatReceipt(Store store, Sale sale) {
+    private void formatReceipt(Store store, SaleTransaction sale) {
 
     }
 

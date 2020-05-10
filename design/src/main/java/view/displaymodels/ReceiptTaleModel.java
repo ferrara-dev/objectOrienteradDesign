@@ -1,6 +1,6 @@
 package view.displaymodels;
 
-import model.amount.Cost;
+import model.sale.saleinformation.cost.CostDetail;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ReceiptTaleModel extends AbstractTableModel{
     private String[] columns = {"Receipt"};
-    private List<Cost> list;
+    private List<CostDetail> list;
     Object data = new Object[3][columns.length];
 
     @Override

@@ -7,7 +7,6 @@ import java.util.UUID;
  *
  * */
 public class SaleId {
-        private static SaleId instance;
         private String value;
 
         public SaleId(){

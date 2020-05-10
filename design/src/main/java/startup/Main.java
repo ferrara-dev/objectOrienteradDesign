@@ -2,12 +2,16 @@ package startup;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.skin.dark.WebDarkSkin;
+import factory.IntegrationFactory;
+import model.banking.Balance;
+import model.physicalobjects.Register;
 import util.datatransferobject.CustomerDTO;
 import factory.CustomerFactory;
 import factory.ProductFactory;
 import util.datatransferobject.ItemDTO;
 import startup.database.DataBaseCreator;
 import startup.database.JsonObjectTableInitiator;
+import util.exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -16,7 +20,8 @@ import java.util.ArrayList;
 
 public class Main {
     private static RootCreator rootCreator;
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws NotFoundException {
         initDB();
         start();
     }
@@ -24,10 +29,10 @@ public class Main {
 
     public static void start()  {
         rootCreator = new RootCreator();
+        rootCreator.createGui();
         rootCreator.initServiceLayer();
         rootCreator.initControllerLayer();
-        rootCreator.createGui();
-
+        rootCreator.initPeripherals();
         run();
     }
 
@@ -49,9 +54,13 @@ public class Main {
 
     }
 
-    public static void initDB() {
+    public static void initDB() throws NotFoundException {
+
         DataBaseCreator dataBaseCreator = new DataBaseCreator();
         if (dataBaseCreator.createTable()) {
+            Register register = new Register();
+            register.setDefault();
+            IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().register("RegisterOne",register);
 
             JsonObjectTableInitiator jsonObjectTableInitiator =
                     new JsonObjectTableInitiator("ProductDB","jsonProductTable");
@@ -67,7 +76,6 @@ public class Main {
                 jsonObjectTableInitiator.register(customerDTO.getCustomerId(), new CustomerFactory().create(customerDTO));
             }
 
-            jsonObjectTableInitiator = new JsonObjectTableInitiator("DiscountDB", "jsonDiscountTable");
         }
     }
 }

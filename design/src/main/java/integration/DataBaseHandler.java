@@ -1,16 +1,17 @@
 package integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import util.exception.notfoundexception.NotFoundException;
 
 import java.sql.SQLException;
 
 public interface DataBaseHandler<obj,param> {
-     static final String URL = "jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1";
-     static final String INSERT_TEMPLATE = "INSERT INTO  %s VALUES ('%s', '%s' FORMAT JSON);";
-     static final String SELECT_TEMPLATE = "SELECT * FROM %s WHERE id='%s';";
-     static final String SELECT_ALL_TEMPLATE = "SELECT * FROM %s;";
-     static final ObjectMapper objectMapper = new ObjectMapper();
-     static final String UPDATE_TEMPLATE = "UPDATE %s SET vdata='%s' FORMAT JSON WHERE id='%s';";
+     String URL = "jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1";
+     String INSERT_TEMPLATE = "INSERT INTO  %s VALUES ('%s', '%s' FORMAT JSON);";
+     String SELECT_TEMPLATE = "SELECT * FROM %s WHERE id='%s';";
+     String SELECT_ALL_TEMPLATE = "SELECT * FROM %s;";
+     ObjectMapper objectMapper = new ObjectMapper();
+     String UPDATE_TEMPLATE = "UPDATE %s SET vdata='%s' FORMAT JSON WHERE id='%s';";
 
 
      boolean register(String id, param obj);

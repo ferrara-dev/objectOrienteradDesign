@@ -39,13 +39,12 @@ public class TotalCostView extends JPanel {
 
         setUpFormats();
         addComponents();
-
     }
 
     public void update(CostDTO costDTO){
-        totalCostField.setValue(costDTO.getTotalCost());
+        totalCostField.setValue(costDTO.getFinalCost());
         totalVatField.setValue(costDTO.getTotalVAT());
-        toPayField.setValue(costDTO.getToPay());
+        toPayField.setValue(costDTO.getRunningTotal());
         super.revalidate();
     }
 

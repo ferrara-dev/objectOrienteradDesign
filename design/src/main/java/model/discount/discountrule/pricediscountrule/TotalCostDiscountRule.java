@@ -1,5 +1,5 @@
 package model.discount.discountrule.pricediscountrule;
-import model.discount.discountrule.DiscountRule;
+
 
 import java.util.List;
 
@@ -36,6 +36,11 @@ public class TotalCostDiscountRule implements PriceDiscountRule {
         if(this.minimumSpent <= amountSpent)
             return true;
         return false;
+    }
+
+    @Override
+    public double getRequierment() {
+        return minimumSpent;
     }
 
     @Override

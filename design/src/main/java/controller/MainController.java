@@ -1,34 +1,29 @@
 package controller;
 
-
-import controller.subcontroller.CustomerController;
-import controller.subcontroller.DiscountController;
-import controller.subcontroller.PaymentController;
-import controller.subcontroller.SaleController;
+import service.ServiceFacade;
 import startup.layer.ControllerCreator;
 import observer.EventObserver;
+import util.datatransferobject.PaymentDTO;
+import util.datatransferobject.SaleItemDTO;
 
 
 public class MainController implements Controller{
-    private CustomerController customerController;
-    private DiscountController discountController;
-    private SaleController saleController;
-    private PaymentController paymentController;
+    private ServiceFacade serviceFacade;
 
     public MainController(ControllerCreator controllerCreator) {
-        customerController = controllerCreator.getCustomerController();
-        discountController = controllerCreator.getDiscountController();
-        saleController = controllerCreator.getSaleController();
-        paymentController = controllerCreator.getPaymentController();
+
     }
 
+    public MainController(ServiceFacade serviceFacade) {
+        this.serviceFacade = serviceFacade;
+    }
     /**
      * Called from the view to start a new sale
      * calls method <code> startsale() </code>
      * resided in an instance of the  <code> SaleController </code>
      */
     public void startSale() {
-        saleController.startSale();
+        serviceFacade.startSale();
     }
 
     /**
@@ -41,8 +36,8 @@ public class MainController implements Controller{
      * @param itemId
      * @param quantity
      */
-    public void registerProduct(int itemId, int quantity) {
-        saleController.initiateProductRegistration(itemId, quantity);
+    public void registerProduct(SaleItemDTO saleItemDTO) {
+        serviceFacade.registerProduct(saleItemDTO);
     }
 
     /**
@@ -53,14 +48,15 @@ public class MainController implements Controller{
      * @param customerId
      */
     public void requestCustomerDiscount(String customerId) {
-            discountController.handleDiscountRequest(customerId);
+           serviceFacade.requestDiscount(customerId);
     }
 
     /**
      * Call from the view to end a sale in progress.
      */
     public void endSale(){
-        saleController.endSale();
+        serviceFacade.endSale();
+        //saleController.endSale();
     }
     /**
      * Call from the view to enter a payment.
@@ -69,29 +65,14 @@ public class MainController implements Controller{
      * initiate the payment process
      *
      */
-    public void enterPayment(double amount){
-            paymentController.initiatePaymentProcess(amount);
-    }
-
-    public PaymentController getPaymentController() {
-        return paymentController;
-    }
-
-    public SaleController getSaleController() {
-        return saleController;
-    }
-
-    public DiscountController getDiscountController() {
-        return discountController;
-    }
-
-    public CustomerController getCustomerController() {
-        return customerController;
+    public void enterPayment(PaymentDTO paymentDTO){
+        serviceFacade.initPayment(paymentDTO);
     }
 
     @Override
     public void addObserver(EventObserver observer) {
-        saleController.addObservers(observer);
+
+        //saleController.addObservers(observer);
     }
 
 }

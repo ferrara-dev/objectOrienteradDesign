@@ -1,13 +1,15 @@
 package model.discount.discounttypes.itemdiscount;
 import model.discount.discountrule.itemdiscountrule.ItemDiscountRule;
 
+import java.math.BigDecimal;
+
 /**
  * Class representing a bulk item discount
  */
 
 public class BulkDiscount implements ItemDiscount {
     ItemDiscountRule discountRule;
-    private double totalPriceReduction;
+    private BigDecimal totalPriceReduction = new BigDecimal("0");
 
     public BulkDiscount(ItemDiscountRule discountRule){
         this.discountRule = discountRule;
@@ -15,7 +17,7 @@ public class BulkDiscount implements ItemDiscount {
 
     @Override
     public void setTotalPriceReduction(double totalPriceReduction) {
-        this.totalPriceReduction = totalPriceReduction;
+        this.totalPriceReduction = new BigDecimal(totalPriceReduction);
     }
 
     /**
@@ -39,7 +41,7 @@ public class BulkDiscount implements ItemDiscount {
     /**
      * Get the total price reduction
      */
-    public Double getTotalPriceReduction() {
+    public BigDecimal getTotalPriceReduction() {
         return totalPriceReduction;
     }
     //TODO:

@@ -29,6 +29,7 @@ public class Date {
     public int getCurrentYear() {
         return currentYear;
     }
+
     public void setCurrentYear(int currentYear) {
         this.currentYear = currentYear;
     }
@@ -48,4 +49,6 @@ public class Date {
     public void setCurrentDate(String currentDate) {
         this.currentDate = currentDate;
     }
+
+
 }

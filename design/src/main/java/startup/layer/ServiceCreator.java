@@ -1,29 +1,40 @@
 package startup.layer;
 
-import service.modelservice.paymentservice.PaymentService;
+
+import integration.PhysicalObjectsRepository;
+import observer.EventObserver;
+import service.ServiceFacade;
 import service.modelservice.productservice.ProductService;
 import service.modelservice.customerservice.CustomerService;
 import service.modelservice.discountservice.DiscountService;
 import service.modelservice.saleservice.SaleService;
-import service.PhysicalObjectsRepository;
+
+
+import java.util.ArrayList;
+
 
 public class ServiceCreator {
-    private PhysicalObjectsRepository physicalObjectsRepository;
-    private IntegrationServiceCreator integrationServiceCreator;
+    private ServiceFacade serviceFacade;
     private DiscountService discountService;
     private SaleService saleService;
     private CustomerService customerService;
     private ProductService productService;
-    private PaymentService paymentService;
+    private PhysicalObjectsRepository physicalObjectsRepository;
 
-    public ServiceCreator(PhysicalObjectsRepository physicalObjectsRepository){
-        this.physicalObjectsRepository = physicalObjectsRepository;
-        integrationServiceCreator = new IntegrationServiceCreator();
-        productService = new ProductService(this);
+    public ServiceCreator(){
+        productService = new ProductService();
         saleService = new SaleService(this);
         customerService = new CustomerService(this);
         discountService = new DiscountService(this);
-        paymentService = new PaymentService(this);
+        serviceFacade = new ServiceFacade(this);
+    }
+
+    public void setUpObservers(ArrayList<EventObserver> eventObservers) {
+        serviceFacade.addObservers(eventObservers);
+    }
+
+    public ServiceFacade getServiceFacade() {
+        return serviceFacade;
     }
 
     public ProductService getProductService() {
@@ -38,19 +49,8 @@ public class ServiceCreator {
         return discountService;
     }
 
-    public IntegrationServiceCreator getIntegrationServiceCreator() {
-        return integrationServiceCreator;
-    }
-
     public SaleService getSaleService() {
         return saleService;
     }
 
-    public PhysicalObjectsRepository getPhysicalObjectsRepository() {
-        return physicalObjectsRepository;
-    }
-
-    public PaymentService getPaymentService() {
-        return paymentService;
-    }
 }

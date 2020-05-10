@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import util.datatransferobject.CustomerDTO;
 import integration.DataBaseHandler;
 import util.datatransferobject.ItemDTO;
-import util.exception.NotFoundException;
+import util.exception.notfoundexception.NotFoundException;
 import util.Tax;
 
 import java.sql.*;
@@ -42,7 +42,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
         return false;
     }
 
-    public Object collect(String id) {
+    public Object collect(String id) throws NotFoundException {
         if (tableName == "ProductDB") {
             ItemDTO itemDTO = collectProduct(id);
             return itemDTO;
@@ -53,7 +53,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
             throw new IllegalArgumentException();
     }
 
-    private ArrayList<CustomerDTO> collectCustomer() {
+    private ArrayList<CustomerDTO> collectCustomer() throws NotFoundException {
         ArrayList<CustomerDTO> customerDTOS = new ArrayList<>();
         try (Connection con = DriverManager.getConnection(URL)) {
             Statement stm = con.createStatement();
@@ -77,7 +77,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
     }
 
 
-    private ItemDTO collectProduct(String id) {
+    private ItemDTO collectProduct(String id) throws NotFoundException {
         try (Connection con = DriverManager.getConnection(URL)) {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, tableName, id));

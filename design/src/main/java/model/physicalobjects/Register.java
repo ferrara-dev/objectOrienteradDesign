@@ -1,34 +1,94 @@
 package model.physicalobjects;
-import model.amount.Amount;
-import model.amount.Payment;
 
-public class Register {
-    Store store;
-    private static double balance;
+import model.ObservableModel;
+import model.amount.MonetaryValue;
+import model.banking.Balance;
+import model.banking.MonetaryAmount;
+import model.banking.Payment;
+import observer.EventObserver;
+import observer.ObservedEvent;
+import observer.PropertyChangeEvent;
 
-    public Register(Store store){
-        this.store = store;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Objects;
+
+
+public class Register implements ObservableModel {
+    private ArrayList<EventObserver> observers;
+    private static Balance balance;
+
+    public Register() {
+
     }
 
-    public void enterPayment(Amount payment){
-        setBalance(balance + payment.getNumber().doubleValue());
+    public void setDefault() {
+        observers = new ArrayList<>();
+        balance = new Balance();
+        balance.setDefault();
     }
 
-    public void setBalance(double balance){
+    public Register(BigDecimal bigDecimal) {
+        observers = new ArrayList<>();
+        this.balance = new Balance();
+        balance.setDefault();
+        balance.setNumber(bigDecimal);
+    }
+
+    public void enterPayment(Payment payment) {
+        balance.increaseValue(payment.getNumber());
+        //  notifyObservers(new PropertyChangeEvent("balance",balance,this.balance));
+    }
+
+    public void setBalance(Balance balance) {
+        //  notifyObservers(new PropertyChangeEvent("balance",balance,this.balance));
         this.balance = balance;
     }
 
-    public double getBalance(){
+    public Balance getBalance() {
         return balance;
     }
 
-
-    public double withdraw(double amountToWithdraw){
-        if(balance >= amountToWithdraw){
-            balance = balance + amountToWithdraw;
-            return (-1)*amountToWithdraw;
-        }
-        else
+    public MonetaryAmount withdraw(MonetaryAmount amountToWithdraw) {
+        if (balance.getNumber().doubleValue() >= amountToWithdraw.getNumber().doubleValue()) {
+            balance.decreaseValue(amountToWithdraw.getNumber());
+            return amountToWithdraw;
+        } else
             throw new IllegalArgumentException();
     }
+
+    public MonetaryValue withdraw(MonetaryValue amount) {
+        if (balance.getNumber().doubleValue() >= amount.getNumber().doubleValue()) {
+            BigDecimal amountToWithDraw = new BigDecimal(amount.getNumber().doubleValue());
+            balance.decreaseValue(amountToWithDraw);
+            notifyObservers(new PropertyChangeEvent("balance", balance, this.balance));
+            return amount;
+        } else
+            throw new IllegalArgumentException();
+    }
+
+    @Override
+    public void notifyObservers(ObservedEvent observedEvent) {
+        if (Objects.nonNull(observers))
+            for (EventObserver eventObserver : observers) {
+                eventObserver.newEvent(observedEvent);
+            }
+    }
+
+    @Override
+    public void addObserver(EventObserver eventObserver) {
+        observers.add(eventObserver);
+    }
+
+    @Override
+    public void removeObserver(EventObserver eventObserver) {
+
+    }
+
+    public void setObservers(ArrayList<EventObserver> observers) {
+        this.observers = observers;
+        notifyObservers(new PropertyChangeEvent("balance", balance, balance));
+    }
+
+
 }

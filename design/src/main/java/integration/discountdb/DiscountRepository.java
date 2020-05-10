@@ -1,17 +1,15 @@
 package integration.discountdb;
 
 import integration.customerdb.CustomerRepository;
-import model.customer.Member;
 import util.datatransferobject.DiscountDTO;
 import integration.DataBaseHandler;
 import model.discount.Discount;
-import util.exception.NotFoundException;
+import util.exception.notfoundexception.NotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
-public class DiscountRepository implements DataBaseHandler<List, Discount> {
+public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> {
     private final String SELECT_DISCOUNT_TEMPLATE = "SELECT * FROM %s ;";
     private static DiscountRepository instance;
 
@@ -22,7 +20,7 @@ public class DiscountRepository implements DataBaseHandler<List, Discount> {
      *  calls to the method thread safe.
      * * @return
      */
-    public static DataBaseHandler<List, Discount> getInstance() {
+    public static DataBaseHandler<ArrayList, Discount> getInstance() {
         if(instance == null){
             synchronized (CustomerRepository.class) {
                 if(instance == null){
@@ -51,7 +49,7 @@ public class DiscountRepository implements DataBaseHandler<List, Discount> {
      */
 
     @Override
-    public boolean find(String id) {
+    public boolean find(String id){
         try (Connection con = DriverManager.getConnection(URL)) {
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, "jsonCustomerTable", id));
@@ -73,9 +71,9 @@ public class DiscountRepository implements DataBaseHandler<List, Discount> {
      */
 
     @Override
-    public List<DiscountDTO> collect(String dayOfTheWeek) {
+    public ArrayList<DiscountDTO> collect(String dayOfTheWeek){
         try (Connection con = DriverManager.getConnection(URL)) {
-            List<DiscountDTO> discountDTOList = new ArrayList<>();
+            ArrayList<DiscountDTO> discountDTOList = new ArrayList<>();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_DISCOUNT_TEMPLATE, "DiscountDB"));
 
@@ -83,7 +81,6 @@ public class DiscountRepository implements DataBaseHandler<List, Discount> {
                 String available = rs.getString("available");
                 String[] dates = available.split(":");
                 boolean isAvailable = false;
-
                 for (String date : dates) {
                     if (date.equals(dayOfTheWeek)) {
                         isAvailable = true;

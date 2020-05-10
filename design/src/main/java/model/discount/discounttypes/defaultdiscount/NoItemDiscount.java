@@ -3,11 +3,13 @@ package model.discount.discounttypes.defaultdiscount;
 import model.discount.discountrule.itemdiscountrule.ItemDiscountRule;
 import model.discount.discounttypes.itemdiscount.ItemDiscount;
 
+import java.math.BigDecimal;
+
 /**
  * Class representing a default item discount
  */
 public class NoItemDiscount implements ItemDiscount {
-    private final double totalPriceReduction = 0;
+    private final BigDecimal totalPriceReduction = new BigDecimal("0");
 
     @Override
     public void setTotalPriceReduction(double totalPriceReduction) {
@@ -25,7 +27,7 @@ public class NoItemDiscount implements ItemDiscount {
     }
 
     @Override
-    public Double getTotalPriceReduction() {
+    public BigDecimal getTotalPriceReduction() {
         return totalPriceReduction;
     }
 

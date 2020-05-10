@@ -1,36 +1,26 @@
 package service.modelservice.discountservice.discountstrategy;
-
-import model.discount.discountrule.DiscountRule;
 import util.datatransferobject.DiscountDTO;
 import model.discount.discountrule.pricediscountrule.TotalCostDiscountRule;
 
 
 import java.util.ArrayList;
 
-public class TotalCostDiscountStrategy implements DiscountStrategy{
-    private ArrayList<TotalCostDiscountRule> totalCostDiscountRules;
-
-    public TotalCostDiscountStrategy(DiscountDTO discountDTO){
-        totalCostDiscountRules = new ArrayList<>();
-        applyStrategy(discountDTO);
+public class TotalCostDiscountStrategy implements DiscountStrategy<TotalCostDiscountRule>{
+    /**
+     * A concrete implementation of a discount strategy, applies
+     * a strategy to get a discount on the total cost
+     * of the sale.
+     */
+    public TotalCostDiscountStrategy( ){
     }
 
-    private boolean applyStrategy(DiscountDTO discountDTO) {
+    public ArrayList<TotalCostDiscountRule> applyStrategy(DiscountDTO discountDTO) {
+        ArrayList<TotalCostDiscountRule> totalCostDiscountRules = new ArrayList<>();
         double minimumSpent = Double.parseDouble(discountDTO.getRequirement());
         double priceReduction = Double.parseDouble(discountDTO.getReduction());
                 TotalCostDiscountRule priceDiscountPolicy = new TotalCostDiscountRule(minimumSpent,priceReduction);
                 totalCostDiscountRules.add(priceDiscountPolicy);
-        return priceDiscountWasAdded();
+        return totalCostDiscountRules;
     }
 
-
-    @Override
-    public TotalCostDiscountRule [] getRules() {
-        return totalCostDiscountRules.toArray(new TotalCostDiscountRule[0]);
-    }
-
-
-    private boolean priceDiscountWasAdded() {
-        return !totalCostDiscountRules.isEmpty();
-    }
 }
