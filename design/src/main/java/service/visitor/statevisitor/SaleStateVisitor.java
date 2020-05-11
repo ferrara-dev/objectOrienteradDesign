@@ -1,14 +1,12 @@
 package service.visitor.statevisitor;
 
-import integration.DataBaseHandler;
 import factory.IntegrationFactory;
+import integration.DataBaseHandler;
 import model.amount.FinalCost;
-import model.banking.Balance;
 import model.sale.saleinformation.SaleSpecification;
 import model.sale.saleinformation.cost.CostDetail;
 import model.sale.saleinformation.salestate.SaleState;
 import model.sale.saleinformation.salestate.State;
-import integration.PhysicalObjectsRepository;
 import observer.EventObserver;
 import observer.ObservedEvent;
 import observer.PropertyChangeEvent;
@@ -20,7 +18,7 @@ import util.datatransferobject.CostDTO;
 import java.util.ArrayList;
 
 
-public class SaleStateVisitor implements Visitor<SaleState,SaleSpecification> {
+public class SaleStateVisitor implements Visitor<SaleState, SaleSpecification> {
     private SaleSpecification saleSpecification;
     private static SaleStateVisitor instance;
     private ArrayList<EventObserver> eventObservers;
@@ -36,7 +34,7 @@ public class SaleStateVisitor implements Visitor<SaleState,SaleSpecification> {
      * calls to the method thread safe.
      * * @return
      */
-    public static  Visitor<SaleState,SaleSpecification> getInstance() {
+    public static Visitor<SaleState, SaleSpecification> getInstance() {
         if (instance == null) {
             synchronized (ProductCartVisitor.class) {
                 if (instance == null) {
@@ -55,25 +53,25 @@ public class SaleStateVisitor implements Visitor<SaleState,SaleSpecification> {
     @Override
     public void processElement(SaleState saleState) {
         saleState.nextState();
-        if(saleState.getCurrentState().equals(State.SALE_PAYMENT_STATE))
+        if (saleState.getCurrentState().equals(State.SALE_PAYMENT_STATE))
             setFinalCost();
 
-        else if(saleState.getCurrentState().equals(State.SALE_COMPLETE_STATE))
+        else if (saleState.getCurrentState().equals(State.SALE_COMPLETE_STATE))
             finalizeSale();
         saleState.notifyObservers(new StateChange(saleState.getCurrentState()));
     }
 
-    private void finalizeSale(){
+    private void finalizeSale() {
         DataBaseHandler dataBaseHandler = IntegrationFactory.SALE_LOG.getDataBaseHandler();
-        dataBaseHandler.register(saleSpecification.getSaleId().getValue(),saleSpecification);
+        dataBaseHandler.register(saleSpecification.getSaleId().getValue(), saleSpecification);
     }
 
-    private void setFinalCost(){
+    private void setFinalCost() {
         CostDetail costDetail = saleSpecification.getCost();
         FinalCost finalCost = new FinalCost();
         finalCost.setNumber(costDetail.getRunningTotal().getNumber());
         saleSpecification.getCost().setFinalCost(finalCost);
-        saleSpecification.getCost().notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(costDetail),null));
+        saleSpecification.getCost().notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(costDetail), null));
     }
 
     @Override

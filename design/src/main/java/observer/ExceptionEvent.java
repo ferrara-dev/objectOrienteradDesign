@@ -1,15 +1,23 @@
 package observer;
 
 import model.exception.UserException;
+import util.exception.ErrorId;
 
-public class ExceptionEvent extends ObservedEvent {
+public class ExceptionEvent {
+    private ErrorId errorId;
+    private String information;
 
-    public ExceptionEvent(Exception userException) {
-        super.setEventSource(userException);
+    public ExceptionEvent(UserException userException) {
+        this.errorId = userException.getErrorId();
+        information = userException.getLocalizedMessage();
     }
 
-    @Override
-    public Object getEventSource() {
-        return super.getEventSource();
+    public ErrorId getErrorId() {
+        return errorId;
     }
+
+    public String getInformation() {
+        return information;
+    }
+
 }

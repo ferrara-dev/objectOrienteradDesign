@@ -5,9 +5,8 @@ import model.discount.discountrule.DiscountRule;
 import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
 import model.discount.discountrule.pricediscountrule.TotalCostDiscountRule;
 import model.discount.discounttypes.pricediscount.TotalCostDiscount;
-import util.exception.UndefinedDiscountException;
+import util.exception.businessruleexception.UndefinedDiscountException;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 

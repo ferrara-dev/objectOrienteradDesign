@@ -6,7 +6,6 @@ import model.exception.BusinessException;
 import org.junit.Before;
 import org.junit.Test;
 import service.handlerpattern.Handler;
-import service.handlerpattern.exceptionhandler.ExceptionHandler;
 import service.handlerpattern.exceptionlog.ExceptionLogStrategy;
 import service.handlerpattern.exceptionlog.ExceptionLogger;
 
@@ -20,7 +19,7 @@ public class BusinessExceptionTest {
     @Before
     public void startUp(){
         exceptionLogger = ExceptionLogStrategy.BUSINESS_EXCEPTION_LOG.get();
-        exceptionHandler = HandlerFactory.EXCEPTION_HANDLER.create();
+
     }
 
     @Test (expected = NotFoundException.class)
@@ -34,7 +33,7 @@ public class BusinessExceptionTest {
         try {
             IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().collect("ABSSCSA");
         } catch (NotFoundException e){
-            RegisterUpdateFailureException registerUpdateFailureException = new RegisterUpdateFailureException(e);
+            RegisterUpdateFailureException registerUpdateFailureException = new RegisterUpdateFailureException("Failed to update register",e);
             exceptionHandler.handle(registerUpdateFailureException);
         }
     }

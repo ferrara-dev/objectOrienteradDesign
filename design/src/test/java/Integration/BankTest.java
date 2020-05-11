@@ -4,7 +4,6 @@ import factory.builderpattern.FinanceBuilder;
 import integration.Bank;
 import integration.DataBaseHandler;
 import factory.IntegrationFactory;
-import integration.saledb.AccountingHandler;
 
 import model.banking.Balance;
 import org.javamoney.moneta.FastMoney;
@@ -28,7 +27,7 @@ public class BankTest {
 
     @Before
     public void startUp() {
-        bank = AccountingHandler.getInstance();
+
     }
 
     @Test

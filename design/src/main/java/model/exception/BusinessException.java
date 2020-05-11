@@ -1,5 +1,7 @@
 package model.exception;
 
+import util.exception.ErrorId;
+
 import java.util.Objects;
 
 /**
@@ -7,6 +9,7 @@ import java.util.Objects;
  */
 public class BusinessException extends RuntimeException {
     String errorMessage;
+    ErrorId errorId;
 
     public BusinessException(String errorMessage, Throwable cause) {
         super(errorMessage, cause);

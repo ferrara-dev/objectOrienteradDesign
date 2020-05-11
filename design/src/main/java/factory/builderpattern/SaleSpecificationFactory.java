@@ -9,7 +9,6 @@ import model.sale.saleinformation.salestate.SaleState;
 import model.sale.saleinformation.salestate.State;
 import observer.EventObserver;
 import util.Calendar;
-
 import java.util.ArrayList;
 import java.util.Objects;
 

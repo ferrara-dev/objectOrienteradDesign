@@ -5,8 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.Bank;
 import integration.DataBaseHandler;
-import model.banking.Balance;
 import model.physicalobjects.Register;
+import util.exception.ErrorId;
 import util.exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
@@ -120,7 +120,7 @@ public class RegisterBalanceAccount implements Bank {
             }
         }
 
-        throw new NotFoundException("No register with " + "\"" + id+ "\"" + " exist in the database");
+        throw new NotFoundException("ID" + "\"" + id + "\"" , ErrorId.REGISTER_ID_NOT_FOUND);
     }
 
 }

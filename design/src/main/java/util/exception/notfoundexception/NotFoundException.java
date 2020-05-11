@@ -1,4 +1,8 @@
 package util.exception.notfoundexception;
+
+
+import util.exception.ErrorId;
+
 /**
  * Runtime exception that is thrown in the integration layer when something is not found in the database
  * This is the highest abstraction of exception regarding this.
@@ -8,16 +12,29 @@ package util.exception.notfoundexception;
  */
 
 public class NotFoundException extends RuntimeException {
-    public final String ITEM_NOT_FOUND_MESSAGE = "ITEM NOT FOUND \n" +
-            " please try again";
-    public final String CUSTOMER_NOT_FOUND_MESSAGE =  "CUSTOMER ID NOT FOUND \n " +
-            "The id that has been entered can not be found in the database " +
-            "\n please try again";
-    private Object invalidDTO;
+    ErrorId errorId;
 
-    public NotFoundException(Exception cause, String s, Object invalidDTO){
+    public NotFoundException(String s, ErrorId errorId){
+        super(s);
+        this.errorId = errorId;
+    }
+
+    public NotFoundException(Exception cause, ErrorId errorId){
+        super(cause.getMessage(),cause);
+        this.errorId = errorId;
+    }
+
+    public NotFoundException(String s, Exception cause, ErrorId errorId){
         super(s,cause);
-        this.invalidDTO = invalidDTO;
+        this.errorId = errorId;
+    }
+
+    public ErrorId getErrorId() {
+        return errorId;
+    }
+
+    public long getErrorCodeValue(){
+        return errorId.code;
     }
 
     public NotFoundException(){
@@ -27,10 +44,6 @@ public class NotFoundException extends RuntimeException {
     @Override
     public String getMessage() {
         return super.getMessage();
-    }
-
-    public NotFoundException(String s){
-        super(s);
     }
 
 }

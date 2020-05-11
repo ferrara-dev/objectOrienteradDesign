@@ -7,10 +7,9 @@ import model.discount.discounttypes.itemdiscount.BulkDiscount;
 import model.discount.discounttypes.itemdiscount.ItemDiscount;
 import model.sale.SaleItem;
 import model.sale.saleinformation.ProductCart;
-import util.exception.UndefinedDiscountException;
+import util.exception.businessruleexception.UndefinedDiscountException;
 import util.sequence.SequenceIterator;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 

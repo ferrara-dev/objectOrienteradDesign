@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import util.datatransferobject.CustomerDTO;
 import integration.DataBaseHandler;
 import util.datatransferobject.ItemDTO;
+import util.exception.ErrorId;
 import util.exception.notfoundexception.NotFoundException;
 import util.Tax;
 
@@ -67,13 +68,12 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
                 customerDTOS.add(customerDTO);
 
             }
-            return customerDTOS;
+
 
         } catch (SQLException ex) {
             DataBaseHandler.printSQLException(ex);
         }
-
-        throw new NotFoundException("Item not found");
+        return customerDTOS;
     }
 
 
@@ -98,7 +98,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
             DataBaseHandler.printSQLException(ex);
         }
 
-        throw new NotFoundException("Item not found");
+        throw new NotFoundException("ID" + "\"" + id + "\"" , ErrorId.PRODUCT_ID_NOT_FOUND);
     }
 
 }

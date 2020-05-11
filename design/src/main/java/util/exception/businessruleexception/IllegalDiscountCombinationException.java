@@ -1,4 +1,4 @@
-package util.exception;
+package util.exception.businessruleexception;
 /**
  * Exception that is thrown when a illegal combination of discounts occurs
  * Only one discount can be applied per item, if an attempt is made to

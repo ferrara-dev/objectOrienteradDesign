@@ -4,6 +4,7 @@ import integration.customerdb.CustomerRepository;
 import util.datatransferobject.DiscountDTO;
 import integration.DataBaseHandler;
 import model.discount.Discount;
+import util.exception.ErrorId;
 import util.exception.notfoundexception.NotFoundException;
 
 import java.sql.*;
@@ -105,7 +106,7 @@ public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> 
             DataBaseHandler.printSQLException(ex);
         }
 
-        throw new NotFoundException("Item not found");
+        throw new NotFoundException(dayOfTheWeek , ErrorId.PRODUCT_ID_NOT_FOUND);
     }
 
 

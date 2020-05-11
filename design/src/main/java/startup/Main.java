@@ -32,6 +32,7 @@ public class Main {
         rootCreator.createGui();
         rootCreator.initServiceLayer();
         rootCreator.initControllerLayer();
+        rootCreator.initExceptionHandler();
         rootCreator.initPeripherals();
         run();
     }

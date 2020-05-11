@@ -68,7 +68,6 @@ public class ViewCreator {
         ArrayList<EventObserver> eventObservers = new ArrayList<>();
         eventObservers.addAll(view.collectEventObservers());
         eventObservers.addAll(revenueView.collectEventObservers());
-        eventObservers.add(exceptionView);
         return eventObservers;
     }
 
@@ -78,6 +77,10 @@ public class ViewCreator {
         inputViews.add(initialView.getInitialViewInput());
         inputViews.add(saleView.getSaleInputView());
         return inputViews;
+    }
+
+    public ExceptionView getExceptionView() {
+        return exceptionView;
     }
 
     public PaymentMainView getPaymentView() {

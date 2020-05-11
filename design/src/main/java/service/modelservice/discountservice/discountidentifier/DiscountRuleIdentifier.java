@@ -8,7 +8,7 @@ import service.modelservice.discountservice.discountRequestHandler.ItemDiscountR
 import util.sequence.ListSequence;
 import util.sequence.ListSequenceIterator;
 import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
-import util.exception.UndefinedDiscountException;
+import util.exception.businessruleexception.UndefinedDiscountException;
 
 import java.util.Objects;
 

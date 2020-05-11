@@ -1,5 +1,6 @@
 package startup;
 import integration.PhysicalObjectsRepository;
+import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
 import service.handlerpattern.exceptionlog.ExceptionLogStrategy;
 import startup.layer.ControllerCreator;
 import startup.layer.ServiceCreator;
@@ -23,6 +24,10 @@ public class RootCreator {
     public void initControllerLayer(){
         controllerCreator = new ControllerCreator(serviceCreator);
         controllerCreator.configureObservers(viewCreator.collectInputViews());
+    }
+
+    public void initExceptionHandler(){
+        ExceptionHandlingFactory.createExceptionHandlingChain(viewCreator.getExceptionView());
     }
 
     public void initPeripherals(){

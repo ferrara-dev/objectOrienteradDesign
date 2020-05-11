@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
 import model.sale.saleinformation.SaleSpecification;
+import util.exception.DataBaseAccessFailureException;
+import util.exception.ErrorId;
 import util.exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
@@ -52,11 +54,10 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
             int result = statement.executeUpdate(String.format(INSERT_TEMPLATE,saleDB,id, objectMapper.writeValueAsString(sale)));
             System.out.println("No. of records affected : " + result);
         } catch (JsonProcessingException jme) {
-            System.err.println(jme.getMessage());
+            throw new DataBaseAccessFailureException(jme,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (SQLException e) {
-
-            // print SQL exception information
             DataBaseHandler.printSQLException(e);
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         }
         return true;
     }
@@ -71,8 +72,8 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
             if(rs.next()) {
                 return true;
             }
-        } catch (SQLException ex) {
-            DataBaseHandler.printSQLException(ex);
+        } catch (SQLException e) {
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         }
         return false;
     }
@@ -82,18 +83,18 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
      * Throws <code> NotFoundException </code> that is handled
      * in the view if sale with the specified identification
      * is not found in the database.
-     * @param saleId a string that identifies
+     * @param id a string that identifies
      *              the sale that is to be collected
      * @return the sale specified by the saleId
      */
     @Override
-    public SaleSpecification collect(String saleId){
+    public SaleSpecification collect(String id){
         // Step 1: Establishing a Connection
         try (Connection connection = DriverManager.getConnection(URL)) {
             Statement statement = connection.createStatement();
 
             // Step 3: Execute the query or update query
-            ResultSet result = statement.executeQuery(String.format(SELECT_TEMPLATE,saleDB, saleId));
+            ResultSet result = statement.executeQuery(String.format(SELECT_TEMPLATE,saleDB, id));
             while (result.next()) {
                 Reader reader = result.getClob(2).getCharacterStream();
                 StringBuilder buffer = new StringBuilder();
@@ -107,19 +108,16 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
 
                 return objectMapper.readValue(targetString, SaleSpecification.class);
             }
-
-
         } catch (SQLException e) {
-
-            // print SQL exception information
-            DataBaseHandler.printSQLException(e);
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (JsonParseException e) {
-            e.printStackTrace();
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         }
-        throw  new NotFoundException("Sale id not found!");
+
+        throw new NotFoundException("ID" + "\"" + id + "\"" , ErrorId.SALE_ID_NOT_FOUND);
     }
 }

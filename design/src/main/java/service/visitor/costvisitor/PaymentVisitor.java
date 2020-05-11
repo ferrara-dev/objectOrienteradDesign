@@ -76,7 +76,7 @@ public class PaymentVisitor implements Visitor<CostDetail,Payment> {
         try {
             IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().register("RegisterOne", register);
         } catch (NotFoundException e){
-            throw new RegisterUpdateFailureException(e);
+            throw new RegisterUpdateFailureException("Failed to update register", e);
         }
     }
 

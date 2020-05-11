@@ -6,9 +6,11 @@ import model.physicalobjects.Register;
 import model.sale.saleinformation.SaleSpecification;
 import model.transaction.saleTransaction.SaleTransaction;
 import observer.EventObserver;
+import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
 import service.visitor.Visitor;
 import factory.VisitorFactory;
 import startup.layer.ServiceCreator;
+import util.exception.DataBaseAccessFailureException;
 import util.exception.notfoundexception.NotFoundException;
 
 import java.util.ArrayList;
@@ -53,11 +55,16 @@ public class SaleService {
     }
 
     /**
-     * End the sale by setting it as completed
+     * End the sale by setting its state as completed
      */
     public void endSale(){
+        visitor = VisitorFactory.SALE_STATE_VISITOR.getVisitor();
         visitor.setData(saleTransaction.getSaleSpecification());
-        saleTransaction.getSaleSpecification().getSaleState().acceptVisitor(visitor);
+        try {
+            saleTransaction.getSaleSpecification().getSaleState().acceptVisitor(visitor);
+        }catch (NotFoundException | DataBaseAccessFailureException e){
+            ExceptionHandlingFactory.getExceptionHandlingChain().handle(e);
+        }
     }
 
     public void setEventObservers(ArrayList<EventObserver> eventObservers) {

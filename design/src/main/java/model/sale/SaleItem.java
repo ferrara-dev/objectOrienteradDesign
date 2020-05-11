@@ -6,7 +6,7 @@ import model.discount.discounttypes.itemdiscount.ItemDiscount;
 import model.discount.discounttypes.defaultdiscount.NoItemDiscount;
 import observer.EventObserver;
 import observer.ObservedEvent;
-import util.exception.IllegalDiscountCombinationException;
+import util.exception.businessruleexception.IllegalDiscountCombinationException;
 
 import java.math.BigDecimal;
 import java.util.Objects;

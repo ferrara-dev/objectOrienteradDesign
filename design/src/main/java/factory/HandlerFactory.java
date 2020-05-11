@@ -1,8 +1,6 @@
 package factory;
 
 import service.handlerpattern.Handler;
-import service.handlerpattern.exceptionhandler.ProductNotFoundHandler;
-import service.handlerpattern.exceptionhandler.RegisterUpdateFailureHandler;
 import service.modelservice.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
 import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
 import service.modelservice.discountservice.discountidentifier.DiscountRuleIdentifier;
@@ -23,13 +21,7 @@ public enum HandlerFactory {
                     new TotalCostDiscountRequestHandler(null),
                     new BulkDiscountRequestHandler(null));
         }
-    },
-    EXCEPTION_HANDLER{
-        @Override
-        public Handler create() {
-            return new ProductNotFoundHandler(new RegisterUpdateFailureHandler(null));
-        }
     };
         public abstract Handler create();
-};
+}
 

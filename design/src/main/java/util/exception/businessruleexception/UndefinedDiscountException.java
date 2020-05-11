@@ -1,4 +1,4 @@
-package util.exception;
+package util.exception.businessruleexception;
 
 public class UndefinedDiscountException extends RuntimeException{
     public UndefinedDiscountException(){

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
 import model.customer.Member;
+import util.exception.DataBaseAccessFailureException;
+import util.exception.ErrorId;
 import util.exception.notfoundexception.NotFoundException;
 import java.io.IOException;
 import java.io.Reader;
@@ -52,7 +54,7 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
             DataBaseHandler.printSQLException(ex);
         }
 
-        throw new NotFoundException();
+        return false;
     }
 
     /**
@@ -84,9 +86,10 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
 
 
         } catch (SQLException e) {
-
+            e.getErrorCode();
             // print SQL exception information
             DataBaseHandler.printSQLException(e);
+            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (JsonParseException e) {
             e.printStackTrace();
         } catch (JsonMappingException e) {
@@ -94,34 +97,9 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        throw new NotFoundException("Customer not found!");
+        throw new NotFoundException("id" + " \"" + id + "\"" , ErrorId.CUSTOMER_ID_NOT_FOUND);
     }
 
-
-    public static void readRecord(String tableName, String item, String key) {
-        try (Connection con = DriverManager.getConnection(URL)) {
-            Statement stm = con.createStatement();
-
-            System.out.println("Reading data from " + tableName);
-            stm = con.createStatement();
-            String sql = "SELECT " + item + " FROM " + tableName + " WHERE id='%s'";
-            ResultSet rs = stm.executeQuery(String.format(sql, key));
-
-            // STEP 4: Extract data from result set
-            while (rs.next()) {
-                // Retrieve by column name
-                String name = rs.getString("name");
-                // Display values
-                System.out.print("User : " + name);
-                System.out.println();
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
     /**
      *  Singleton method used to create an instance of the class
      *  and make sure that multiple instances can not be created
