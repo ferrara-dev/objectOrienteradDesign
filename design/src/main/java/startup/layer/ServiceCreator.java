@@ -4,10 +4,10 @@ package startup.layer;
 import integration.PhysicalObjectsRepository;
 import observer.EventObserver;
 import service.ServiceFacade;
-import service.modelservice.productservice.ProductService;
-import service.modelservice.customerservice.CustomerService;
-import service.modelservice.discountservice.DiscountService;
-import service.modelservice.saleservice.SaleService;
+import service.ProductService;
+import service.CustomerService;
+import service.discountservice.DiscountService;
+import service.SaleService;
 
 
 import java.util.ArrayList;

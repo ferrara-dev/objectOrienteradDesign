@@ -1,9 +1,7 @@
-package service.modelservice.customerservice;
+package service;
 
 import model.customer.Member;
-import service.modelservice.Service;
 import startup.layer.ServiceCreator;
-import service.modelservice.saleservice.SaleService;
 
 /**
  * Customer service class that used to perform operation on <code> Member </code>objects

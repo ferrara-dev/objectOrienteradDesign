@@ -1,8 +1,8 @@
-package service.modelservice.discountservice.discountidentifier;
+package service.discountservice.discountidentifier;
 
 import model.customer.customerrequest.MemberDiscountRequest;
-import service.modelservice.discountservice.discountRequestHandler.PriceDiscountHandler;
-import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.PriceDiscountHandler;
+import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
 
 public class PriceDiscountStrategyHandler extends DiscountStrategyHandler {
     private PriceDiscountHandler priceDiscountHandler;

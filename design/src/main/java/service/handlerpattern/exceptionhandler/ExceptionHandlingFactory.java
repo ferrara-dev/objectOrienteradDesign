@@ -15,7 +15,7 @@ public class ExceptionHandlingFactory {
 
     public static void createExceptionHandlingChain(ExceptionListener exceptionListener) {
         if (exceptionHandlingChain == null) {
-            exceptionHandlingChain = new NotFoundExceptionHandler(new BusinessExceptionHandler(null));
+            exceptionHandlingChain = new NotFoundExceptionHandler(new DataBaseFailureExceptionHandler(new SystemStartUpFailureHandler(null)));
             exceptionHandlingChain.setExceptionListener(exceptionListener);
         }
     }

@@ -1,4 +1,4 @@
-package service.modelservice.discountservice;
+package service.discountservice;
 
 import factory.discountstrategyFactory.DiscountRuleFactory;
 import integration.customerdb.CustomerRepository;
@@ -7,10 +7,10 @@ import model.customer.Member;
 import model.customer.customerrequest.MemberDiscountRequest;
 import model.discount.discountrule.DiscountRule;
 import model.transaction.saleTransaction.SaleTransaction;
-import service.modelservice.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
-import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
-import service.modelservice.discountservice.discountidentifier.*;
-import service.modelservice.Service;
+import service.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import service.discountservice.discountidentifier.*;
+import service.Service;
 import service.visitor.Visitor;
 import factory.VisitorFactory;
 import startup.layer.ServiceCreator;

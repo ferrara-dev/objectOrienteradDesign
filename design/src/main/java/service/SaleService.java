@@ -1,4 +1,4 @@
-package service.modelservice.saleservice;
+package service;
 
 
 import factory.builderpattern.SaleSpecificationFactory;

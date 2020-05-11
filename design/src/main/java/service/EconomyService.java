@@ -1,5 +1,5 @@
 
-package service.facadepattern;
+package service;
 
 import model.banking.CashPayment;
 import model.transaction.saleTransaction.SaleTransaction;

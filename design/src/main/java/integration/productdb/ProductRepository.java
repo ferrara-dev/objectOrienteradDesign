@@ -21,7 +21,6 @@ public class ProductRepository implements DataBaseHandler<Product, Object> {
 
     /**
      * Override to register a new product to the database
-     *
      * @param id
      * @return
      */

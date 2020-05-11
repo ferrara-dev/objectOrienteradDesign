@@ -1,4 +1,4 @@
-package service.modelservice.discountservice.discountstrategy;
+package service.discountservice.discountstrategy;
 
 import util.datatransferobject.DiscountDTO;
 import model.discount.discountrule.itemdiscountrule.BulkDiscountRule;

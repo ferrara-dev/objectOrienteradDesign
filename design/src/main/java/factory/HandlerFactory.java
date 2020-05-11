@@ -1,9 +1,9 @@
 package factory;
 
 import service.handlerpattern.Handler;
-import service.modelservice.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
-import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
-import service.modelservice.discountservice.discountidentifier.DiscountRuleIdentifier;
+import service.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import service.discountservice.discountidentifier.DiscountRuleIdentifier;
 
 /**
  * Enum implementation of a factory pattern used to create handler objects.

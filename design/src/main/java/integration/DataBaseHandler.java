@@ -1,7 +1,7 @@
 package integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import util.exception.notfoundexception.NotFoundException;
+
 
 import java.sql.SQLException;
 

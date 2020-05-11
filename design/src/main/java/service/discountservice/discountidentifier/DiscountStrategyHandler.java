@@ -1,4 +1,4 @@
-package service.modelservice.discountservice.discountidentifier;
+package service.discountservice.discountidentifier;
 
 import model.customer.customerrequest.MemberDiscountRequest;
 

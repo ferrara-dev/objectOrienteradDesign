@@ -1,15 +1,11 @@
 package factory.discountstrategyFactory;
 
 import factory.Factory;
-import integration.DataBaseHandler;
-import integration.customerdb.CustomerRepository;
-import integration.discountdb.DiscountRepository;
-import model.discount.Discount;
 import model.discount.discountrule.DiscountRule;
 import util.datatransferobject.DiscountDTO;
-import service.modelservice.discountservice.discountstrategy.BulkDiscountStrategy;
-import service.modelservice.discountservice.discountstrategy.DiscountStrategy;
-import service.modelservice.discountservice.discountstrategy.TotalCostDiscountStrategy;
+import service.discountservice.discountstrategy.BulkDiscountStrategy;
+import service.discountservice.discountstrategy.DiscountStrategy;
+import service.discountservice.discountstrategy.TotalCostDiscountStrategy;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package service;
+package exception;
 
 import factory.IntegrationFactory;
 import org.junit.Before;
@@ -61,7 +61,7 @@ public class CustomerNotFoundTest {
     @Test
     public void testInvalidProductId4() {
         try{
-            IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("111111");
+            IntegrationFactory.CUSTOMER_REPO.getDataBaseHandler().collect("111111");
         } catch (NotFoundException e){
             exceptionHandlingChain.handle(e);
             e.printStackTrace();

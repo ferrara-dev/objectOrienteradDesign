@@ -26,6 +26,9 @@ public class ExceptionView extends JOptionPane implements ExceptionListener {
             case PRODUCT_ID_NOT_FOUND: {
                 createInvalidProductIdMessage(exceptionEvent);
             }
+            case DATABASE_ACCESS_FAILURE: {
+                createDataBaseAccessFailureMessage(exceptionEvent);
+            }
         }
     }
 
@@ -43,5 +46,13 @@ public class ExceptionView extends JOptionPane implements ExceptionListener {
                 + " not found";
         showMessageDialog(null, errorMessage, "Invalid member ID",
                 JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void createDataBaseAccessFailureMessage(ExceptionEvent exceptionEvent) {
+        String errorMessage = "Could not connect to database \n" +
+                "Please restart the system and contact IT-service if the problem persist";
+        showMessageDialog(null, errorMessage, "Connection problem",
+                JOptionPane.ERROR_MESSAGE);
+
     }
 }

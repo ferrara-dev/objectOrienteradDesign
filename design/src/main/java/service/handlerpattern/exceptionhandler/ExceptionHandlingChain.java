@@ -4,6 +4,8 @@ import service.handlerpattern.Handler;
 import service.handlerpattern.exceptionlog.ExceptionLogger;
 import view.ExceptionListener;
 
+import java.util.Objects;
+
 /**
  * Handles thrown exceptions by logging them using the <code> ExceptionLogger </code> interface.
  * If the user needs to be notified about the exception, the exception is wrapped and sent to
@@ -15,13 +17,15 @@ public abstract class ExceptionHandlingChain implements Handler<Exception> {
     protected ExceptionHandlingChain successor;
     protected ExceptionLogger exceptionLogger;
 
-    ExceptionHandlingChain(ExceptionHandlingChain successor){
+    ExceptionHandlingChain(ExceptionHandlingChain successor) {
         super();
         this.successor = successor;
     }
 
-    void setExceptionListener(ExceptionListener exceptionListener){
+    void setExceptionListener(ExceptionListener exceptionListener) {
         this.exceptionListener = exceptionListener;
+        if (Objects.nonNull(successor))
+            successor.setExceptionListener(exceptionListener);
     }
 
     public abstract void handle(Exception exception);

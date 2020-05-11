@@ -10,8 +10,8 @@ import java.util.Objects;
 /**
  * Handles a business exception that is not displayed to the user
  */
-public class BusinessExceptionHandler extends ExceptionHandlingChain {
-    BusinessExceptionHandler(ExceptionHandlingChain successor) {
+public class DataBaseFailureExceptionHandler extends ExceptionHandlingChain {
+    DataBaseFailureExceptionHandler(ExceptionHandlingChain successor){
         super(successor);
         exceptionLogger = ExceptionLogStrategy.BUSINESS_EXCEPTION_LOG.get();
     }

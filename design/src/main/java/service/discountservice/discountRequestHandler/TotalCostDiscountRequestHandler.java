@@ -1,4 +1,4 @@
-package service.modelservice.discountservice.discountRequestHandler;
+package service.discountservice.discountRequestHandler;
 import model.amount.RunningTotal;
 import model.customer.customerrequest.MemberDiscountRequest;
 import model.discount.discountrule.DiscountRule;

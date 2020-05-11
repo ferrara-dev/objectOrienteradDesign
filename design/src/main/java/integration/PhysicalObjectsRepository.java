@@ -26,16 +26,16 @@ public class PhysicalObjectsRepository {
 
 
     /**
-     *  Singleton method used to create an instance of the class
-     *  and make sure that multiple instances can not be created
-     *  <code> synchronized </code> keyword is used to make the
-     *  calls to the method thread safe.
+     * Singleton method used to create an instance of the class
+     * and make sure that multiple instances can not be created
+     * <code> synchronized </code> keyword is used to make the
+     * calls to the method thread safe.
      * * @return
      */
     public static PhysicalObjectsRepository getInstance() {
-        if(instance == null){
+        if (instance == null) {
             synchronized (PhysicalObjectsRepository.class) {
-                if(instance == null){
+                if (instance == null) {
                     instance = new PhysicalObjectsRepository();
                 }
             }
@@ -48,25 +48,20 @@ public class PhysicalObjectsRepository {
     }
 
     public void startUpRegister(ArrayList<EventObserver> eventObservers) {
-        if(cashRegister == null){
-            try {
-                cashRegister = (Register) IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().collect("RegisterOne");
-            }
-            catch (NotFoundException e){
-                throw new SystemStartUpFailureException(e);
-            }
+        if (cashRegister == null) {
+            cashRegister = (Register) IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().collect("RegisterOne");
             cashRegister.setObservers(eventObservers);
         }
     }
 
-    public void startUpPrinter(ArrayList<EventObserver> eventObservers){
+    public void startUpPrinter(ArrayList<EventObserver> eventObservers) {
 
     }
 
-    private PhysicalObjectsRepository(){
-        Address address = new Address("Store street 123", "Store City","Sweden","191 49");
+    private PhysicalObjectsRepository() {
+        Address address = new Address("Store street 123", "Store City", "Sweden", "191 49");
         ContactInformation contactInformation = new ContactInformation("spof@kth.se", "070 123 4567");
-        store = new Store(address,contactInformation);
+        store = new Store(address, contactInformation);
     }
 
     /**
@@ -74,8 +69,8 @@ public class PhysicalObjectsRepository {
      *
      * @param sale
      */
-    public void printReceipt(SaleTransaction sale){
-       Printer.getInstance().print(new ReceiptDTO(store,sale));
+    public void printReceipt(SaleTransaction sale) {
+        Printer.getInstance().print(new ReceiptDTO(store, sale));
     }
 
     public Register getCashRegister() {

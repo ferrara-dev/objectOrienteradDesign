@@ -1,4 +1,4 @@
-package service.modelservice;
+package service;
 
 public interface Service {
 

@@ -1,13 +1,13 @@
-package service.modelservice.discountservice.discountidentifier;
+package service.discountservice.discountidentifier;
 
 import model.customer.customerrequest.MemberDiscountRequest;
 import model.discount.discountrule.DiscountRule;
 import model.discount.discountrule.itemdiscountrule.ItemDiscountRule;
 import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
-import service.modelservice.discountservice.discountRequestHandler.ItemDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.ItemDiscountRequestHandler;
 import util.sequence.ListSequence;
 import util.sequence.ListSequenceIterator;
-import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
 import util.exception.businessruleexception.UndefinedDiscountException;
 
 import java.util.Objects;

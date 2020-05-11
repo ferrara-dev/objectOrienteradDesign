@@ -1,9 +1,9 @@
-package service.modelservice.discountservice.discountidentifier;
+package service.discountservice.discountidentifier;
 
 import model.customer.customerrequest.MemberDiscountRequest;
 import service.handlerpattern.Handler;
-import service.modelservice.discountservice.discountRequestHandler.ItemDiscountRequestHandler;
-import service.modelservice.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.ItemDiscountRequestHandler;
+import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
 
 public abstract class DiscountRequestHandler implements Handler <MemberDiscountRequest>{
     protected TotalCostDiscountRequestHandler priceDiscountRequestSuccessor = null;

@@ -1,21 +1,16 @@
-package service.modelservice.productservice;
+package service;
 
 import integration.DataBaseHandler;
 import factory.IntegrationFactory;
 import model.sale.SaleItem;
 import model.transaction.saleTransaction.SaleTransaction;
 import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
-import service.modelservice.Service;
 import integration.productdb.Product;
 import service.visitor.Visitor;
 import factory.VisitorFactory;
 import util.datatransferobject.SaleItemDTO;
 import util.exception.DataBaseAccessFailureException;
-import util.exception.ErrorId;
 import util.exception.notfoundexception.NotFoundException;
-import util.exception.notfoundexception.ProductNotFoundException;
-
-import java.util.List;
 
 /**
  * Performs logic to create and fetch products from the database and
