@@ -3,12 +3,12 @@ package model.sale.saleinformation;
 
 import model.ObservableModel;
 import model.sale.SaleItem;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import model.Element;
 import service.visitor.Visitor;
-import util.exception.notfoundexception.NotFoundException;
+import exception.notfoundexception.NotFoundException;
 import util.sequence.ListSequenceIterator;
 import util.sequence.Sequence;
 import util.sequence.SequenceIterator;
@@ -24,6 +24,19 @@ public class ProductCart implements Sequence<SaleItem>, ObservableModel, Element
 
     public ProductCart() {
 
+    }
+
+    public void setEventObservers(ArrayList<EventObserver> eventObservers) {
+        this.eventObservers = eventObservers;
+    }
+
+    public ArrayList<EventObserver> getEventObservers() {
+        return eventObservers;
+    }
+
+    @Override
+    public SequenceIterator<SaleItem> sequenceIterator() {
+        return sequenceIterator;
     }
 
     /**
@@ -59,10 +72,6 @@ public class ProductCart implements Sequence<SaleItem>, ObservableModel, Element
 
     }
 
-    @Override
-    public SequenceIterator<SaleItem> getSequenceIterator() {
-        return sequenceIterator;
-    }
 
     @Override
     public List<SaleItem> getItems() {

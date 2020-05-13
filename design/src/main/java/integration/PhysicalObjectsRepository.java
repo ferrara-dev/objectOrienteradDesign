@@ -2,16 +2,16 @@ package integration;
 
 
 import factory.IntegrationFactory;
-import model.banking.Balance;
-import model.transaction.saleTransaction.SaleTransaction;
-import observer.EventObserver;
+import model.sale.saleinformation.SaleTransaction;
+import observer.modelobserver.EventObserver;
 import util.datatransferobject.ReceiptDTO;
 import model.physicalobjects.Address;
 import model.physicalobjects.ContactInformation;
 import model.physicalobjects.Register;
 import model.physicalobjects.Store;
-import util.exception.SystemStartUpFailureException;
-import util.exception.notfoundexception.NotFoundException;
+import exception.DataBaseAccessFailureException;
+import exception.SystemStartUpFailureException;
+import exception.notfoundexception.NotFoundException;
 
 import java.util.ArrayList;
 
@@ -21,6 +21,7 @@ import java.util.ArrayList;
  */
 public class PhysicalObjectsRepository {
     private Register cashRegister;
+    private Printer printer;
     private final Store store;
     private static PhysicalObjectsRepository instance;
 
@@ -43,19 +44,35 @@ public class PhysicalObjectsRepository {
         return instance;
     }
 
-    public void setCashRegister(Register cashRegister) {
-        this.cashRegister = cashRegister;
-    }
-
+    /**
+     * Start up the register by loading it from the database
+     * and add implementations of <code> EventObservers </code>
+     * to it.
+     *
+     * {@Throws SystemStartUpFailureException} if the register can not be loaded from the database.
+     * The exception is caught and sent to the exception handler in the calling <code> Main </code> class.
+     *
+     * @param eventObservers implementations of the eventObserver interface.
+     *                       these implementations listen to changes in the
+     *                       register model and update the view accordingly.
+     */
     public void startUpRegister(ArrayList<EventObserver> eventObservers) {
         if (cashRegister == null) {
-            cashRegister = (Register) IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().collect("RegisterOne");
+            try {
+                cashRegister = (Register) IntegrationFactory.REGISTER_BALANCE_ACCOUNT.getDataBaseHandler().collect("RegisterOne");
+            } catch (NotFoundException | DataBaseAccessFailureException e) {
+                throw new SystemStartUpFailureException("Failed to startup the program : ", e);
+            }
             cashRegister.setObservers(eventObservers);
         }
     }
 
-    public void startUpPrinter(ArrayList<EventObserver> eventObservers) {
+    public void startUpPrinter() {
+        printer = Printer.getInstance();
+    }
 
+    public Printer getPrinter() {
+        return printer;
     }
 
     private PhysicalObjectsRepository() {

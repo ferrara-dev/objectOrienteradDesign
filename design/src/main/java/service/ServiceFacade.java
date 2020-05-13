@@ -1,11 +1,12 @@
 package service;
 
-import observer.EventObserver;
+import observer.modelobserver.EventObserver;
 import service.discountservice.DiscountService;
+import exception.exceptionhandler.ExceptionHandler;
+import exception.exceptionhandler.ExceptionHandlingChain;
 import startup.layer.ServiceCreator;
 import util.datatransferobject.PaymentDTO;
 import util.datatransferobject.SaleItemDTO;
-
 import java.util.ArrayList;
 
 /**
@@ -23,28 +24,48 @@ public class ServiceFacade {
     public ServiceFacade(ServiceCreator creator) {
         saleService = creator.getSaleService();
         productService = creator.getProductService();
-        discountService = new DiscountService(creator);
-        economyService = new EconomyService();
+        discountService = creator.getDiscountService();
+        economyService = creator.getEconomyService();
     }
 
     public void startSale() {
-        saleService.startSale();
+        try {
+            saleService.startSale();
+        } catch (Exception e){
+            ExceptionHandler.handle(e);
+        }
     }
 
     public void registerProduct(SaleItemDTO saleItemDTO) {
-        productService.registerProduct(saleItemDTO, saleService.getSaleInformation());
+        try {
+            productService.registerProduct(saleItemDTO, saleService.getSaleInformation());
+        } catch (Exception e){
+            ExceptionHandler.handle(e);
+        }
     }
 
     public void endSale() {
-        saleService.endSale();
+        try {
+            saleService.endSale();
+        } catch (Exception e){
+            ExceptionHandler.handle(e);
+        }
     }
 
     public void initPayment(PaymentDTO paymentDTO) {
-        economyService.paySaleTransaction(paymentDTO, saleService.getSaleInformation());
+        try {
+            economyService.paySaleTransaction(paymentDTO, saleService.getSaleInformation());
+        } catch (Exception e){
+            ExceptionHandler.handle(e);
+        }
     }
 
     public void requestDiscount(String customerId) {
-        discountService.processDiscountRequest(customerId, saleService.getSaleInformation());
+        try {
+            discountService.processDiscountRequest(customerId, saleService.getSaleInformation());
+        } catch (Exception e){
+            ExceptionHandler.handle(e);
+        }
     }
 
     public void addObservers(ArrayList<EventObserver> eventObservers) {

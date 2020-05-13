@@ -1,16 +1,12 @@
 package startup.layer;
 
-import factory.IntegrationFactory;
-import integration.PhysicalObjectsRepository;
-import observer.EventObserver;
-import util.exception.notfoundexception.NotFoundException;
+import observer.modelobserver.EventObserver;
 import view.*;
 import view.closedsaleview.ClosedSaleMainView;
-import view.guiutil.ExceptionView;
+import view.exceptionview.ExceptionView;
 import view.initialview.InitialMainView;
 import view.paymentview.PaymentMainView;
 import view.saleview.SaleMainView;
-import view.storesystemview.RevenueMainView;
 import view.storesystemview.SystemView;
 
 import javax.swing.*;

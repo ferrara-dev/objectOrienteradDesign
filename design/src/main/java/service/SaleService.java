@@ -2,16 +2,12 @@ package service;
 
 
 import factory.builderpattern.SaleSpecificationFactory;
-import model.physicalobjects.Register;
 import model.sale.saleinformation.SaleSpecification;
-import model.transaction.saleTransaction.SaleTransaction;
-import observer.EventObserver;
-import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
+import model.sale.saleinformation.SaleTransaction;
+import observer.modelobserver.EventObserver;
 import service.visitor.Visitor;
 import factory.VisitorFactory;
-import startup.layer.ServiceCreator;
-import util.exception.DataBaseAccessFailureException;
-import util.exception.notfoundexception.NotFoundException;
+
 
 import java.util.ArrayList;
 
@@ -24,15 +20,7 @@ public class SaleService {
     SaleTransaction saleTransaction;
     Visitor visitor;
 
-    public SaleService(ServiceCreator serviceCreator) {
-
-    }
-
     public SaleService() {
-
-    }
-
-    public void setUp(){
 
     }
 
@@ -42,14 +30,18 @@ public class SaleService {
      * calling a enum class providing implementations of the <code> Factory </code>
      * interface.
      */
-    public void startSale(){
+    public void startSale() {
         SaleSpecification saleSpecification = SaleSpecificationFactory.DEFAULT_SALE.create(eventObservers);
         saleTransaction = new SaleTransaction(saleSpecification);
         visitor = VisitorFactory.SALE_STATE_VISITOR.getVisitor();
-        visitor.setData(saleSpecification);
+        visitor.setData(saleTransaction);
         saleTransaction.getSaleState().acceptVisitor(visitor);
     }
 
+    /**
+     *  Get the information about the current <code>SaleTransaction</code>
+     * @return the current sale transaction
+     */
     public SaleTransaction getSaleInformation() {
         return this.saleTransaction;
     }
@@ -57,18 +49,13 @@ public class SaleService {
     /**
      * End the sale by setting its state as completed
      */
-    public void endSale(){
+    public void endSale() {
         visitor = VisitorFactory.SALE_STATE_VISITOR.getVisitor();
-        visitor.setData(saleTransaction.getSaleSpecification());
-        try {
-            saleTransaction.getSaleSpecification().getSaleState().acceptVisitor(visitor);
-        }catch (NotFoundException | DataBaseAccessFailureException e){
-            ExceptionHandlingFactory.getExceptionHandlingChain().handle(e);
-        }
+        visitor.setData(saleTransaction);
+        saleTransaction.getSaleSpecification().getSaleState().acceptVisitor(visitor);
     }
 
     public void setEventObservers(ArrayList<EventObserver> eventObservers) {
-
         this.eventObservers = eventObservers;
     }
 }

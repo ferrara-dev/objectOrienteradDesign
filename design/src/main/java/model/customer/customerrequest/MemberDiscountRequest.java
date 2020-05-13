@@ -1,7 +1,7 @@
 package model.customer.customerrequest;
 import model.customer.Member;
 import model.discount.discountrule.DiscountRule;
-import model.transaction.saleTransaction.SaleTransaction;
+import model.sale.saleinformation.SaleTransaction;
 import util.sequence.ListSequence;
 
 import java.util.ArrayList;
@@ -44,13 +44,6 @@ public class MemberDiscountRequest {
         return saleTransaction;
     }
 
-    /**
-     * Get the currently requestedDiscount.
-     * @return
-     */
-    public DiscountRule getRequestedDiscount() {
-        return requestedDiscount;
-    }
 
     /**
      * Getter, gets the member that has requested the discount

@@ -1,5 +1,5 @@
 package integration;
-import model.transaction.saleTransaction.SaleTransaction;
+import model.sale.saleinformation.SaleTransaction;
 import util.datatransferobject.ReceiptDTO;
 import model.physicalobjects.Store;
 

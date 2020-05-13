@@ -6,12 +6,11 @@ import startup.layer.ServiceCreator;
 /**
  * Customer service class that used to perform operation on <code> Member </code>objects
  */
-public class CustomerService implements Service {
+public class CustomerService {
     public static final Long HASH_KEY_ID = 13L;
-    private SaleService saleService;
-    private Member member;
-    public CustomerService(ServiceCreator serviceCreator){
-        saleService = serviceCreator.getSaleService();
+
+    public CustomerService(){
+
     }
 
     public void initDefault(){
@@ -23,14 +22,11 @@ public class CustomerService implements Service {
      * @param customerId
      * @return
      */
-    public Member findCustomer(String customerId){
-        //member.setSaleInProgress(saleService.getSale());
-        return member;
+    public Member addNewMember(String customerId){
+
+        return null;
     }
 
-    public void handleCustomerRequest(Service service){
-
-    }
 
 
 

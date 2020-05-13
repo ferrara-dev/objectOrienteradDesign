@@ -7,7 +7,7 @@ import model.discount.discounttypes.itemdiscount.BulkDiscount;
 import model.discount.discounttypes.itemdiscount.ItemDiscount;
 import model.sale.SaleItem;
 import model.sale.saleinformation.ProductCart;
-import util.exception.businessruleexception.UndefinedDiscountException;
+import exception.businessruleexception.UndefinedDiscountException;
 import util.sequence.SequenceIterator;
 
 import java.util.Objects;
@@ -25,12 +25,12 @@ public class BulkDiscountRequestHandler extends ItemDiscountRequestHandler {
 
     @Override
     public void handleRequest(MemberDiscountRequest memberDiscountRequest) {
-        DiscountRule currentRule = memberDiscountRequest.getDiscountRuleListSequence().getSequenceIterator().getCurrentItem();
+        DiscountRule currentRule = memberDiscountRequest.getDiscountRuleListSequence().sequenceIterator().getCurrentItem();
         if (currentRule instanceof BulkDiscountRule) {
             BulkDiscountRule bulkDiscountRule = (BulkDiscountRule) currentRule;
             ProductCart productCart = memberDiscountRequest.getSaleTransaction().getCart();
             int requiredItemId = bulkDiscountRule.getItemId();
-            SequenceIterator<SaleItem> cartIterator = productCart.getSequenceIterator();
+            SequenceIterator<SaleItem> cartIterator = productCart.sequenceIterator();
             cartIterator.firstItem();
             while (!cartIterator.isOver()) {
                 if (cartIterator.getCurrentItem().getProduct().getItemId() == requiredItemId) {

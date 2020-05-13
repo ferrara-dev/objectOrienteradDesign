@@ -4,27 +4,19 @@ import factory.IntegrationFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.LoggerFactory;
-import service.handlerpattern.exceptionhandler.ExceptionHandlingChain;
-import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
+import exception.exceptionhandler.ExceptionHandlingChain;
+import exception.exceptionhandler.ExceptionHandler;
 
-import util.exception.DataBaseAccessFailureException;
-import util.exception.ErrorId;
-import util.exception.notfoundexception.NotFoundException;
-import view.guiutil.ExceptionView;
+import exception.DataBaseAccessFailureException;
+import exception.ErrorId;
+import exception.notfoundexception.NotFoundException;
+import view.exceptionview.ExceptionView;
 
 
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.nio.channels.NonWritableChannelException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -35,8 +27,8 @@ public class ProductNotFoundTest {
     @Before
     public void startUp() {
         exceptionView = new ExceptionView();
-        ExceptionHandlingFactory.createExceptionHandlingChain(exceptionView);
-        exceptionHandlingChain = ExceptionHandlingFactory.getExceptionHandlingChain();
+        ExceptionHandler.createExceptionHandlingChain(exceptionView);
+        exceptionHandlingChain = ExceptionHandler.getExceptionHandlingChain();
     }
 
     /**
@@ -55,7 +47,7 @@ public class ProductNotFoundTest {
         try {
             IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("111111");
         } catch (NotFoundException e) {
-            assertEquals(ErrorId.PRODUCT_ID_NOT_FOUND.code, e.getErrorCodeValue());
+            assertEquals(ErrorId.PRODUCT_ID_NOT_FOUND.code, e.getErrorId().code);
         }
     }
 

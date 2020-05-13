@@ -6,10 +6,9 @@ import model.amount.TotalVAT;
 import model.sale.SaleItem;
 import model.sale.saleinformation.cost.CostDetail;
 
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
-import observer.StateChange;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import service.visitor.Visitor;
 import util.datatransferobject.CostDTO;
 import util.sequence.SequenceIterator;
@@ -69,6 +68,7 @@ public class CostVisitor implements Visitor<CostDetail,SequenceIterator<SaleItem
         costDetail.setRunningTotal(runningTotal);
         costDetail.setTotalVAT(totalVAT);
         iterator.firstItem();
+        costHasChanged(costDetail);
     }
 
     private void costHasChanged(CostDetail costDetail){
@@ -77,7 +77,7 @@ public class CostVisitor implements Visitor<CostDetail,SequenceIterator<SaleItem
         double priceDiscount = costDetail.getPriceDiscount().getTotalPriceReduction().doubleValue();
         double totalPriceOfDiscount = costDetail.getTotalDiscountOfPrice().doubleValue();
         double finalCost = costDetail.getFinalCost().getNumber().doubleValue();
-        notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(finalCost,runningTotal,totalVAT,priceDiscount,totalPriceOfDiscount),null));
+        costDetail.notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(finalCost,runningTotal,totalVAT,priceDiscount,totalPriceOfDiscount),null));
     }
 
     @Override

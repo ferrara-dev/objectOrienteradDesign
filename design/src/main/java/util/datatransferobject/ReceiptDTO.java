@@ -1,23 +1,14 @@
 package util.datatransferobject;
 
 import model.physicalobjects.Store;
-import model.sale.Date;
-import model.sale.SaleItem;
-import model.sale.saleinformation.ProductCart;
-import model.sale.saleinformation.cost.CostDetail;
-import model.transaction.saleTransaction.SaleTransaction;
-
-import java.util.ArrayList;
+import model.sale.saleinformation.SaleTransaction;
 
 public class ReceiptDTO implements DataTransferObject{
-    double cashBack;
-    CostDetail cost;
-    ProductCart productCart;
-    Date   dateOfSale;
-    String storeAddress;
-    String storeName;
+    SaleTransaction saleTransaction;
+    Store store;
 
-    public ReceiptDTO(Store store, SaleTransaction sale){
-
+    public ReceiptDTO(Store store, SaleTransaction saleTransaction){
+        this.store = store;
+        this.saleTransaction = saleTransaction;
     }
 }

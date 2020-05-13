@@ -2,9 +2,9 @@ package service.visitor.cartvisitor;
 
 import model.sale.SaleItem;
 import model.sale.saleinformation.ProductCart;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import service.visitor.Visitor;
 import util.sequence.SequenceIterator;
 
@@ -27,7 +27,7 @@ public class ProductCartVisitor implements Visitor<ProductCart, SaleItem> {
      * calls to the method thread safe.
      * * @return
      */
-    public static Visitor<ProductCart, SaleItem>  getInstance() {
+    public static Visitor<ProductCart, SaleItem> getInstance() {
         if (instance == null) {
             synchronized (ProductCartVisitor.class) {
                 if (instance == null) {
@@ -45,34 +45,36 @@ public class ProductCartVisitor implements Visitor<ProductCart, SaleItem> {
 
     @Override
     public void processElement(ProductCart productCart) {
-        SequenceIterator<SaleItem> iterator = productCart.getSequenceIterator();
-        if(Objects.nonNull(saleItem)) {
-            boolean addNewSaleItem = true;
-            while (!iterator.isOver()) {
-                if (iterator.getCurrentItem().compare(saleItem)) {
-                    iterator.getCurrentItem().increaseQuantity(saleItem.getQuantity());
-                    addNewSaleItem = false;
-                    break;
-                }
-                iterator.nextItem();
-            }
-
-            if (addNewSaleItem) {
+        SequenceIterator<SaleItem> iterator = productCart.sequenceIterator();
+        if (Objects.nonNull(saleItem)) {
+            boolean hasSaleItem = searchSaleItem(iterator);
+            if (hasSaleItem)
+                iterator.getCurrentItem().increaseQuantity(saleItem.getQuantity());
+            else
                 productCart.addItem(saleItem);
-                saleItem.reCalcTotalPrice();
-                saleItem.reCalcTotalVAT();
-            }
         }
+
         iterator.firstItem();
         updateSaleItemCost(iterator);
 
-        productCart.notifyObservers(new PropertyChangeEvent("list",productCart.getItems(),productCart.getItems()));
+        productCart.notifyObservers(new PropertyChangeEvent("list", productCart.getItems(), productCart.getItems()));
     }
 
-    private void updateSaleItemCost(SequenceIterator<SaleItem> iterator){
+    private boolean searchSaleItem(SequenceIterator<SaleItem> iterator) {
+        iterator.firstItem();
         while (!iterator.isOver()) {
-            iterator.getCurrentItem().reCalcTotalPrice();
-            iterator.getCurrentItem().reCalcTotalVAT();
+            if (iterator.getCurrentItem().compare(saleItem))
+                return true;
+            iterator.nextItem();
+        }
+        return false;
+    }
+
+    private void updateSaleItemCost(SequenceIterator<SaleItem> iterator) {
+        while (iterator.hasNext()) {
+            SaleItem saleItem = iterator.getCurrentItem();
+            saleItem.reCalcTotalPrice();
+            saleItem.reCalcTotalVAT();
             iterator.nextItem();
         }
     }

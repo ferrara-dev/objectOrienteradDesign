@@ -2,9 +2,10 @@ package view.closedsaleview;
 
 
 
+import model.amount.Change;
 import net.miginfocom.swing.MigLayout;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import view.MainView;
 import view.View;
 import view.closedsaleview.closedsaleviewcomponents.ReceiptView;
@@ -23,9 +24,11 @@ public class ClosedSaleMainView extends MainView {
     @Override
     public void newEvent(ObservedEvent observedEvent) {
         if(observedEvent instanceof PropertyChangeEvent){
-            String propertyName = ((PropertyChangeEvent) observedEvent).getPropertyName();
-            if(propertyName == "cashBack"){
-                receiptView.update((Double) ((PropertyChangeEvent) observedEvent).getNewValue());
+            String propertyName = (observedEvent).getPropertyName();
+            if(propertyName == "change"){
+                Change change = (Change) observedEvent.getPropertyValue();
+                double cashBack = change.getNumber().doubleValue();
+                receiptView.update(cashBack);
             }
 
         }

@@ -3,19 +3,24 @@ package startup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.skin.dark.WebDarkSkin;
 import factory.IntegrationFactory;
-import model.banking.Balance;
 import model.physicalobjects.Register;
+import exception.exceptionhandler.ExceptionHandler;
+
 import util.datatransferobject.CustomerDTO;
 import factory.CustomerFactory;
 import factory.ProductFactory;
 import util.datatransferobject.ItemDTO;
 import startup.database.DataBaseCreator;
 import startup.database.JsonObjectTableInitiator;
-import util.exception.notfoundexception.NotFoundException;
+import exception.SystemStartUpFailureException;
+import exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Main {
@@ -26,14 +31,17 @@ public class Main {
         start();
     }
 
-
     public static void start()  {
-        rootCreator = new RootCreator();
-        rootCreator.createGui();
-        rootCreator.initServiceLayer();
-        rootCreator.initControllerLayer();
-        rootCreator.initExceptionHandler();
-        rootCreator.initPeripherals();
+        try {
+            rootCreator = new RootCreator();
+            rootCreator.createGui();
+            rootCreator.initExceptionHandler();
+            rootCreator.initServiceLayer();
+            rootCreator.initControllerLayer();
+            rootCreator.initPeripherals();
+        } catch (SystemStartUpFailureException systemStartUpFailureException){
+            ExceptionHandler.handle(systemStartUpFailureException);
+        }
         run();
     }
 
@@ -51,7 +59,8 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-        });
+        }
+        );
 
     }
 
@@ -76,6 +85,29 @@ public class Main {
             for(CustomerDTO customerDTO: customerDTOS){
                 jsonObjectTableInitiator.register(customerDTO.getCustomerId(), new CustomerFactory().create(customerDTO));
             }
+
+        }
+    }
+
+    public static class TimedExit {
+       private static Timer timer = new Timer();
+       private static TimerTask exitApp = new TimerTask() {
+            public void run() {
+                System.exit(0);
+            }
+        };
+
+        public static void exit(){
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(1);
+                }
+            }).start();
 
         }
     }

@@ -5,7 +5,7 @@ import model.discount.discountrule.DiscountRule;
 import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
 import model.discount.discountrule.pricediscountrule.TotalCostDiscountRule;
 import model.discount.discounttypes.pricediscount.TotalCostDiscount;
-import util.exception.businessruleexception.UndefinedDiscountException;
+import exception.businessruleexception.UndefinedDiscountException;
 
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ public class TotalCostDiscountRequestHandler extends PriceDiscountHandler {
 
     @Override
     public void handleRequest(MemberDiscountRequest memberDiscountRequest) {
-        DiscountRule currentRule = memberDiscountRequest.getDiscountRuleListSequence().getSequenceIterator().getCurrentItem();
+        DiscountRule currentRule = memberDiscountRequest.getDiscountRuleListSequence().sequenceIterator().getCurrentItem();
         if(currentRule instanceof TotalCostDiscountRule){
             RunningTotal finalCost = memberDiscountRequest.getSaleTransaction().getCost().getRunningTotal();
             if(currentRule.checkRequierments(finalCost.getNumber().doubleValue())){
@@ -31,7 +31,7 @@ public class TotalCostDiscountRequestHandler extends PriceDiscountHandler {
         else{
             if(Objects.nonNull(successor))
                 successor.handleRequest(memberDiscountRequest);
-            else throw new UndefinedDiscountException();
+            else throw new UndefinedDiscountException("Discount rule is undefined : ");
         }
     }
 }

@@ -14,6 +14,15 @@ public final class CashPayment implements Payment{
     private Currency currency = Currency.SEK;
     private final String paymentMethod = CASH;
 
+    public CashPayment(BigDecimal number){
+        setDefault();
+        this.number = number;
+    }
+
+    public CashPayment(){
+
+    }
+
     @Override
     public void setDefault() {
         this.number = new BigDecimal("0");

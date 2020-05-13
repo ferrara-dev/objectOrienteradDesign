@@ -3,14 +3,14 @@ package service.visitor.statevisitor;
 import factory.IntegrationFactory;
 import integration.DataBaseHandler;
 import model.amount.FinalCost;
-import model.sale.saleinformation.SaleSpecification;
 import model.sale.saleinformation.cost.CostDetail;
 import model.sale.saleinformation.salestate.SaleState;
 import model.sale.saleinformation.salestate.State;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
-import observer.StateChange;
+import model.sale.saleinformation.SaleTransaction;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
+import observer.modelobserver.StateChange;
 import service.visitor.Visitor;
 import service.visitor.cartvisitor.ProductCartVisitor;
 import util.datatransferobject.CostDTO;
@@ -18,8 +18,8 @@ import util.datatransferobject.CostDTO;
 import java.util.ArrayList;
 
 
-public class SaleStateVisitor implements Visitor<SaleState, SaleSpecification> {
-    private SaleSpecification saleSpecification;
+public class SaleStateVisitor implements Visitor<SaleState, SaleTransaction> {
+    private SaleTransaction saleTransaction;
     private static SaleStateVisitor instance;
     private ArrayList<EventObserver> eventObservers;
 
@@ -34,7 +34,7 @@ public class SaleStateVisitor implements Visitor<SaleState, SaleSpecification> {
      * calls to the method thread safe.
      * * @return
      */
-    public static Visitor<SaleState, SaleSpecification> getInstance() {
+    public static Visitor<SaleState, SaleTransaction> getInstance() {
         if (instance == null) {
             synchronized (ProductCartVisitor.class) {
                 if (instance == null) {
@@ -46,8 +46,8 @@ public class SaleStateVisitor implements Visitor<SaleState, SaleSpecification> {
     }
 
     @Override
-    public void setData(SaleSpecification saleSpecification) {
-        this.saleSpecification = saleSpecification;
+    public void setData(SaleTransaction saleSpecification) {
+        this.saleTransaction = saleSpecification;
     }
 
     @Override
@@ -62,16 +62,17 @@ public class SaleStateVisitor implements Visitor<SaleState, SaleSpecification> {
     }
 
     private void finalizeSale() {
+        saleTransaction.removeObservers();
         DataBaseHandler dataBaseHandler = IntegrationFactory.SALE_LOG.getDataBaseHandler();
-        dataBaseHandler.register(saleSpecification.getSaleId().getValue(), saleSpecification);
+        dataBaseHandler.register(saleTransaction.getSaleSpecification().getSaleId().getValue(), saleTransaction);
     }
 
     private void setFinalCost() {
-        CostDetail costDetail = saleSpecification.getCost();
+        CostDetail costDetail = saleTransaction.getCost();
         FinalCost finalCost = new FinalCost();
         finalCost.setNumber(costDetail.getRunningTotal().getNumber());
-        saleSpecification.getCost().setFinalCost(finalCost);
-        saleSpecification.getCost().notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(costDetail), null));
+        saleTransaction.getCost().setFinalCost(finalCost);
+        saleTransaction.getCost().notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(costDetail), null));
     }
 
     @Override

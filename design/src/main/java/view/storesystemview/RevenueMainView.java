@@ -2,9 +2,8 @@ package view.storesystemview;
 
 import model.banking.Balance;
 import net.miginfocom.swing.MigLayout;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import view.MainView;
 import view.View;
 
@@ -49,7 +48,7 @@ public class RevenueMainView extends MainView{
     public void newEvent(ObservedEvent observedEvent) {
         if(observedEvent instanceof PropertyChangeEvent){
             if(((PropertyChangeEvent) observedEvent).getPropertyName() == "balance"){
-               Balance balance = (Balance) ((PropertyChangeEvent) observedEvent).getNewValue();
+               Balance balance = (Balance) ((PropertyChangeEvent) observedEvent).getPropertyValue();
                double b = balance.getNumber().doubleValue();
                registerBalanceField.setValue(b);
             }

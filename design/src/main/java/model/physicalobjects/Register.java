@@ -3,11 +3,12 @@ package model.physicalobjects;
 import model.ObservableModel;
 import model.amount.MonetaryValue;
 import model.banking.Balance;
-import model.banking.MonetaryAmount;
 import model.banking.Payment;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
+import model.exception.BusinessLogicException;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
+import exception.ErrorId;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,12 +37,13 @@ public class Register implements ObservableModel {
     }
 
     public void enterPayment(Payment payment) {
-        balance.increaseValue(payment.getNumber());
-        //  notifyObservers(new PropertyChangeEvent("balance",balance,this.balance));
+        if(Objects.isNull(payment))
+            throw new BusinessLogicException("Payment value is null ",ErrorId.BUSINESS_LOGIC_ERROR);
+        notifyObservers(new PropertyChangeEvent("balance", balance, this.balance));
+        balance.increaseValue(payment.getNumber().abs());
     }
 
     public void setBalance(Balance balance) {
-        //  notifyObservers(new PropertyChangeEvent("balance",balance,this.balance));
         this.balance = balance;
     }
 
@@ -49,22 +51,25 @@ public class Register implements ObservableModel {
         return balance;
     }
 
-    public MonetaryAmount withdraw(MonetaryAmount amountToWithdraw) {
-        if (balance.getNumber().doubleValue() >= amountToWithdraw.getNumber().doubleValue()) {
-            balance.decreaseValue(amountToWithdraw.getNumber());
-            return amountToWithdraw;
-        } else
-            throw new IllegalArgumentException();
-    }
+    /**
+     * Withdraw amount of <code> MonetaryValue </code> from the register.
+     * If the amount is larger then the current balance a <code> BusinessException </code>
+     * is thrown.
+     *
+     * @param amount
+     * @return
+     */
+    public MonetaryValue withdraw(MonetaryValue amount) throws BusinessLogicException {
+        if (Objects.isNull(amount))
+            throw new BusinessLogicException("Withdrawn value is null ", ErrorId.BUSINESS_LOGIC_ERROR);
 
-    public MonetaryValue withdraw(MonetaryValue amount) {
-        if (balance.getNumber().doubleValue() >= amount.getNumber().doubleValue()) {
-            BigDecimal amountToWithDraw = new BigDecimal(amount.getNumber().doubleValue());
-            balance.decreaseValue(amountToWithDraw);
-            notifyObservers(new PropertyChangeEvent("balance", balance, this.balance));
-            return amount;
-        } else
-            throw new IllegalArgumentException();
+        if (balance.getNumber().doubleValue() < amount.getNumber().doubleValue())
+            throw new BusinessLogicException("Withdrawal exceeds register balance ", ErrorId.BUSINESS_LOGIC_ERROR);
+
+        BigDecimal amountToWithDraw = new BigDecimal(amount.getNumber().doubleValue());
+        balance.decreaseValue(amountToWithDraw.abs());
+        notifyObservers(new PropertyChangeEvent("balance", balance, this.balance));
+        return amount;
     }
 
     @Override

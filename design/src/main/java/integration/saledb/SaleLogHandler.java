@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.DataBaseHandler;
-import model.sale.saleinformation.SaleSpecification;
-import util.exception.DataBaseAccessFailureException;
-import util.exception.ErrorId;
-import util.exception.notfoundexception.NotFoundException;
+import exception.DataBaseAccessFailureException;
+import exception.ErrorId;
+import exception.notfoundexception.NotFoundException;
+import model.sale.saleinformation.SaleTransaction;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -15,7 +15,7 @@ import java.sql.*;
 import java.util.Base64;
 
 
-public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object> {
+public class SaleLogHandler implements DataBaseHandler<SaleTransaction,Object> {
    private final String saleDB = "sales";
    private static SaleLogHandler instance;
 
@@ -27,7 +27,7 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
      *  calls to the method thread safe.
      * * @return
      */
-    public static DataBaseHandler<SaleSpecification,Object> getInstance() {
+    public static DataBaseHandler<SaleTransaction,Object> getInstance() {
         if(instance == null){
             synchronized (SaleLogHandler.class) {
                 if(instance == null){
@@ -88,7 +88,7 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
      * @return the sale specified by the saleId
      */
     @Override
-    public SaleSpecification collect(String id){
+    public SaleTransaction collect(String id){
         // Step 1: Establishing a Connection
         try (Connection connection = DriverManager.getConnection(URL)) {
             Statement statement = connection.createStatement();
@@ -106,7 +106,7 @@ public class SaleLogHandler implements DataBaseHandler<SaleSpecification,Object>
                 reader.close();
                 String targetString = buffer.toString();
 
-                return objectMapper.readValue(targetString, SaleSpecification.class);
+                return objectMapper.readValue(targetString, SaleTransaction.class);
             }
         } catch (SQLException e) {
             throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);

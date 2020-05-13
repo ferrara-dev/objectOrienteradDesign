@@ -1,7 +1,7 @@
 package service.discountservice.discountidentifier;
 
 import model.customer.customerrequest.MemberDiscountRequest;
-import service.handlerpattern.Handler;
+import service.Handler;
 import service.discountservice.discountRequestHandler.ItemDiscountRequestHandler;
 import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
 

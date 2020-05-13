@@ -1,13 +1,12 @@
 package startup.layer;
 
 
+import factory.HandlerFactory;
 import integration.PhysicalObjectsRepository;
-import observer.EventObserver;
-import service.ServiceFacade;
-import service.ProductService;
-import service.CustomerService;
+import observer.modelobserver.EventObserver;
+import service.*;
 import service.discountservice.DiscountService;
-import service.SaleService;
+import service.discountservice.discountidentifier.DiscountRequestHandler;
 
 
 import java.util.ArrayList;
@@ -19,18 +18,24 @@ public class ServiceCreator {
     private SaleService saleService;
     private CustomerService customerService;
     private ProductService productService;
+    private EconomyService economyService;
     private PhysicalObjectsRepository physicalObjectsRepository;
 
     public ServiceCreator(){
         productService = new ProductService();
-        saleService = new SaleService(this);
-        customerService = new CustomerService(this);
-        discountService = new DiscountService(this);
+        saleService = new SaleService();
+        customerService = new CustomerService();
+        discountService = new DiscountService((DiscountRequestHandler) HandlerFactory.DISCOUNT_REQUEST_HANDLER.create());
+        economyService = new EconomyService();
         serviceFacade = new ServiceFacade(this);
     }
 
     public void setUpObservers(ArrayList<EventObserver> eventObservers) {
         serviceFacade.addObservers(eventObservers);
+    }
+
+    public EconomyService getEconomyService() {
+        return economyService;
     }
 
     public ServiceFacade getServiceFacade() {

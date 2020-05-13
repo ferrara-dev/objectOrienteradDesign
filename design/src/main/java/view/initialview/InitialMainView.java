@@ -1,7 +1,7 @@
 package view.initialview;
 
 import net.miginfocom.swing.MigLayout;
-import observer.ObservedEvent;
+import observer.modelobserver.ObservedEvent;
 import view.MainView;
 import view.View;
 import view.initialview.initialviewcomponents.InitialViewInput;

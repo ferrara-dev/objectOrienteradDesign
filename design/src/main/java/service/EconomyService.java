@@ -2,7 +2,7 @@
 package service;
 
 import model.banking.CashPayment;
-import model.transaction.saleTransaction.SaleTransaction;
+import model.sale.saleinformation.SaleTransaction;
 import service.visitor.Visitor;
 import factory.VisitorFactory;
 import util.datatransferobject.PaymentDTO;
@@ -25,7 +25,6 @@ public class EconomyService {
     public void paySaleTransaction(PaymentDTO paymentDTO, SaleTransaction saleTransaction) {
         preparePaymentVisitor(paymentDTO);
         saleTransaction.getCost().acceptVisitor(visitor);
-
         if (saleTransaction.getCost().getRunningTotal().zeroOrLess()) {
             prepareSaleStateVisitor(saleTransaction);
             saleTransaction.getSaleState().acceptVisitor(visitor);
@@ -43,7 +42,7 @@ public class EconomyService {
 
     private void prepareSaleStateVisitor(SaleTransaction saleTransaction){
         visitor = VisitorFactory.SALE_STATE_VISITOR.getVisitor();
-        visitor.setData(saleTransaction.getSaleSpecification());
+        visitor.setData(saleTransaction);
     }
 
 }

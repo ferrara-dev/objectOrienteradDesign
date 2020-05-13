@@ -1,7 +1,7 @@
 package model;
 
-import observer.EventObserver;
-import observer.ObservedEvent;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
 
 public interface ObservableModel {
     void notifyObservers(ObservedEvent observedEvent);

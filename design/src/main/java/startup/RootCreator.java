@@ -1,11 +1,11 @@
 package startup;
 import integration.PhysicalObjectsRepository;
-import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
-import service.handlerpattern.exceptionlog.ExceptionLogStrategy;
+import exception.exceptionhandler.ExceptionHandler;
+import exception.exceptionlog.ExceptionLogStrategy;
 import startup.layer.ControllerCreator;
 import startup.layer.ServiceCreator;
 import startup.layer.ViewCreator;
-import util.exception.SystemStartUpFailureException;
+import exception.SystemStartUpFailureException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,7 +27,7 @@ public class RootCreator {
     }
 
     public void initExceptionHandler(){
-        ExceptionHandlingFactory.createExceptionHandlingChain(viewCreator.getExceptionView());
+        ExceptionHandler.createExceptionHandlingChain(viewCreator.getExceptionView());
     }
 
     public void initPeripherals(){
@@ -35,7 +35,7 @@ public class RootCreator {
              PhysicalObjectsRepository.getInstance().startUpRegister(viewCreator.collectObservers());
         }
         catch (SystemStartUpFailureException systemStartUpFailureException){
-            ExceptionLogStrategy.STARTUP_EXCEPTION_LOG.get().logException(systemStartUpFailureException);
+            ExceptionLogStrategy.SEVERE_EXCEPTION_LOG.get().logException(systemStartUpFailureException);
         }
     }
 

@@ -1,5 +1,5 @@
 package view;
-import observer.EventObserver;
+import observer.modelobserver.EventObserver;
 import javax.swing.*;
 import java.util.ArrayList;
 

@@ -1,11 +1,12 @@
 package integration.discountdb;
 
 import integration.customerdb.CustomerRepository;
+import util.AppProperties;
 import util.datatransferobject.DiscountDTO;
 import integration.DataBaseHandler;
 import model.discount.Discount;
-import util.exception.ErrorId;
-import util.exception.notfoundexception.NotFoundException;
+import exception.DataBaseAccessFailureException;
+import exception.ErrorId;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,16 +16,16 @@ public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> 
     private static DiscountRepository instance;
 
     /**
-     *  Singleton method used to create an instance of the class
-     *  and make sure that multiple instances can not be created
-     *  <code> synchronized </code> keyword is used to make the
-     *  calls to the method thread safe.
+     * Singleton method used to create an instance of the class
+     * and make sure that multiple instances can not be created
+     * <code> synchronized </code> keyword is used to make the
+     * calls to the method thread safe.
      * * @return
      */
     public static DataBaseHandler<ArrayList, Discount> getInstance() {
-        if(instance == null){
+        if (instance == null) {
             synchronized (CustomerRepository.class) {
-                if(instance == null){
+                if (instance == null) {
                     instance = new DiscountRepository();
                 }
             }
@@ -50,18 +51,27 @@ public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> 
      */
 
     @Override
-    public boolean find(String id){
-        try (Connection con = DriverManager.getConnection(URL)) {
+    public boolean find(String id) {
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, "jsonCustomerTable", id));
             if (rs.next()) {
                 return true;
             }
-        } catch (SQLException ex) {
-            DataBaseHandler.printSQLException(ex);
+        } catch (SQLException e) {
+            throw new DataBaseAccessFailureException(e, ErrorId.DATABASE_ACCESS_FAILURE);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                throw new DataBaseAccessFailureException(e, ErrorId.DATABASE_ACCESS_FAILURE);
+            }
         }
-
-        throw new NotFoundException();
+        return false;
     }
 
     /**
@@ -72,8 +82,11 @@ public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> 
      */
 
     @Override
-    public ArrayList<DiscountDTO> collect(String dayOfTheWeek){
-        try (Connection con = DriverManager.getConnection(URL)) {
+    public ArrayList<DiscountDTO> collect(String dayOfTheWeek) {
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             ArrayList<DiscountDTO> discountDTOList = new ArrayList<>();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_DISCOUNT_TEMPLATE, "DiscountDB"));
@@ -88,7 +101,6 @@ public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> 
                         break;
                     }
                 }
-
                 if (isAvailable) {
                     String itemId = rs.getString("id");
                     String type = rs.getString("type");
@@ -100,14 +112,17 @@ public class DiscountRepository implements DataBaseHandler<ArrayList, Discount> 
                 } else
                     continue;
             }
-
             return discountDTOList;
-        } catch (SQLException ex) {
-            DataBaseHandler.printSQLException(ex);
+
+        } catch (SQLException e) {
+            throw new DataBaseAccessFailureException(e, ErrorId.DATABASE_ACCESS_FAILURE);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                throw new DataBaseAccessFailureException(e, ErrorId.DATABASE_ACCESS_FAILURE);
+            }
         }
-
-        throw new NotFoundException(dayOfTheWeek , ErrorId.PRODUCT_ID_NOT_FOUND);
     }
-
-
 }

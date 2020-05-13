@@ -1,9 +1,9 @@
 package model.sale.saleinformation.salestate;
 
 import model.ObservableModel;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.StateChange;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.StateChange;
 import model.Element;
 import service.visitor.Visitor;
 import util.sequence.ListSequence;
@@ -22,8 +22,8 @@ public class SaleState implements ObservableModel, Element {
         eventObservers = new ArrayList<>();
         ListSequence<State> saleStates = new ListSequence<>();
         saleStates.setItems(states);
-        stateIterator = saleStates.getSequenceIterator();
-        currentState = saleStates.getSequenceIterator().getCurrentItem();
+        stateIterator = saleStates.sequenceIterator();
+        currentState = saleStates.sequenceIterator().getCurrentItem();
     }
 
     public void nextState() {

@@ -1,8 +1,8 @@
 package view;
 
 import model.sale.saleinformation.salestate.State;
-import observer.EventObserver;
-import observer.ObservedEvent;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
 import startup.layer.ViewCreator;
 import view.closedsaleview.ClosedSaleMainView;
 import view.initialview.InitialMainView;

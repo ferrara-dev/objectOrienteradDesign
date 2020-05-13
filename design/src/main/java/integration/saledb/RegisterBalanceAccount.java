@@ -4,10 +4,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import integration.Bank;
-import integration.DataBaseHandler;
 import model.physicalobjects.Register;
-import util.exception.ErrorId;
-import util.exception.notfoundexception.NotFoundException;
+import util.AppProperties;
+import exception.DataBaseAccessFailureException;
+import exception.ErrorId;
+import exception.notfoundexception.NotFoundException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -43,53 +44,66 @@ public class RegisterBalanceAccount implements Bank {
     @Override
     public boolean register(String id, Object obj) {
         String sqlQuery = INSERT_TEMPLATE;
-
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(URL)) {
-            Statement statement = connection.createStatement();
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
+            Statement statement = con.createStatement();
             String value = Base64.getEncoder().encodeToString(objectMapper.writeValueAsString(obj).getBytes());
             // Step 3: Execute the query or update query
             int result;
             if (find(id)) {
                 sqlQuery = UPDATE_TEMPLATE;
-                 result = statement.executeUpdate(String.format(sqlQuery, REGISTERACCOUNT, objectMapper.writeValueAsString(obj), id));
+                result = statement.executeUpdate(String.format(sqlQuery, REGISTERACCOUNT, objectMapper.writeValueAsString(obj), id));
             } else
-                 result = statement.executeUpdate(String.format(sqlQuery, REGISTERACCOUNT, id, objectMapper.writeValueAsString(obj)));
-
+                result = statement.executeUpdate(String.format(sqlQuery, REGISTERACCOUNT, id, objectMapper.writeValueAsString(obj)));
             System.out.println("No. of records affected : " + result);
             return true;
-        } catch (JsonProcessingException jme) {
-            System.err.println(jme.getMessage());
-        } catch (SQLException e) {
-            // print SQL exception information
-            DataBaseHandler.printSQLException(e);
-        } catch (NotFoundException notFoundException) {
-            notFoundException.printStackTrace();
+        } catch (JsonProcessingException | SQLException e) {
+            throw new DataBaseAccessFailureException("Failed to update register" , e, ErrorId.DATABASE_ACCESS_FAILURE);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                throw new DataBaseAccessFailureException("Failed to update register" , e, ErrorId.DATABASE_CLOSE_ON_EXIT_FAILURE);
+            }
         }
-        return false;
     }
 
     @Override
-    public boolean find(String id){
-        try (Connection con = DriverManager.getConnection(URL)) {
+    public boolean find(String id) {
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, REGISTERACCOUNT, id));
-
             if (rs.next()) {
                 return true;
             }
-        } catch (SQLException ex) {
-            DataBaseHandler.printSQLException(ex);
+        } catch (SQLException e) {
+            throw new DataBaseAccessFailureException("Failed to connect to database" , e, ErrorId.DATABASE_ACCESS_FAILURE);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException e) {
+                throw new DataBaseAccessFailureException("Failed to close connection to database " , e, ErrorId.DATABASE_CLOSE_ON_EXIT_FAILURE);
+            }
         }
         return false;
     }
 
     @Override
-    public Register collect(String id){
+    public Register collect(String id) {
         // Step 1: Establishing a Connection
-        if(find(id)) {
-            try (Connection connection = DriverManager.getConnection(URL)) {
-                Statement statement = connection.createStatement();
+        if (find(id)) {
+            Connection con = null;
+            try {
+                String url = AppProperties.getDataBaseURL();
+                con = DriverManager.getConnection(url);
+                Statement statement = con.createStatement();
 
                 // Step 3: Execute the query or update query
                 ResultSet result = statement.executeQuery(String.format(SELECT_TEMPLATE, REGISTERACCOUNT, id));
@@ -108,19 +122,23 @@ public class RegisterBalanceAccount implements Bank {
 
 
             } catch (SQLException e) {
-
-                // print SQL exception information
-                DataBaseHandler.printSQLException(e);
+                throw new DataBaseAccessFailureException("Failed to retrieve register balance" , e, ErrorId.DATABASE_ACCESS_FAILURE);
             } catch (JsonParseException e) {
-                e.printStackTrace();
+                throw new DataBaseAccessFailureException("Failed to retrieve register balance"  , e, ErrorId.DATABASE_ACCESS_FAILURE);
             } catch (JsonMappingException e) {
-                e.printStackTrace();
+                throw new DataBaseAccessFailureException("Failed to retrieve register balance" , e, ErrorId.DATABASE_ACCESS_FAILURE);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new DataBaseAccessFailureException("Failed to retrieve register balance" , e, ErrorId.DATABASE_ACCESS_FAILURE);
+            }finally {
+                try {
+                    if (con != null)
+                        con.close();
+                } catch (SQLException e) {
+                    throw new DataBaseAccessFailureException("Failed to close connection to database "  , e, ErrorId.DATABASE_CLOSE_ON_EXIT_FAILURE);
+                }
             }
         }
-
-        throw new NotFoundException("ID" + "\"" + id + "\"" , ErrorId.REGISTER_ID_NOT_FOUND);
+        throw new NotFoundException("ID" + "\"" + id + "\"", ErrorId.REGISTER_ID_NOT_FOUND);
     }
 
 }

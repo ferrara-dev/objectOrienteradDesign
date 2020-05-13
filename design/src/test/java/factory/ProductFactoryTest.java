@@ -19,6 +19,5 @@ public class ProductFactoryTest {
         assertEquals(product.getItemId(),4);
         assertEquals(product.getCategory(),"3");
         assertEquals(product.getTaxRate(), 6,0000000);
-
     }
 }

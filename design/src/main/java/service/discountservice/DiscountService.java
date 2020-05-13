@@ -6,29 +6,22 @@ import integration.discountdb.DiscountRepository;
 import model.customer.Member;
 import model.customer.customerrequest.MemberDiscountRequest;
 import model.discount.discountrule.DiscountRule;
-import model.transaction.saleTransaction.SaleTransaction;
-import service.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
-import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
+import model.sale.saleinformation.SaleTransaction;
 import service.discountservice.discountidentifier.*;
-import service.Service;
 import service.visitor.Visitor;
 import factory.VisitorFactory;
-import startup.layer.ServiceCreator;
 import util.Calendar;
 import util.datatransferobject.DiscountDTO;
-import util.exception.notfoundexception.NotFoundException;
 
 import java.util.List;
 
-public class DiscountService implements Service {
+public class DiscountService{
     public static final Long HASH_KEY_ID = 12L;
     private DiscountRequestHandler requestHandler;
     private Visitor visitor;
 
-    public DiscountService(ServiceCreator serviceCreator) {
-        requestHandler = new DiscountRuleIdentifier(
-                new TotalCostDiscountRequestHandler(null),
-                new BulkDiscountRequestHandler(null));
+    public DiscountService(DiscountRequestHandler discountRequestHandler) {
+        requestHandler = discountRequestHandler;
     }
 
     /**
@@ -43,49 +36,31 @@ public class DiscountService implements Service {
      *
      * @param customerId
      */
-    public void processDiscountRequest(String customerId, SaleTransaction saleTransaction) throws NotFoundException {
-        try {
-            MemberDiscountRequest memberDiscountRequest = createRequest(customerId);
-
+    public void processDiscountRequest(String customerId, SaleTransaction saleTransaction) {
+            MemberDiscountRequest memberDiscountRequest;
+            memberDiscountRequest = createRequest(customerId);
             memberDiscountRequest.setSaleTransaction(saleTransaction);
-
             findAvailableDiscounts(memberDiscountRequest);
-
             handleRequest(memberDiscountRequest);
-        } catch (NotFoundException ex) {
-            throw ex;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    private MemberDiscountRequest createRequest(String customerId) throws NotFoundException{
-        try {
+    private MemberDiscountRequest createRequest(String customerId){
         Member member = CustomerRepository.getInstance().collect(customerId);
-            MemberDiscountRequest memberDiscountRequest = new MemberDiscountRequest(member);
-            return memberDiscountRequest;
-        } catch (NotFoundException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
+        MemberDiscountRequest memberDiscountRequest = new MemberDiscountRequest(member);
+        return memberDiscountRequest;
     }
 
-    private void findAvailableDiscounts(MemberDiscountRequest memberDiscountRequest) throws NotFoundException{
-        try {
+    private void findAvailableDiscounts(MemberDiscountRequest memberDiscountRequest){
             List<DiscountDTO> discountDTOs = DiscountRepository.getInstance().collect(Calendar.getDayOfTheWeek());
             for (DiscountDTO discountDTO : discountDTOs)
                 for (DiscountRule discountRule : DiscountRuleFactory.getInstance().create(discountDTO))
                     memberDiscountRequest.addDiscountRule(discountRule);
-        } catch (NotFoundException exception){
-            exception.printStackTrace();
-            throw exception;
-        }
     }
 
-    private void handleRequest(MemberDiscountRequest memberDiscountRequest) throws Exception {
+    private void handleRequest(MemberDiscountRequest memberDiscountRequest){
         requestHandler.handle(memberDiscountRequest);
         visitor = VisitorFactory.COST_VISITOR.getVisitor();
-        visitor.setData(memberDiscountRequest.getSaleTransaction().getCart().getSequenceIterator());
+        visitor.setData(memberDiscountRequest.getSaleTransaction().getCart().sequenceIterator());
         memberDiscountRequest.getSaleTransaction().getCost().acceptVisitor(visitor);
     }
 }

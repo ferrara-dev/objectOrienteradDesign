@@ -1,7 +1,5 @@
 package util.sequence;
 
-import java.util.Iterator;
-import java.util.function.Consumer;
 
 /**
  * Generic implementation of <code> SequenceIterator </code> interface.
@@ -13,8 +11,26 @@ public class ListSequenceIterator<T> implements ProductSequenceIterator<T> {
     private Sequence<T> list = null;
 
     public ListSequenceIterator(Sequence<T> list) {
-        super();
         this.list = list;
+    }
+
+    public ListSequenceIterator() {
+
+    }
+    public void setList(Sequence<T> list) {
+        this.list = list;
+    }
+
+    public void setCurrentItemNo(int currentItemNo) {
+        this.currentItemNo = currentItemNo;
+    }
+
+    public int getCurrentItemNo() {
+        return currentItemNo;
+    }
+
+    public Sequence<T> getList() {
+        return list;
     }
 
     private int currentItemNo = 0;
@@ -46,20 +62,14 @@ public class ListSequenceIterator<T> implements ProductSequenceIterator<T> {
     @Override
     public boolean isOver() {
         if (currentItemNo == list.getItems().size()) {
+            firstItem();
             return true;
         } else {
             return false;
         }
     }
 
-    /**
-     * Moves the iterator to the next object
-     * in the sequence.
-     */
-    @Override
-    public T next() {
-        return list.getItems().get(currentItemNo + 1);
-    }
+
 
     @Override
     public void nextItem() {
@@ -83,9 +93,11 @@ public class ListSequenceIterator<T> implements ProductSequenceIterator<T> {
      */
     @Override
     public boolean hasNext() {
-        if(currentItemNo < list.getItems().size() - 1 )
-                return true;
-        return false;
+        if (currentItemNo == list.getItems().size()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 

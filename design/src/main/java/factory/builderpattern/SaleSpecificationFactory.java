@@ -7,7 +7,7 @@ import model.sale.saleinformation.ProductCart;
 import model.sale.saleinformation.SaleSpecification;
 import model.sale.saleinformation.salestate.SaleState;
 import model.sale.saleinformation.salestate.State;
-import observer.EventObserver;
+import observer.modelobserver.EventObserver;
 import util.Calendar;
 import java.util.ArrayList;
 import java.util.Objects;

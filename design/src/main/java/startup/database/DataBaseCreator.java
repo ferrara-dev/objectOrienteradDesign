@@ -15,9 +15,7 @@ import java.util.Objects;
 public class DataBaseCreator {
     private static final String URL = "jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1";
 
-
     public DataBaseCreator() {
-
     }
 
     public boolean createTable() {

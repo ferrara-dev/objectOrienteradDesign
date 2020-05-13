@@ -11,7 +11,7 @@ import org.javamoney.moneta.Money;
 import org.junit.Before;
 import org.junit.Test;
 import model.banking.BankAccount;
-import util.exception.notfoundexception.NotFoundException;
+import exception.notfoundexception.NotFoundException;
 
 import javax.money.CurrencyUnit;
 import javax.money.Monetary;

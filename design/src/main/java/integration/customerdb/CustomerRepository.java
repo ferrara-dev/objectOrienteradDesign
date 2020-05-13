@@ -2,11 +2,13 @@ package integration.customerdb;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import exception.notfoundexception.NotFoundException;
 import integration.DataBaseHandler;
 import model.customer.Member;
-import util.exception.DataBaseAccessFailureException;
-import util.exception.ErrorId;
-import util.exception.notfoundexception.NotFoundException;
+import util.AppProperties;
+import exception.DataBaseAccessFailureException;
+import exception.ErrorId;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.*;
@@ -43,18 +45,27 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
      * @param customerId
      * @return
      */
-    public boolean find(String customerId){
-        try (Connection con = DriverManager.getConnection(URL)) {
+    public boolean find(String customerId) {
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, "jsonCustomerTable", customerId));
             if (rs.next()) {
                 return true;
             }
-        } catch (SQLException ex) {
-            DataBaseHandler.printSQLException(ex);
+        } catch (SQLException e) {
+            throw new DataBaseAccessFailureException("Database could not be accessed ", e, ErrorId.DATABASE_ACCESS_FAILURE);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            return false;
         }
-
-        return false;
     }
 
     /**
@@ -64,9 +75,11 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
      */
     @Override
     public Member collect(String id){
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(URL)) {
-            Statement statement = connection.createStatement();
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
+            Statement statement = con.createStatement();
 
             // Step 3: Execute the query or update query
             ResultSet result = statement.executeQuery(String.format(SELECT_TEMPLATE, "jsonCustomerTable", id));
@@ -83,21 +96,23 @@ public class CustomerRepository implements DataBaseHandler <Member, Member>{
 
                 return objectMapper.readValue(targetString, Member.class);
             }
-
-
         } catch (SQLException e) {
-            e.getErrorCode();
-            // print SQL exception information
-            DataBaseHandler.printSQLException(e);
-            throw new DataBaseAccessFailureException(e,ErrorId.DATABASE_ACCESS_FAILURE);
+            throw new DataBaseAccessFailureException("Database could not be accessed ",e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (JsonParseException e) {
-            e.printStackTrace();
+            throw new DataBaseAccessFailureException("Failed to parse Json Object ",e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (JsonMappingException e) {
-            e.printStackTrace();
+            throw new DataBaseAccessFailureException("Failed to map Json Object ",e,ErrorId.DATABASE_ACCESS_FAILURE);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DataBaseAccessFailureException("Database file could not be accessed ",e,ErrorId.DATABASE_ACCESS_FAILURE);
+        } finally {
+            try {
+                if (con != null)
+                    con.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
-        throw new NotFoundException("id" + " \"" + id + "\"" , ErrorId.CUSTOMER_ID_NOT_FOUND);
+        throw new NotFoundException("ID" + "\"" + id + "\"",ErrorId.CUSTOMER_ID_NOT_FOUND);
     }
 
     /**

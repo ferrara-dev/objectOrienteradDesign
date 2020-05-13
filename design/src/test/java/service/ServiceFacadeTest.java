@@ -1,9 +1,11 @@
 package service;
 
+import exception.DataBaseAccessFailureException;
+import integration.PhysicalObjectsRepository;
 import model.sale.SaleItem;
 import model.sale.saleinformation.salestate.SaleState;
 import model.sale.saleinformation.salestate.State;
-import model.transaction.saleTransaction.SaleTransaction;
+import model.sale.saleinformation.SaleTransaction;
 import org.junit.Before;
 import org.junit.Test;
 import startup.layer.ServiceCreator;
@@ -44,9 +46,11 @@ public class ServiceFacadeTest {
     public void testRegisterProduct2(){
         SaleTransaction saleTransaction = serviceFacade.getSaleService().getSaleInformation();
         double firstTotalVAT  = saleTransaction.getCost().getTotalVAT().getNumber().doubleValue();
+        System.out.println(firstTotalVAT);
         SaleItemDTO firstItem = new SaleItemDTO(3,1);
         serviceFacade.registerProduct(firstItem);
         double secondTotalVAT = saleTransaction.getCost().getTotalVAT().getNumber().doubleValue();
+        System.out.println(secondTotalVAT);
         assertNotSame(firstTotalVAT,secondTotalVAT);
     }
 
@@ -66,7 +70,7 @@ public class ServiceFacadeTest {
         System.out.println(secondTotalVAT);
         int quantity = firstItem.getQuantity();
 
-        SequenceIterator<SaleItem> iterator = saleTransaction.getCart().getSequenceIterator();
+        SequenceIterator<SaleItem> iterator = saleTransaction.getCart().sequenceIterator();
         while(!iterator.isOver()){
             if(iterator.getCurrentItem().getProduct().getItemId() == 3){
                 quantity = iterator.getCurrentItem().getQuantity();
@@ -74,7 +78,7 @@ public class ServiceFacadeTest {
             }
             iterator.nextItem();
         }
-
+        System.out.println(quantity);
         assertEquals(2,quantity);
     }
 
@@ -92,6 +96,8 @@ public class ServiceFacadeTest {
         serviceFacade.endSale();
         SaleState saleState = saleTransaction.getSaleState();
         State state = saleState.getCurrentState();
+        System.out.println(State.SALE_PAYMENT_STATE.toString());
+        System.out.println(state.toString());
         assertSame(State.SALE_PAYMENT_STATE,state);
     }
 
@@ -151,6 +157,26 @@ public class ServiceFacadeTest {
         serviceFacade.requestDiscount("940412-1395");
         double updatedRunningTotal = saleTransaction.getCost().getRunningTotal().getNumber().doubleValue();
         System.out.println(updatedRunningTotal);
+    }
+
+    @Test
+    public void finalizeSaleTest(){
+        SaleTransaction saleTransaction = serviceFacade.getSaleService().getSaleInformation();
+        double firstTotalVAT  = saleTransaction.getCost().getTotalVAT().getNumber().doubleValue();
+        SaleItemDTO firstItem = new SaleItemDTO(4,20);
+        serviceFacade.registerProduct(firstItem);
+        double firstRunningTOtal = saleTransaction.getCost().getRunningTotal().getNumber().doubleValue();
+        System.out.println(firstRunningTOtal);
+        serviceFacade.requestDiscount("940412-1395");
+        double updatedRunningTotal = saleTransaction.getCost().getRunningTotal().getNumber().doubleValue();
+        System.out.println(updatedRunningTotal);
+        EconomyService economyService = serviceFacade.getEconomyService();
+        PhysicalObjectsRepository.getInstance().startUpRegister(null);
+        try {
+            economyService.paySaleTransaction(new PaymentDTO(999999, "Cash Payment"), saleTransaction);
+        } catch (DataBaseAccessFailureException e){
+            e.printStackTrace();
+        }
     }
 
 }

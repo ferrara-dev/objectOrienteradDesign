@@ -5,7 +5,7 @@ import integration.productdb.ProductRepository;
 import junit.framework.TestCase;
 import integration.productdb.Product;
 import org.junit.Test;
-import util.exception.notfoundexception.NotFoundException;
+import exception.notfoundexception.NotFoundException;
 
 public class DataBaseCreatorTest extends TestCase {
 

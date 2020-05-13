@@ -2,7 +2,7 @@ package controller;
 
 import service.ServiceFacade;
 import startup.layer.ControllerCreator;
-import observer.EventObserver;
+import observer.modelobserver.EventObserver;
 import util.datatransferobject.PaymentDTO;
 import util.datatransferobject.SaleItemDTO;
 
@@ -33,8 +33,8 @@ public class MainController implements Controller{
      * the process of registering a product.
      *
      * The valid product identifications are 1,2,3,4,5,6,7
-     * @param itemId
-     * @param quantity
+     * @param saleItemDTO containing information about sale item that
+     *                    is to be added to the cart
      */
     public void registerProduct(SaleItemDTO saleItemDTO) {
         serviceFacade.registerProduct(saleItemDTO);
@@ -56,8 +56,8 @@ public class MainController implements Controller{
      */
     public void endSale(){
         serviceFacade.endSale();
-        //saleController.endSale();
     }
+
     /**
      * Call from the view to enter a payment.
      *
@@ -71,8 +71,6 @@ public class MainController implements Controller{
 
     @Override
     public void addObserver(EventObserver observer) {
-
-        //saleController.addObservers(observer);
     }
 
 }

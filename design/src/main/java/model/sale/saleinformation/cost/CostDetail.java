@@ -6,12 +6,12 @@ import model.amount.RunningTotal;
 import model.amount.TotalVAT;
 import model.discount.discounttypes.defaultdiscount.NoPriceDiscount;
 import model.discount.discounttypes.pricediscount.PriceDiscount;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import model.Element;
 import service.visitor.Visitor;
-import util.exception.notfoundexception.NotFoundException;
+import exception.notfoundexception.NotFoundException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -42,6 +42,7 @@ public class CostDetail implements ObservableModel, Element {
     }
 
     public void setChange(Change change) {
+        notifyObservers(new PropertyChangeEvent("change",change, this.change));
         this.change = change;
     }
 
@@ -54,6 +55,7 @@ public class CostDetail implements ObservableModel, Element {
     }
 
     public void increaseTotalDiscountOfPrice(BigDecimal totalDiscountOfPrice){
+        notifyObservers(new PropertyChangeEvent("totalDiscountOfPrice",totalDiscountOfPrice, this.totalDiscountOfPrice));
         this.totalDiscountOfPrice = this.totalDiscountOfPrice.add(totalDiscountOfPrice);
     }
 
@@ -126,5 +128,9 @@ public class CostDetail implements ObservableModel, Element {
     @Override
     public void acceptVisitor(Visitor visitor) throws NotFoundException {
         visitor.processElement(this);
+    }
+
+    public void setEventObservers(ArrayList<EventObserver> eventObservers) {
+        this.eventObservers = eventObservers;
     }
 }

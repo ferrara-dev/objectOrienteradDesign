@@ -1,6 +1,6 @@
 package factory;
 
-import service.handlerpattern.Handler;
+import service.Handler;
 import service.discountservice.discountRequestHandler.BulkDiscountRequestHandler;
 import service.discountservice.discountRequestHandler.TotalCostDiscountRequestHandler;
 import service.discountservice.discountidentifier.DiscountRuleIdentifier;

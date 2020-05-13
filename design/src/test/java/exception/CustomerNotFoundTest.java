@@ -3,23 +3,20 @@ package exception;
 import factory.IntegrationFactory;
 import org.junit.Before;
 import org.junit.Test;
-import service.handlerpattern.exceptionhandler.ExceptionHandlingChain;
-import service.handlerpattern.exceptionhandler.ExceptionHandlingFactory;
-import util.exception.ErrorId;
-import util.exception.notfoundexception.NotFoundException;
-import view.guiutil.ExceptionView;
+import exception.exceptionhandler.ExceptionHandler;
+import exception.notfoundexception.NotFoundException;
+import view.exceptionview.ExceptionView;
 
 import static org.junit.Assert.assertEquals;
 
 public class CustomerNotFoundTest {
     ExceptionView exceptionView;
-    ExceptionHandlingChain exceptionHandlingChain;
 
     @Before
     public void startUp() {
         exceptionView = new ExceptionView();
-        ExceptionHandlingFactory.createExceptionHandlingChain(exceptionView);
-        exceptionHandlingChain = ExceptionHandlingFactory.getExceptionHandlingChain();
+        ExceptionHandler.createExceptionHandlingChain(exceptionView);
+
     }
 
     /**
@@ -38,7 +35,7 @@ public class CustomerNotFoundTest {
         try{
             IntegrationFactory.CUSTOMER_REPO.getDataBaseHandler().collect("111111");
         } catch (NotFoundException e){
-            assertEquals(ErrorId.CUSTOMER_ID_NOT_FOUND.code, e.getErrorCodeValue());
+            assertEquals(ErrorId.CUSTOMER_ID_NOT_FOUND.code, e.getErrorId().code);
         }
     }
 
@@ -63,7 +60,7 @@ public class CustomerNotFoundTest {
         try{
             IntegrationFactory.CUSTOMER_REPO.getDataBaseHandler().collect("111111");
         } catch (NotFoundException e){
-            exceptionHandlingChain.handle(e);
+            ExceptionHandler.handle(e);
             e.printStackTrace();
         }
     }

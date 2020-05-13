@@ -1,18 +1,14 @@
 package view.paymentview;
 
-import controller.MainController;
 import util.datatransferobject.CostDTO;
 import net.miginfocom.swing.MigLayout;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
-import observer.StateChangeEvent;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import view.MainView;
 import view.View;
 import view.paymentview.paymentviewcomponents.PaymentViewInput;
 import view.paymentview.paymentviewcomponents.TotalCostView;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class PaymentMainView extends MainView {
@@ -33,8 +29,8 @@ public class PaymentMainView extends MainView {
     @Override
     public void newEvent(ObservedEvent observedEvent) {
         if(observedEvent instanceof PropertyChangeEvent){
-            if(((PropertyChangeEvent) observedEvent).getNewValue() instanceof CostDTO) {
-                CostDTO cost = (CostDTO) ((PropertyChangeEvent) observedEvent).getNewValue();
+            if(((PropertyChangeEvent) observedEvent).getPropertyValue() instanceof CostDTO) {
+                CostDTO cost = (CostDTO) ((PropertyChangeEvent) observedEvent).getPropertyValue();
                 totalCostView.update(cost);
             }
         }
@@ -42,7 +38,7 @@ public class PaymentMainView extends MainView {
         else if(observedEvent instanceof PropertyChangeEvent){
             String propertyName =( (PropertyChangeEvent) observedEvent).getPropertyName();
             if(propertyName.equals("costDetail")){
-                double toPay = (Double) ((PropertyChangeEvent) observedEvent).getNewValue();
+                double toPay = (Double) ((PropertyChangeEvent) observedEvent).getPropertyValue();
                 totalCostView.setToPayField(toPay);
             }
         }

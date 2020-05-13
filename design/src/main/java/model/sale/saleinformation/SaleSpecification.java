@@ -7,7 +7,7 @@ import model.Element;
 import model.sale.saleinformation.cost.CostDetail;
 import model.sale.saleinformation.salestate.SaleState;
 import service.visitor.Visitor;
-import util.exception.notfoundexception.NotFoundException;
+import exception.notfoundexception.NotFoundException;
 
 public class SaleSpecification implements Element {
     private Date dateOfSale;

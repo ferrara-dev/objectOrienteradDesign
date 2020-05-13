@@ -2,7 +2,7 @@ package util.sequence;
 
 import java.util.Iterator;
 
-public interface SequenceIterator<T> extends Iterator<T> {
+public interface SequenceIterator<T>  {
     T getCurrentItem();
     boolean isOver();
     void nextItem();

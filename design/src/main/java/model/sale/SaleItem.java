@@ -4,9 +4,8 @@ import integration.productdb.Product;
 import model.ObservableModel;
 import model.discount.discounttypes.itemdiscount.ItemDiscount;
 import model.discount.discounttypes.defaultdiscount.NoItemDiscount;
-import observer.EventObserver;
-import observer.ObservedEvent;
-import util.exception.businessruleexception.IllegalDiscountCombinationException;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -40,9 +39,7 @@ public class SaleItem implements ObservableModel {
         if (Objects.nonNull(itemDiscount))
             if ((this.itemDiscount.getTotalPriceReduction().doubleValue() < itemDiscount.getTotalPriceReduction().doubleValue())) {
                 this.itemDiscount = itemDiscount;
-
-            } else
-                throw new IllegalDiscountCombinationException();
+            }
     }
 
     public ItemDiscount getItemDiscount() {
@@ -58,6 +55,7 @@ public class SaleItem implements ObservableModel {
     /**
      * Increase the sale items quantity by adding a
      * another quantity
+     *
      * @param quantity, the quantity that this <code> quantity </code>
      *                  is increased by.
      */

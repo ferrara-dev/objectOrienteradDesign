@@ -1,6 +1,6 @@
 package model.customer;
 
-import model.transaction.saleTransaction.SaleTransaction;
+import model.sale.saleinformation.SaleTransaction;
 import util.datatransferobject.CustomerDTO;
 
 import java.util.ArrayList;

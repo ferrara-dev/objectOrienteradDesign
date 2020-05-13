@@ -1,7 +1,7 @@
 package view.storesystemview;
 
-import observer.EventObserver;
-import observer.ObservedEvent;
+import observer.modelobserver.EventObserver;
+import observer.modelobserver.ObservedEvent;
 import view.MainView;
 import view.View;
 

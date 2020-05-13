@@ -10,4 +10,6 @@ public interface ProductSequenceIterator<T> extends SequenceIterator<T> {
 
     void firstItem();
 
+
+
 }

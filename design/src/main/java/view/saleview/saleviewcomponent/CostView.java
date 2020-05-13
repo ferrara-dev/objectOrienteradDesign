@@ -30,5 +30,14 @@ public class CostView extends JPanel{
         defaultTableModel.newDataAvailable(new TableModelEvent(defaultTableModel));
     }
 
+    void totalVAThasChanged(double vat){
+        jTable.setValueAt(vat,0,1);
+        defaultTableModel.newDataAvailable(new TableModelEvent(defaultTableModel));
+    }
+
+    void priceDiscountHasChanged(double priceDiscount){
+
+    }
+
 
 }

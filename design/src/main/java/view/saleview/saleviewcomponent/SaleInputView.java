@@ -3,9 +3,7 @@ import controller.Controller;
 import controller.MainController;
 import net.miginfocom.swing.MigLayout;
 import util.datatransferobject.SaleItemDTO;
-import util.exception.notfoundexception.NotFoundException;
 import view.InputView;
-import view.guiutil.GuiErrorMessage;
 
 
 import javax.swing.*;

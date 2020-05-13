@@ -4,9 +4,8 @@ import controller.Controller;
 import util.datatransferobject.CostDTO;
 import model.sale.SaleItem;
 import net.miginfocom.swing.MigLayout;
-import observer.ObservedEvent;
-import observer.PropertyChangeEvent;
-import observer.StateChangeEvent;
+import observer.modelobserver.ObservedEvent;
+import observer.modelobserver.PropertyChangeEvent;
 import view.MainView;
 import view.View;
 import view.saleview.saleviewcomponent.CartView;
@@ -49,19 +48,19 @@ public class SaleMainView extends MainView {
     @Override
     public void newEvent(ObservedEvent observedEvent) {
         if(observedEvent instanceof PropertyChangeEvent){
-            String propertyName = ((PropertyChangeEvent) observedEvent).getPropertyName();
+            String propertyName = observedEvent.getPropertyName();
             if(propertyName == "items"){
-                cartView.getSaleItemJTable().setCard((List<SaleItem>) ((PropertyChangeEvent) observedEvent).getNewValue());
+                cartView.getSaleItemJTable().setCard((List<SaleItem>) (observedEvent).getPropertyValue());
             }
             else if(propertyName == "costDetail"){
-                CostDTO cost = (CostDTO) ((PropertyChangeEvent) observedEvent).getNewValue();
+                CostDTO cost = (CostDTO) (observedEvent).getPropertyValue();
                 double runningTotal = cost.getRunningTotal();
                 double totalVAT  = cost.getTotalVAT();
                 double priceDiscount = cost.getPriceDiscount();
                 costView.runningTotalHasChanged(runningTotal,totalVAT, priceDiscount);
             }
             else if(propertyName == "list"){
-                ArrayList<SaleItem> list = (ArrayList<SaleItem>) ((PropertyChangeEvent) observedEvent).getNewValue();
+                ArrayList<SaleItem> list = (ArrayList<SaleItem>) (observedEvent).getPropertyValue();
                 cartView.cartHasChanged(list);
             }
         }

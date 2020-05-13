@@ -1,5 +1,6 @@
 package model.discount.discounttypes.pricediscount;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import model.discount.discountrule.pricediscountrule.PriceDiscountRule;
 
 import java.math.BigDecimal;
@@ -12,6 +13,9 @@ public class TotalCostDiscount implements PriceDiscount {
     public TotalCostDiscount(PriceDiscountRule priceDiscountRule) {
         this.priceDiscountRule = priceDiscountRule;
         this.discountRate = priceDiscountRule.getDiscountRate();
+    }
+
+    public TotalCostDiscount() {
     }
 
 

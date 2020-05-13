@@ -9,10 +9,9 @@ public class ListSequence<T> implements Sequence<T> {
     private SequenceIterator<T> sequenceIterator = new ListSequenceIterator<>(this);
 
     @Override
-    public SequenceIterator<T> getSequenceIterator() {
+    public SequenceIterator<T> sequenceIterator() {
         return this.sequenceIterator;
     }
-
 
     @Override
     public void addItem(T t) {

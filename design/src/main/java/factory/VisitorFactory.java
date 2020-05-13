@@ -1,6 +1,6 @@
 package factory;
 
-import observer.EventObserver;
+import observer.modelobserver.EventObserver;
 import service.visitor.Visitor;
 import service.visitor.cartvisitor.ProductCartVisitor;
 import service.visitor.costvisitor.CostVisitor;
