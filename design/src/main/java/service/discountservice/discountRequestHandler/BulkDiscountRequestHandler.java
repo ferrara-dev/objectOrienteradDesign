@@ -49,7 +49,7 @@ public class BulkDiscountRequestHandler extends ItemDiscountRequestHandler {
             if (Objects.nonNull(successor))
                 successor.handleRequest(memberDiscountRequest);
             else
-                throw new UndefinedDiscountException();
+                throw new UndefinedDiscountException("Discount rule is undefined : ");
         }
     }
 }

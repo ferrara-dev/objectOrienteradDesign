@@ -9,7 +9,13 @@ import util.datatransferobject.PaymentDTO;
 
 import java.math.BigDecimal;
 
-
+/**
+ * Service class responsible for processing payments and to
+ * update register balance.
+ *
+ * The operations are performed using implementations of the <code> Visitor </code>
+ * interface.
+ */
 public class EconomyService {
     private Visitor visitor;
 

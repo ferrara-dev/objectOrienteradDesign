@@ -2,9 +2,9 @@ package model.physicalobjects;
 
 import model.ObservableModel;
 import model.amount.MonetaryValue;
-import model.banking.Balance;
+import model.amount.Balance;
 import model.banking.Payment;
-import model.exception.BusinessLogicException;
+import exception.businessruleexception.BusinessLogicException;
 import observer.modelobserver.EventObserver;
 import observer.modelobserver.ObservedEvent;
 import observer.modelobserver.PropertyChangeEvent;
@@ -37,7 +37,7 @@ public class Register implements ObservableModel {
     }
 
     public void enterPayment(Payment payment) {
-        if(Objects.isNull(payment))
+        if(Objects.isNull(payment) && Objects.isNull(balance))
             throw new BusinessLogicException("Payment value is null ",ErrorId.BUSINESS_LOGIC_ERROR);
         notifyObservers(new PropertyChangeEvent("balance", balance, this.balance));
         balance.increaseValue(payment.getNumber().abs());

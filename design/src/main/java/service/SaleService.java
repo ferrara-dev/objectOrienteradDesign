@@ -10,10 +10,12 @@ import factory.VisitorFactory;
 
 
 import java.util.ArrayList;
-
-
 /**
- * Service class that performs business logic and manipulates the sale model
+ * Service class responsible for initiating and processing the state of a
+ * <code> SaleTransaction </code> object.
+ *
+ * The operations are performed using implementations of the <code> Visitor </code>
+ * interface.
  */
 public class SaleService {
     private ArrayList<EventObserver> eventObservers;
@@ -47,7 +49,7 @@ public class SaleService {
     }
 
     /**
-     * End the sale by setting its state as completed
+     * End the sale by setting its state as completed.
      */
     public void endSale() {
         visitor = VisitorFactory.SALE_STATE_VISITOR.getVisitor();

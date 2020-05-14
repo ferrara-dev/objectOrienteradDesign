@@ -3,7 +3,6 @@ package service;
 import observer.modelobserver.EventObserver;
 import service.discountservice.DiscountService;
 import exception.exceptionhandler.ExceptionHandler;
-import exception.exceptionhandler.ExceptionHandlingChain;
 import startup.layer.ServiceCreator;
 import util.datatransferobject.PaymentDTO;
 import util.datatransferobject.SaleItemDTO;
@@ -13,7 +12,11 @@ import java.util.ArrayList;
  * Class working as a mediator between the controller- and service layer.
  * Holds references to all service classes in order to create abstraction
  * between control- and service layer.
+ *
+ * All runtime exceptions that are thrown during operations are caught here
+ * and sent to the <code> ExceptionHandler </code> for processing.
  */
+
 public class ServiceFacade {
     private DiscountService discountService;
     private SaleService saleService;
@@ -27,7 +30,9 @@ public class ServiceFacade {
         discountService = creator.getDiscountService();
         economyService = creator.getEconomyService();
     }
-
+    /**
+     * Start a new sale transaction
+     */
     public void startSale() {
         try {
             saleService.startSale();
@@ -36,6 +41,9 @@ public class ServiceFacade {
         }
     }
 
+    /**
+     * Register an item to the sale transaction
+     */
     public void registerProduct(SaleItemDTO saleItemDTO) {
         try {
             productService.registerProduct(saleItemDTO, saleService.getSaleInformation());
@@ -44,6 +52,9 @@ public class ServiceFacade {
         }
     }
 
+    /**
+     * End a sale transaction
+     */
     public void endSale() {
         try {
             saleService.endSale();
@@ -52,6 +63,10 @@ public class ServiceFacade {
         }
     }
 
+    /**
+     * Initiate a payment
+     * @param paymentDTO information about the payment.
+     */
     public void initPayment(PaymentDTO paymentDTO) {
         try {
             economyService.paySaleTransaction(paymentDTO, saleService.getSaleInformation());

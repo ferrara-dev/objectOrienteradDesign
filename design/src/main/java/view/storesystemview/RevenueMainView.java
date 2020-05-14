@@ -1,6 +1,6 @@
 package view.storesystemview;
 
-import model.banking.Balance;
+import model.amount.Balance;
 import net.miginfocom.swing.MigLayout;
 import observer.modelobserver.ObservedEvent;
 import observer.modelobserver.PropertyChangeEvent;
@@ -12,16 +12,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class RevenueMainView extends MainView{
-    private JPanel SystemViewPanel;
-    private JTabbedPane tabbedPane1;
-
-    private JFormattedTextField formattedTextField1;
-    private JFormattedTextField formattedTextField2;
-    private JFormattedTextField memberServices;
-    private JFormattedTextField formattedTextField4;
-    private JButton applyForMembershipButton;
-
-    private JLabel ActiveAccounts;
     private JFormattedTextField registerBalanceField;
     private NumberFormat paymentFormat;
 

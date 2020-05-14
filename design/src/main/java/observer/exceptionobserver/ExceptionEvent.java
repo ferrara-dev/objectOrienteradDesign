@@ -1,18 +1,17 @@
 package observer.exceptionobserver;
 
-import model.exception.UserException;
 import exception.ErrorId;
 
+/**
+ * Event containing information about an exception that has been thrown.
+ *
+ * This event is sent as parameter to an implementation of <code> ExceptionListener </code>
+ */
 public class ExceptionEvent {
     private ErrorId errorId;
     private String information;
     private Exception cause;
     private boolean handled;
-
-    public ExceptionEvent(UserException userException) {
-        this.errorId = userException.getErrorId();
-        information = userException.getLocalizedMessage();
-    }
 
     public ExceptionEvent(Exception cause, ErrorId errorId) {
         this.errorId = errorId;
@@ -22,9 +21,11 @@ public class ExceptionEvent {
     public void setHandled(boolean handled) {
         this.handled = handled;
     }
+
     public boolean getHandled(){
         return handled;
     }
+
     public Exception getCause() {
         return cause;
     }

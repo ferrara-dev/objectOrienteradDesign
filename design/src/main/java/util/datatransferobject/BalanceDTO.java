@@ -1,7 +1,7 @@
 package util.datatransferobject;
 
 import model.amount.Currency;
-import model.banking.Balance;
+import model.amount.Balance;
 
 public class BalanceDTO implements DataTransferObject{
     private String amount;

@@ -8,6 +8,11 @@ import model.sale.saleinformation.ProductCart;
 import model.sale.saleinformation.SaleSpecification;
 import model.sale.saleinformation.salestate.SaleState;
 
+/**
+ * Implementation of the <code> Builder </code> interface.
+ * Implements a builder pattern used to construct a
+ * new <code> SaleSpecification </code> att program startup.
+ */
 public class SaleSpecBuilder implements Builder<SaleSpecification> {
     private Date dateOfSale;
     private SaleId saleId;
@@ -15,11 +20,7 @@ public class SaleSpecBuilder implements Builder<SaleSpecification> {
     private ProductCart cart;
     private CostDetail cost;
 
-    /**
-     * Empty constructor in order
-     * to be able to store the
-     * object in JSON format
-     */
+
     public SaleSpecBuilder(){
 
     }
@@ -69,6 +70,11 @@ public class SaleSpecBuilder implements Builder<SaleSpecification> {
         return this;
     }
 
+    /**
+     * assemble the SaleSpecification and return it.
+     * @return the <code> SaleSpecification </code> object
+     *         that has been built.
+     */
     @Override
     public SaleSpecification build() {
         SaleSpecification saleSpecification = new SaleSpecification();

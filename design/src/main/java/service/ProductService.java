@@ -45,6 +45,7 @@ public class ProductService{
     public void registerProduct(SaleItemDTO saleItemDTO, SaleTransaction saleTransaction) {
         SaleItem saleItem = createSaleItem(saleItemDTO);
         addSaleItem(saleTransaction, saleItem);
+        updateSaleCost(saleTransaction);
     }
 
     private SaleItem createSaleItem(SaleItemDTO saleItemDTO){
@@ -60,7 +61,6 @@ public class ProductService{
         visitor = VisitorFactory.PRODUCT_CART_VISITOR.getVisitor();
         visitor.setData(saleItem);
         productCart.acceptVisitor(visitor);
-        updateSaleCost(saleTransaction);
     }
 
     private void updateSaleCost(SaleTransaction saleTransaction){

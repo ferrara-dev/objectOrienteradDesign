@@ -5,6 +5,8 @@ package exception;
  * and determine in what fashion the exception should be handled.
  *
  * Codes are:
+ * 0   - Undefined exception has been thrown - this should always result
+ *       in program shutdown.
  * 1XX - failed database operations caused by invalid argument
  * 2XX - system failure
  * 3XX - Database connection failure

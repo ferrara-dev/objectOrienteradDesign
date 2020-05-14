@@ -50,6 +50,15 @@ public class SaleStateVisitor implements Visitor<SaleState, SaleTransaction> {
         this.saleTransaction = saleSpecification;
     }
 
+    /**
+     * Override to set the next state of the sale and perform operations that
+     * are related to the change of state.
+     *
+     * For example, when entering the <code> SALE_COMPLETE_STATE </code>
+     * the sale is finalized by removing observers and logging the sale.
+     *
+     * @param saleState
+     */
     @Override
     public void processElement(SaleState saleState) {
         saleState.nextState();
@@ -73,22 +82,5 @@ public class SaleStateVisitor implements Visitor<SaleState, SaleTransaction> {
         finalCost.setNumber(costDetail.getRunningTotal().getNumber());
         saleTransaction.getCost().setFinalCost(finalCost);
         saleTransaction.getCost().notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(costDetail), null));
-    }
-
-    @Override
-    public void notifyObservers(ObservedEvent observedEvent) {
-        eventObservers.forEach(eventObserver -> {
-            eventObserver.newEvent(observedEvent);
-        });
-    }
-
-    @Override
-    public void addObserver(EventObserver eventObserver) {
-        eventObservers.add(eventObserver);
-    }
-
-    @Override
-    public void removeObserver(EventObserver eventObserver) {
-
     }
 }

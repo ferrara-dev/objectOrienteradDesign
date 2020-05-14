@@ -1,7 +1,7 @@
 package model;
 
 import model.amount.MonetaryValue;
-import model.banking.Balance;
+import model.amount.Balance;
 import model.banking.CashPayment;
 import model.physicalobjects.Register;
 import org.junit.Test;
@@ -15,6 +15,7 @@ public class TestRegister {
     @Test
     public void testRegisterWithdraw() {
         Register register = new Register();
+        register.setDefault();
         Balance registerBalance = new Balance();
         registerBalance.setNumber(new BigDecimal(1000));
         register.setBalance(registerBalance);
@@ -27,6 +28,7 @@ public class TestRegister {
     @Test
     public void testRegisterDeposit() {
         Register register = new Register();
+        register.setDefault();
         Balance balance = new Balance();
         balance.setDefault();
 
@@ -34,7 +36,6 @@ public class TestRegister {
         cashPayment.setDefault();
         cashPayment.setNumber(new BigDecimal(1000));
         register.enterPayment(cashPayment);
-
         assertEquals(1000,register.getBalance().getNumber().doubleValue(),0);
     }
 }

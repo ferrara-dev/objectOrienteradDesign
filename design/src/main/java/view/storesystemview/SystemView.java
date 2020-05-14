@@ -15,7 +15,7 @@ public class SystemView extends MainView {
     public SystemView(){
         revenueMainView = new RevenueMainView();
         tabbedPane1 = new JTabbedPane();
-        tabbedPane1.add(revenueMainView, "Bank services");
+        tabbedPane1.add(revenueMainView, "Total revenues");
         add(tabbedPane1);
     }
 

@@ -1,4 +1,4 @@
-package model.banking;
+package model.amount;
 
 import model.amount.Currency;
 import model.amount.MonetaryValue;

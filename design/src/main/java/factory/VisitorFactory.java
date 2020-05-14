@@ -1,13 +1,11 @@
 package factory;
 
-import observer.modelobserver.EventObserver;
+
 import service.visitor.Visitor;
 import service.visitor.cartvisitor.ProductCartVisitor;
 import service.visitor.costvisitor.CostVisitor;
 import service.visitor.costvisitor.PaymentVisitor;
 import service.visitor.statevisitor.SaleStateVisitor;
-
-import java.util.ArrayList;
 
 /**
  * Enum class implementing a factory pattern that is used to
@@ -46,12 +44,4 @@ public enum VisitorFactory {
 
     public abstract Visitor getVisitor();
 
-    public static void initVisitors(ArrayList<EventObserver> eventObservers){
-        for(EventObserver eventObserver: eventObservers){
-            COST_VISITOR.getVisitor().addObserver(eventObserver);
-            PRODUCT_CART_VISITOR.getVisitor().addObserver(eventObserver);
-            SALE_STATE_VISITOR.getVisitor().addObserver(eventObserver);
-            PAYMENT_VISITOR.getVisitor().addObserver(eventObserver);
-        }
-    }
 }

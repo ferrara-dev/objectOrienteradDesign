@@ -1,6 +1,7 @@
 package startup.database;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import util.AppProperties;
 import util.datatransferobject.CustomerDTO;
 import integration.DataBaseHandler;
 import util.datatransferobject.ItemDTO;
@@ -22,9 +23,10 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
     }
 
     public boolean register(String id, Object obj) {
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(URL)) {
-            Statement statement = connection.createStatement();
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            Statement statement = con.createStatement();
             String value = Base64.getEncoder().encodeToString(objectMapper.writeValueAsString(obj).getBytes());
             // Step 3: Execute the query or update query
             int result = statement.executeUpdate(String.format(INSERT_TEMPLATE, jsonTableName, id, objectMapper.writeValueAsString(obj)));
@@ -56,7 +58,9 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
 
     private ArrayList<CustomerDTO> collectCustomer() throws NotFoundException {
         ArrayList<CustomerDTO> customerDTOS = new ArrayList<>();
-        try (Connection con = DriverManager.getConnection(URL)) {
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_ALL_TEMPLATE, tableName));
 
@@ -78,7 +82,9 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
 
 
     private ItemDTO collectProduct(String id) throws NotFoundException {
-        try (Connection con = DriverManager.getConnection(URL)) {
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, tableName, id));
 

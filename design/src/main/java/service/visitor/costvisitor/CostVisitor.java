@@ -1,27 +1,29 @@
 package service.visitor.costvisitor;
 
-import model.ObservableModel;
 import model.amount.RunningTotal;
 import model.amount.TotalVAT;
 import model.sale.SaleItem;
 import model.sale.saleinformation.cost.CostDetail;
 
 import observer.modelobserver.EventObserver;
-import observer.modelobserver.ObservedEvent;
 import observer.modelobserver.PropertyChangeEvent;
 import service.visitor.Visitor;
 import util.datatransferobject.CostDTO;
 import util.sequence.SequenceIterator;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class CostVisitor implements Visitor<CostDetail,SequenceIterator<SaleItem>>, ObservableModel {
+/**
+ * Implementation of the <code> Visitor </code> interface that is used to visit the
+ * <code> CostDetail </code> model and update its fields.
+  */
+public class CostVisitor implements Visitor<CostDetail,SequenceIterator<SaleItem>> {
     private SequenceIterator<SaleItem> iterator;
     private static CostVisitor instance;
-    private ArrayList<EventObserver> eventObservers;
 
     private CostVisitor() {
-        eventObservers = new ArrayList<>();
+
     }
 
     /**
@@ -47,27 +49,15 @@ public class CostVisitor implements Visitor<CostDetail,SequenceIterator<SaleItem
         iterator = itemSequenceIterator;
     }
 
+    /**
+     * Override to update the sales <code> RunningTotal </code> and <code> TotalVAT </code>
+     * @param costDetail
+     */
     @Override
     public void processElement(CostDetail costDetail) {
-        RunningTotal runningTotal = new RunningTotal();
-        TotalVAT totalVAT = new TotalVAT();
         iterator.firstItem();
-
-        while(!iterator.isOver()) {
-            SaleItem currentItem = iterator.getCurrentItem();
-            currentItem.reCalcTotalVAT();
-            currentItem.reCalcTotalPrice();
-            totalVAT.increaseValue(currentItem.getTotalVAT());
-            runningTotal.increaseValue(currentItem.getTotalPrice());
-            costDetail.increaseTotalDiscountOfPrice(currentItem.getItemDiscount().getTotalPriceReduction());
-            iterator.nextItem();
-        }
-
-        costDetail.increaseTotalDiscountOfPrice(costDetail.getPriceDiscount().getTotalPriceReduction());
-        runningTotal.decreaseValue(costDetail.getTotalDiscountOfPrice());
-        costDetail.setRunningTotal(runningTotal);
-        costDetail.setTotalVAT(totalVAT);
-        iterator.firstItem();
+        updateSaleItemCost(iterator);
+        updateSaleCost(costDetail, iterator);
         costHasChanged(costDetail);
     }
 
@@ -80,19 +70,32 @@ public class CostVisitor implements Visitor<CostDetail,SequenceIterator<SaleItem
         costDetail.notifyObservers(new PropertyChangeEvent("costDetail", new CostDTO(finalCost,runningTotal,totalVAT,priceDiscount,totalPriceOfDiscount),null));
     }
 
-    @Override
-    public void notifyObservers(ObservedEvent observedEvent) {
-        for(EventObserver eventObserver: eventObservers)
-            eventObserver.newEvent(observedEvent);
+
+    private void updateSaleItemCost(SequenceIterator<SaleItem> iterator) {
+            while (!iterator.isOver()) {
+                SaleItem saleItem = iterator.getCurrentItem();
+                saleItem.reCalcTotalPrice();
+                saleItem.reCalcTotalVAT();
+                iterator.nextItem();
+            }
+        iterator.firstItem();
     }
-
-    @Override
-    public void addObserver(EventObserver eventObserver) {
-        eventObservers.add(eventObserver);
-    }
-
-    @Override
-    public void removeObserver(EventObserver eventObserver) {
-
+    private void updateSaleCost(CostDetail costDetail, SequenceIterator<SaleItem> iterator) {
+        RunningTotal runningTotal = new RunningTotal();
+        TotalVAT totalVAT = new TotalVAT();
+        BigDecimal totalDiscount = new BigDecimal(0);
+        while (iterator.hasNext()){
+            SaleItem saleItem = iterator.getCurrentItem();
+            runningTotal.increaseValue(saleItem.getTotalPrice());
+            totalVAT.increaseValue(saleItem.getTotalVAT());
+            totalDiscount = totalDiscount.add(saleItem.getItemDiscount().getTotalPriceReduction());
+            iterator.nextItem();
+        }
+        iterator.firstItem();
+        totalDiscount = totalDiscount.add(costDetail.getPriceDiscount().getTotalPriceReduction());
+        costDetail.setTotalDiscountOfPrice(totalDiscount);
+        runningTotal.decreaseValue(costDetail.getTotalDiscountOfPrice());
+        costDetail.setRunningTotal(runningTotal);
+        costDetail.setTotalVAT(totalVAT);
     }
 }

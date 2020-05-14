@@ -1,22 +1,16 @@
 package controller;
 
 import service.ServiceFacade;
-import startup.layer.ControllerCreator;
-import observer.modelobserver.EventObserver;
 import util.datatransferobject.PaymentDTO;
 import util.datatransferobject.SaleItemDTO;
-
 
 public class MainController implements Controller{
     private ServiceFacade serviceFacade;
 
-    public MainController(ControllerCreator controllerCreator) {
-
-    }
-
     public MainController(ServiceFacade serviceFacade) {
         this.serviceFacade = serviceFacade;
     }
+
     /**
      * Called from the view to start a new sale
      * calls method <code> startsale() </code>
@@ -69,8 +63,5 @@ public class MainController implements Controller{
         serviceFacade.initPayment(paymentDTO);
     }
 
-    @Override
-    public void addObserver(EventObserver observer) {
-    }
 
 }

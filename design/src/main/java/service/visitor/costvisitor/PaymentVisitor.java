@@ -5,12 +5,10 @@ import factory.IntegrationFactory;
 import model.amount.Change;
 import model.amount.RunningTotal;
 import model.banking.Payment;
-import model.exception.BusinessLogicException;
+import exception.businessruleexception.BusinessLogicException;
 import model.physicalobjects.Register;
 import model.sale.saleinformation.cost.CostDetail;
 import integration.PhysicalObjectsRepository;
-import observer.modelobserver.EventObserver;
-import observer.modelobserver.ObservedEvent;
 import service.visitor.Visitor;
 
 import java.util.Objects;
@@ -83,18 +81,4 @@ public class PaymentVisitor implements Visitor<CostDetail,Payment> {
 
     }
 
-    @Override
-    public void notifyObservers(ObservedEvent observedEvent) {
-
-    }
-
-    @Override
-    public void addObserver(EventObserver eventObserver) {
-
-    }
-
-    @Override
-    public void removeObserver(EventObserver eventObserver) {
-
-    }
 }

@@ -2,7 +2,6 @@ package exception.exceptionhandler;
 
 
 import exception.ErrorId;
-import model.exception.UserException;
 import observer.exceptionobserver.ExceptionEvent;
 import exception.exceptionlog.ExceptionLogStrategy;
 import exception.notfoundexception.NotFoundException;
@@ -20,8 +19,8 @@ public class NotFoundExceptionHandler extends ExceptionHandlingChain {
     public void handle(Exception exception) {
         if (exception instanceof NotFoundException) {
             exceptionLogger.logException(exception);
-            UserException userException = new UserException(exception, ((NotFoundException) exception).getErrorId());
-            super.notifyListener(new ExceptionEvent(userException));
+            NotFoundException userException = new NotFoundException(exception, ((NotFoundException) exception).getErrorId());
+            super.notifyListener(new ExceptionEvent(userException,userException.getErrorId()));
 
         }  else {
             if (Objects.nonNull(successor)) {

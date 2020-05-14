@@ -4,7 +4,7 @@ import exception.exceptionhandler.ExceptionHandler;
 import factory.IntegrationFactory;
 import model.amount.MonetaryValue;
 import model.banking.CashPayment;
-import model.exception.BusinessLogicException;
+import exception.businessruleexception.BusinessLogicException;
 import model.physicalobjects.Register;
 import org.junit.Before;
 import org.junit.Test;

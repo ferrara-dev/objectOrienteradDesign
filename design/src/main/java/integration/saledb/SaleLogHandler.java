@@ -8,6 +8,7 @@ import exception.DataBaseAccessFailureException;
 import exception.ErrorId;
 import exception.notfoundexception.NotFoundException;
 import model.sale.saleinformation.SaleTransaction;
+import util.AppProperties;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -46,9 +47,11 @@ public class SaleLogHandler implements DataBaseHandler<SaleTransaction,Object> {
      */
     @Override
     public boolean register(String id, Object sale) {
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(URL)) {
-            Statement statement = connection.createStatement();
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
+            Statement statement = con.createStatement();
             String value = Base64.getEncoder().encodeToString(objectMapper.writeValueAsString(sale).getBytes());
             // Step 3: Execute the query or update query
             int result = statement.executeUpdate(String.format(INSERT_TEMPLATE,saleDB,id, objectMapper.writeValueAsString(sale)));
@@ -65,7 +68,10 @@ public class SaleLogHandler implements DataBaseHandler<SaleTransaction,Object> {
 
     @Override
     public boolean find(String id){
-        try (Connection con = DriverManager.getConnection(URL)){
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE,saleDB,id));
 
@@ -89,9 +95,11 @@ public class SaleLogHandler implements DataBaseHandler<SaleTransaction,Object> {
      */
     @Override
     public SaleTransaction collect(String id){
-        // Step 1: Establishing a Connection
-        try (Connection connection = DriverManager.getConnection(URL)) {
-            Statement statement = connection.createStatement();
+        Connection con = null;
+        try {
+            String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
+            Statement statement = con.createStatement();
 
             // Step 3: Execute the query or update query
             ResultSet result = statement.executeQuery(String.format(SELECT_TEMPLATE,saleDB, id));

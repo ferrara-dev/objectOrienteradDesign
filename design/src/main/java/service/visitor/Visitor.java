@@ -1,9 +1,8 @@
 package service.visitor;
 
 
-import model.ObservableModel;
 
-public interface Visitor<E,Data> extends ObservableModel {
+public interface Visitor<E,Data> {
     void processElement(E element);
     void setData(Data data);
 }

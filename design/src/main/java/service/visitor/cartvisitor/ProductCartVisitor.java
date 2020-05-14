@@ -43,6 +43,22 @@ public class ProductCartVisitor implements Visitor<ProductCart, SaleItem> {
         this.saleItem = saleItem;
     }
 
+    /**
+     * Override to process <code> ProductCart </code> object
+     * that contains items bought during a sale transaction.
+     *
+     * Adds sale items to a <code> ProductCart </code> object,
+     * if the cart contains the sale item that is to be added
+     * it increases the quantity instead.
+     *
+     * Updates the cost of each sale item in the cart before
+     * returning to the caller.
+     *
+     * can be used to only update the cost of the sale items
+     * if the inherited <code> data </code> field is set to
+     * null before calling.
+     * @param productCart
+     */
     @Override
     public void processElement(ProductCart productCart) {
         SequenceIterator<SaleItem> iterator = productCart.sequenceIterator();
@@ -55,8 +71,6 @@ public class ProductCartVisitor implements Visitor<ProductCart, SaleItem> {
         }
 
         iterator.firstItem();
-        updateSaleItemCost(iterator);
-
         productCart.notifyObservers(new PropertyChangeEvent("list", productCart.getItems(), productCart.getItems()));
     }
 
@@ -70,29 +84,4 @@ public class ProductCartVisitor implements Visitor<ProductCart, SaleItem> {
         return false;
     }
 
-    private void updateSaleItemCost(SequenceIterator<SaleItem> iterator) {
-        while (iterator.hasNext()) {
-            SaleItem saleItem = iterator.getCurrentItem();
-            saleItem.reCalcTotalPrice();
-            saleItem.reCalcTotalVAT();
-            iterator.nextItem();
-        }
-    }
-
-    @Override
-    public void notifyObservers(ObservedEvent observedEvent) {
-        eventObservers.forEach(eventObserver -> {
-            eventObserver.newEvent(observedEvent);
-        });
-    }
-
-    @Override
-    public void addObserver(EventObserver eventObserver) {
-        eventObservers.add(eventObserver);
-    }
-
-    @Override
-    public void removeObserver(EventObserver eventObserver) {
-
-    }
 }

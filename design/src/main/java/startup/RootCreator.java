@@ -10,7 +10,10 @@ import exception.SystemStartUpFailureException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-
+/**
+ * Creator class that creates creators for all layers that are vital
+ * for program startup.
+ */
 public class RootCreator {
     private ControllerCreator controllerCreator;
     private ServiceCreator serviceCreator;
@@ -35,7 +38,7 @@ public class RootCreator {
              PhysicalObjectsRepository.getInstance().startUpRegister(viewCreator.collectObservers());
         }
         catch (SystemStartUpFailureException systemStartUpFailureException){
-            ExceptionLogStrategy.SEVERE_EXCEPTION_LOG.get().logException(systemStartUpFailureException);
+            ExceptionHandler.handle(systemStartUpFailureException);
         }
     }
 

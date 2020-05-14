@@ -1,4 +1,4 @@
-package model.exception;
+package exception.businessruleexception;
 
 import exception.ErrorId;
 

@@ -3,7 +3,7 @@ package exception.exceptionhandler;
 import exception.ErrorId;
 import exception.businessruleexception.UndefinedDiscountException;
 import exception.exceptionlog.ExceptionLogStrategy;
-import model.exception.BusinessLogicException;
+import exception.businessruleexception.BusinessLogicException;
 import observer.exceptionobserver.ExceptionEvent;
 
 
