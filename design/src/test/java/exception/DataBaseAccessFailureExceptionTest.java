@@ -1,5 +1,6 @@
 package exception;
 
+import exception.exceptionhandler.ExceptionHandler;
 import factory.IntegrationFactory;
 import integration.DataBaseHandler;
 import org.junit.After;
@@ -7,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import exception.exceptionhandler.ExceptionHandlingChain;
 import util.AppProperties;
+import view.exceptionview.ExceptionView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -18,10 +20,11 @@ import static org.junit.Assert.assertTrue;
 
 public class DataBaseAccessFailureExceptionTest {
     private FileLock lock = null;
-    private ExceptionHandlingChain exceptionHandlingChain;
+
 
     @Before
     public void startUp() {
+        ExceptionHandler.createExceptionHandlingChain(new ExceptionView());
         try {
             AppProperties.resetDataBaseURL();
             System.out.println(AppProperties.getDataBaseURL());
@@ -41,18 +44,28 @@ public class DataBaseAccessFailureExceptionTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //AppProperties.resetDataBaseURL();
+        AppProperties.resetDataBaseURL();
         System.out.println(AppProperties.getDataBaseURL());
     }
 
     @Test
     public void testPropertiesClass() {
         String url = AppProperties.getDataBaseURL();
-        assertEquals(DataBaseHandler.URL,url);
+
     }
 
     @Test(expected = DataBaseAccessFailureException.class)
     public void testDataBaseAccessFailure() throws IOException {
         IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("1");
+    }
+
+
+    @Test
+    public void testDataBaseAccessFailure2() throws IOException {
+        try {
+            IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("1");
+        } catch (DataBaseAccessFailureException e){
+            ExceptionHandler.handle(e);
+        }
     }
 }

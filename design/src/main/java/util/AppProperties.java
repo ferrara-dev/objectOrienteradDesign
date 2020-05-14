@@ -8,9 +8,15 @@ public class AppProperties {
     private static Properties properties = new Properties();
     private static InputStream input;
     private static final String PATH = "src/main/resources/application.properties";
+
     static {
         try {
             input = new FileInputStream(PATH);
+            try {
+                properties.load(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -18,11 +24,11 @@ public class AppProperties {
 
     private static String previousURL;
 
-    public static void resetDataBaseURL(){
-        properties.setProperty("url","jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1");
+    public static void resetDataBaseURL() {
+        properties.setProperty("url", "jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1");
     }
 
-    public static final String path(){
+    public static final String path() {
         return PATH;
     }
 
@@ -37,6 +43,6 @@ public class AppProperties {
 
     public static void setDataBaseURL(String url) {
         String newUrl = "jdbc:h2:file:./" + url + ";DB_CLOSE_DELAY=-1";
-        properties.setProperty("url",newUrl);
+        properties.setProperty("url", newUrl);
     }
 }

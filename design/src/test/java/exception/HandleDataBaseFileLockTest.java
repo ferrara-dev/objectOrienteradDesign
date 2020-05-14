@@ -35,12 +35,6 @@ public class HandleDataBaseFileLockTest {
     }
 
     @Test
-    public void testPropertiesClass() {
-        String url = AppProperties.getDataBaseURL();
-        assertEquals(DataBaseHandler.URL,url);
-    }
-
-    @Test
     public void testDataBaseAccessFailure() throws IOException {
         System.out.println(AppProperties.getDataBaseURL());
         Product product = (Product) IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("1");

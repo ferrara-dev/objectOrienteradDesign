@@ -85,7 +85,6 @@ public class SaleMainView extends MainView {
 
     public void initDefault(Controller controller) {
         saleInputView.setMainController(controller);
-        controller.addObserver(this);
 
     }
 

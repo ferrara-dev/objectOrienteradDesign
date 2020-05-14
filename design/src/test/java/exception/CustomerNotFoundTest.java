@@ -47,7 +47,7 @@ public class CustomerNotFoundTest {
         try{
             IntegrationFactory.CUSTOMER_REPO.getDataBaseHandler().collect("111111");
         } catch (NotFoundException e){
-            assertEquals("id \"111111\"", e.getMessage());
+            assertEquals("ID\"111111\"", e.getMessage());
             e.printStackTrace();
         }
     }

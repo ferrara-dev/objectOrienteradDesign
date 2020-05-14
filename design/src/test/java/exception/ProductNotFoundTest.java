@@ -1,17 +1,20 @@
 package exception;
 
+import exception.exceptionhandler.ExceptionHandler;
 import factory.IntegrationFactory;
 import org.junit.Before;
 import org.junit.Test;
 import exception.notfoundexception.NotFoundException;
+import view.exceptionview.ExceptionView;
 
 
 import static org.junit.Assert.assertEquals;
 
-public class GlobalExceptionExceptHandlerTest {
+public class ProductNotFoundTest {
 
     @Before
     public void startUp() {
+        ExceptionHandler.createExceptionHandlingChain(new ExceptionView());
     }
 
     /**
@@ -22,13 +25,6 @@ public class GlobalExceptionExceptHandlerTest {
         IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("11111");
     }
 
-    /**
-     * Test if the error code is correct
-     */
-    @Test
-    public void testInvalidProductId2() {
-        IntegrationFactory.CUSTOMER_REPO.getDataBaseHandler().collect("111111");
-    }
 
     /**
      * Test that the message is correct
@@ -38,7 +34,7 @@ public class GlobalExceptionExceptHandlerTest {
         try{
             IntegrationFactory.CUSTOMER_REPO.getDataBaseHandler().collect("111111");
         } catch (NotFoundException e){
-            assertEquals("id \"111111\"", e.getMessage());
+            assertEquals("ID\"111111\"", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -48,5 +44,10 @@ public class GlobalExceptionExceptHandlerTest {
      */
     @Test
     public void testInvalidProductId4() {
+        try{
+            IntegrationFactory.PRODUCT_REPO.getDataBaseHandler().collect("111111");
+        } catch (NotFoundException e){
+            ExceptionHandler.handle(e);
+        }
     }
 }

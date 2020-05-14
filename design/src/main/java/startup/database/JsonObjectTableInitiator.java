@@ -26,6 +26,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
         Connection con = null;
         try {
             String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement statement = con.createStatement();
             String value = Base64.getEncoder().encodeToString(objectMapper.writeValueAsString(obj).getBytes());
             // Step 3: Execute the query or update query
@@ -61,6 +62,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
         Connection con = null;
         try {
             String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_ALL_TEMPLATE, tableName));
 
@@ -85,6 +87,7 @@ public class JsonObjectTableInitiator implements DataBaseHandler {
         Connection con = null;
         try {
             String url = AppProperties.getDataBaseURL();
+            con = DriverManager.getConnection(url);
             Statement stm = con.createStatement();
             ResultSet rs = stm.executeQuery(String.format(SELECT_TEMPLATE, tableName, id));
 

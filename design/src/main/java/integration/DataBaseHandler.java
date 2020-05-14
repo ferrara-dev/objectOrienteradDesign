@@ -6,7 +6,7 @@ import util.JsonUtil;
 import java.sql.*;
 
 public interface DataBaseHandler<obj,param> {
-     String URL = "jdbc:h2:file:./userDB;DB_CLOSE_DELAY=-1";
+
      String INSERT_TEMPLATE = "INSERT INTO  %s VALUES ('%s', '%s' FORMAT JSON);";
      String SELECT_TEMPLATE = "SELECT * FROM %s WHERE id='%s';";
      String SELECT_ALL_TEMPLATE = "SELECT * FROM %s;";

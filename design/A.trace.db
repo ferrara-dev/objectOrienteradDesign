@@ -1,0 +1,9 @@
+2020-05-14 11:35:06 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "JSONPRODUCTTABLE" not found; SQL statement:
+SELECT * FROM jsonProductTable WHERE id='1'; [42102-200]
+2020-05-14 11:35:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "JSONPRODUCTTABLE" not found; SQL statement:
+SELECT * FROM jsonProductTable WHERE id='1'; [42102-200]
+2020-05-14 11:37:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "JSONPRODUCTTABLE" not found; SQL statement:
+SELECT * FROM jsonProductTable WHERE id='1'; [42102-200]
